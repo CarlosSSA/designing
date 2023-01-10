@@ -25,7 +25,7 @@ export const recipesSlice = createSlice({
     },
     reducers: {
         onSetActiveRecipe: ( state, { payload }) => {
-            state.activeRecipe = payload;
+            state.activeRecipe = payload; // hay un problema al recibir el payload
         },
         
         onAddNewRecipe: ( state, { payload }) => {

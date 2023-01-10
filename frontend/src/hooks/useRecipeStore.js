@@ -43,7 +43,8 @@ export const useRecipeStore = () => {
     }
     
     const startActiveRecipe = ( receta ) => {
-        dispatch( onSetActiveRecipe( receta ) )        
+        dispatch( onSetActiveRecipe( receta ) )   
+        console.log("Se ha pinchado esta receta", receta);     
         
     } 
 

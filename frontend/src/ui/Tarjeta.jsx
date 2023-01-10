@@ -15,13 +15,11 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MessageIcon from '@mui/icons-material/Message';
-import { CardActionArea } from '@mui/material';
+import { CardActionArea, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useRecipeStore } from '../hooks/useRecipeStore';
-
-
-
+import { useState } from 'react';
 
 
 const ExpandMore = styled((props) => {
@@ -52,7 +50,7 @@ const commentCard = ()=>{
 }
 
 
-export default function RecipeReviewCard({nombre, autor}) {
+export default function RecipeReviewCard({nombre, autor, receta}) {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -60,14 +58,24 @@ export default function RecipeReviewCard({nombre, autor}) {
   const { startActiveRecipe } = useRecipeStore();
 
   const handleCardActionAreaClick = () => {
-    console.log('Card action area clicked');
-    dispatch(startActiveRecipe())
-    navigate('/receta')
+    console.log('Card action area clicked con esta receta', receta);
+    dispatch(startActiveRecipe(receta)); 
+    handleClickOpen() ;   
   };
 
   const handleAvatarClick = () => {
     console.log("Has pinchado en el avatar");
     
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
 
@@ -77,7 +85,7 @@ export default function RecipeReviewCard({nombre, autor}) {
       
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" onClick={handleAvatarClick}>
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" onClick={handleClickOpen}>
               A
             </Avatar>
           }
@@ -89,7 +97,7 @@ export default function RecipeReviewCard({nombre, autor}) {
           title= {nombre}
           subheader={autor}
         />
-        <CardActionArea onClick={handleCardActionAreaClick}>
+        <CardActionArea onClick={handleCardActionAreaClick }>
         <CardMedia
           component="img"
           height="194"
@@ -104,6 +112,19 @@ export default function RecipeReviewCard({nombre, autor}) {
             if you like.
           </Typography>
         </CardContent>
+        <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>{nombre}</DialogTitle>
+                <DialogContent>
+                <Typography variant="body2" color="text.secondary">
+                This impressive paella is a perfect party dish and a fun meal to cook
+                together with your guests. Add 1 cup of frozen peas along with the mussels,
+                if you like.
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                Autor:{autor}
+                </Typography>
+                </DialogContent>
+        </Dialog>
       
       </CardActionArea>
       

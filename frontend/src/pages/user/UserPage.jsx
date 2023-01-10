@@ -89,7 +89,7 @@ export default function UserPage() {   // No le gusta el await
             {recetas.map((card) => (
               //hay que meterle aqui el onclick con el Handleactive Event y tal
               <Grid item key={card} xs={12} sm={6} md={4}>
-                <RecipeReviewCard nombre={card.nombre} autor = {card.autor}/>  // NO RECIBE NADA AQUI
+                <RecipeReviewCard nombre={card.nombre} autor = {card.autor} receta={card}/>  // NO RECIBE NADA AQUI
               </Grid>
             ))}
           </Grid>

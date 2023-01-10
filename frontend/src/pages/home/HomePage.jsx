@@ -32,7 +32,70 @@ function Copyright() {
   );
 }
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];  // Hacer una llamada y filtrar las ultimas 20 recetas por fecha
+const cards = [
+  {
+      "_id": "639c5d6694a22a28d4d4d696",
+      "nombre": "Huevos con Papa",
+      "autor": "638389059828e7eb2e0c14ba",
+      "ingredientes": [
+          {
+              "ingrediente": "638109f47ef4db1713b09133",
+              "cantidad": 200,
+              "_id": "639c5d6694a22a28d4d4d697"
+          },
+          {
+              "ingrediente": "63810a897ef4db1713b09135",
+              "cantidad": 50,
+              "_id": "639c5d6694a22a28d4d4d698"
+          }
+      ],
+      "likes": 20,
+      "comments": 15,
+      "__v": 0
+  },
+  {
+      "_id": "639c5d6c94a22a28d4d4d6a0",
+      "nombre": "Huevos con Papa 2",
+      "autor": "638389059828e7eb2e0c14ba",
+      "ingredientes": [
+          {
+              "ingrediente": "638109f47ef4db1713b09133",
+              "cantidad": 200,
+              "_id": "639c5d6c94a22a28d4d4d6a1"
+          },
+          {
+              "ingrediente": "63810a897ef4db1713b09135",
+              "cantidad": 50,
+              "_id": "639c5d6c94a22a28d4d4d6a2"
+          }
+      ],
+      "likes": 20,
+      "comments": 15,
+      "__v": 0
+  },
+  {
+      "_id": "639c5d7094a22a28d4d4d6aa",
+      "nombre": "Huevos con Papa 3",
+      "autor": "638389059828e7eb2e0c14ba",
+      "ingredientes": [
+          {
+              "ingrediente": "638109f47ef4db1713b09133",
+              "cantidad": 200,
+              "_id": "639c5d7094a22a28d4d4d6ab"
+          },
+          {
+              "ingrediente": "63810a897ef4db1713b09135",
+              "cantidad": 50,
+              "_id": "639c5d7094a22a28d4d4d6ac"
+          }
+      ],
+      "likes": 20,
+      "comments": 15,
+      "__v": 0
+  }
+]; 
+
+// Hacer una llamada y filtrar las ultimas 20 recetas por fecha
 
 const theme = createTheme();
 
@@ -50,8 +113,8 @@ export default function Album() {
           {/* End hero unit */}
           <Grid container spacing={6}>
             {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <RecipeReviewCard/>
+              <Grid item key={card} xs={12} sm={6} md={4} >
+                <RecipeReviewCard nombre={card.nombre} autor = {card.autor} receta = {card}/>
               </Grid>
             ))}
           </Grid>
