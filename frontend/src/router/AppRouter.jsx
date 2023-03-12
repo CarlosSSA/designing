@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import CrearReceta from '../pages/crearReceta/CrearReceta';
 import { useAuthStore } from '../hooks/useAuthStore';
-import Album from '../pages/home/HomePage';
 import LoginInside from '../pages/login/Login';
 import RegisterInside from '../pages/login/Register';
 import { RecipePage } from '../pages/recipe/RecipePage';
-import  UserPage from '../pages/user/UserPage';    
+import  UserPage from '../pages/user/UserPage';   
+import HomePage from '../pages/home/HomePage';
+
+ 
 
 
 export const AppRouter = () => {
@@ -38,10 +41,11 @@ export const AppRouter = () => {
                     )
                     : (
                         <>
-                            <Route path="/" element={ <Album /> } />
+                            <Route path="/" element={ <HomePage /> } />
                             <Route path="/receta/:recipeid" element={ <RecipePage /> } />
                             <Route path="/user/:userid" element={ <UserPage /> } />
                             <Route path="/receta" element={ <RecipePage /> } />
+                            <Route path="/crearReceta" element={ <CrearReceta /> } />
                             <Route path="/*" element={ <Navigate to="/" /> } />
                         </>
                     )

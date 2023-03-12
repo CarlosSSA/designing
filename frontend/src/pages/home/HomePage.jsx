@@ -17,6 +17,9 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PrimarySearchAppBar from '../../ui/NavBar.jsx'
 import RecipeReviewCard from '../../ui/Tarjeta.jsx'
+import { useRecipeStore } from '../../hooks/useRecipeStore.js';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 function Copyright() {
@@ -32,75 +35,26 @@ function Copyright() {
   );
 }
 
-const cards = [
-  {
-      "_id": "639c5d6694a22a28d4d4d696",
-      "nombre": "Huevos con Papa",
-      "autor": "638389059828e7eb2e0c14ba",
-      "ingredientes": [
-          {
-              "ingrediente": "638109f47ef4db1713b09133",
-              "cantidad": 200,
-              "_id": "639c5d6694a22a28d4d4d697"
-          },
-          {
-              "ingrediente": "63810a897ef4db1713b09135",
-              "cantidad": 50,
-              "_id": "639c5d6694a22a28d4d4d698"
-          }
-      ],
-      "likes": 20,
-      "comments": 15,
-      "__v": 0
-  },
-  {
-      "_id": "639c5d6c94a22a28d4d4d6a0",
-      "nombre": "Huevos con Papa 2",
-      "autor": "638389059828e7eb2e0c14ba",
-      "ingredientes": [
-          {
-              "ingrediente": "638109f47ef4db1713b09133",
-              "cantidad": 200,
-              "_id": "639c5d6c94a22a28d4d4d6a1"
-          },
-          {
-              "ingrediente": "63810a897ef4db1713b09135",
-              "cantidad": 50,
-              "_id": "639c5d6c94a22a28d4d4d6a2"
-          }
-      ],
-      "likes": 20,
-      "comments": 15,
-      "__v": 0
-  },
-  {
-      "_id": "639c5d7094a22a28d4d4d6aa",
-      "nombre": "Huevos con Papa 3",
-      "autor": "638389059828e7eb2e0c14ba",
-      "ingredientes": [
-          {
-              "ingrediente": "638109f47ef4db1713b09133",
-              "cantidad": 200,
-              "_id": "639c5d7094a22a28d4d4d6ab"
-          },
-          {
-              "ingrediente": "63810a897ef4db1713b09135",
-              "cantidad": 50,
-              "_id": "639c5d7094a22a28d4d4d6ac"
-          }
-      ],
-      "likes": 20,
-      "comments": 15,
-      "__v": 0
-  }
-]; 
+
 
 // Hacer una llamada y filtrar las ultimas 20 recetas por fecha
 
+
 const theme = createTheme();
 
-export default function Album() { 
-  
+export default function HomePage() { 
+  const {startAllRecipes} = useRecipeStore();
+  const [recetasiniciales, setRecetasIniciales] = useState([])
+
+  useEffect(() => {
+    const obtenerRecetas = async () => {
+      const allRecipes = await startAllRecipes();      
+      console.log("Esto me hace el useEffect de la Home?: ", allRecipes);
+      setRecetasIniciales(allRecipes)
+    };
+    obtenerRecetas();
+  }, [])  
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -112,9 +66,9 @@ export default function Album() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={6}>
-            {cards.map((card) => (
+            {recetasiniciales.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4} >
-                <RecipeReviewCard nombre={card.nombre} autor = {card.autor} receta = {card}/>
+                <RecipeReviewCard nombre = {card.nombre} autor = {card.autor.nombre} receta = {card} descripcion={card.descripcion} likes = {card.likes} comments = {card.comments}/>
               </Grid>
             ))}
           </Grid>

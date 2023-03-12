@@ -1,24 +1,19 @@
 import {useDispatch, useSelector} from 'react-redux';
 import recetaApi from '../apis/authApi';
-import { onclearErrorMessage, onChecking, onLogin, onLogout } from '../store/auth/authSlice';
+///api/createIngredient
 
+export const useIngredientStore = () => {
 
-export const useAuthStore = () => {
-
-   const {status, user, errorMessage, premium} = useSelector(state => state.auth) // con esto pillo el slice
-   const dispatch = useDispatch();
-   
+ 
    // Start Login
-   const startLogin = async({email,password}) => {
-        console.log({email, password});
-        dispatch(onChecking())
-
+   const startGetIngredients = async() => {
+        
         try {
             
             // Es que necesita meterle el nombre a pelo para que funcione XD, esto cambiarlo y dejarlo solo con login y password
             
             const {data} = await recetaApi.post('/auth', {email, password})
-            console.log("login desde el backend: ",data);
+            console.log(data);
             localStorage.setItem('token',data.token);
             localStorage.setItem('token-init-date',new Date().getTime());        
             dispatch(onLogin({nombre:data.name, id:data.uid}))
@@ -70,17 +65,34 @@ export const useAuthStore = () => {
             dispatch( onclearErrorMessage() );
         }, 10);
     }
-}
+}  
+
+    const startAllIngredients = async() => {
+            
+        try {        
+        
+            const {data} = await recetaApi.get('/createIngredient/all')  
+           
+            console.log("Desde UseIngredient Store -Todos los ingredientes", data);
+            return data 
+            
+            
+        } catch (error) {
+            console.log("error", error);        
+        }
+
+    }
 
   return {
 
     // Propiedades
     status,
-    user,
-    errorMessage,
+    
+ 
 
     //Metodos
-    startLogin,
+    startGetIngredients,
+    startAllIngredients,
     startRegister,
     startCheckAuthToken
   }

@@ -9,7 +9,7 @@ const IngredientTable = ({ ingredients, deleteItem }) => (
           {ingredients.map((ingredient, index) => (
             <TableRow key={index}>
               <TableCell>{ingredient.ingredient}</TableCell>
-              <TableCell>{ingredient.amount}</TableCell>
+              <TableCell>{ingredient.cantidad}</TableCell>
               <TableCell>
               <Button onClick={() => deleteItem(ingredients, index) }>Delete</Button>
               </TableCell>
@@ -23,3 +23,5 @@ const IngredientTable = ({ ingredients, deleteItem }) => (
 
 
 export default IngredientTable
+
+

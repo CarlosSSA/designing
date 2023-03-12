@@ -1,24 +1,27 @@
-import { TextField, Button, InputAdornment} from "@mui/material";
+import { TextField, Button, InputAdornment, FormControl} from "@mui/material";
 import { useState } from "react";
 
-const PasosForm = ({addPaso, pasos}) => {
-    const [paso, setPaso] = useState("");      
-  
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      addPaso(paso);
-      setPaso("");
-    };
 
-    //esto era para subir una imagen xo se puede borrar
+const PasosForm = ({addPaso, handleChange}) => {
+    const [paso, setPaso] = useState("");  
     
+    const handleSubmit = (event) => {
+      event.preventDefault();      
+      addPaso(paso);
+      setPaso("")
+      console.log("se lanza un handlesubmit desde PasosForm");
+      
+    };
+   
   
     return (
-      <form onSubmit={addPaso(paso)} style={{display: 'flex', justifyContent: 'space-between'}}>
+      <form onSubmit={handleSubmit} style={{display: 'flex', justifyContent: 'space-between'}}>
+      <FormControl>
         <div>
           <TextField
             label="Paso"
             value={paso}
+            name="pasos"
             onChange={(event) => setPaso(event.target.value)}
             margin="normal"
           />
@@ -27,6 +30,7 @@ const PasosForm = ({addPaso, pasos}) => {
             Ave
           </Button>
         </div>
+        </FormControl>  
       </form>
     );
   };

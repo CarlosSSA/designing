@@ -21,7 +21,8 @@ export const recipesSlice = createSlice({
         recipes: [
             // tempEvent
         ],
-        activeRecipe: null
+        activeRecipe: null,
+        createRecipe: {}
     },
     reducers: {
         onSetActiveRecipe: ( state, { payload }) => {
@@ -73,12 +74,15 @@ export const recipesSlice = createSlice({
             state.isLoadingEvents = true,
             state.recipes      = []
             state.activeRecipe = null
+        },
+        onFormRecipe: (state, payload) => {
+            state.createRecipe = payload
         }
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { onLoadUserRecipes, onSetActiveRecipe, onAddNewRecipe, onUpdateRecipe, onDeleteRecipe, onLoadRecipes, onLogoutRecipe  } = recipesSlice.actions
+export const { onLoadUserRecipes, onSetActiveRecipe, onAddNewRecipe, onUpdateRecipe, onDeleteRecipe, onLoadRecipes, onLogoutRecipe, onCreateRecipe,onFormRecipe  } = recipesSlice.actions
 
 export default recipesSlice.reducer

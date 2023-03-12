@@ -1,33 +1,55 @@
-import { TextField, Button, InputAdornment, FormControl, InputLabel, Select, MenuItem} from "@mui/material";
-import React, { useState } from "react";
+import { TextField, Button, InputAdornment, FormControl, InputLabel, Select, MenuItem, Autocomplete} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useIngredientStore } from "../../hooks/useIngredientStore";
 
 
-
-const IngredientForm = ({addIngredient, handleChange}) => {
+const IngredientForm = ({addIngredient, handleChange, ingredientesDb}) => {
+  
     const [ingredient, setIngredient] = useState("");
     const [amount, setAmount] = useState("");
-    //new
-    const [unit, setUnit] = useState(1);
-   
+    //Para controlar las unidades
+    const [unit, setUnit] = useState(1);    
+    const [value, setValue] = useState();     
+
+    // Recibo todos los ingredientes de la BBDD
+    /*
+    [{cantidad, descripcion,grasas, hcs, nombre, proteinas, id},{},{}...]
+    */
+
+    //how to create a loop?
+
+    const totalIngredientes = ingredientesDb    
     
-  
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      //multiplica el valor del amount por el tipo de cantidad que se introduce. Habrá que ver cuanto es una pieza, poner la taza y cucharadita como standard
-      const totalAmount = parseInt(amount * unit)
-      addIngredient({ ingredient, amount:totalAmount });
+    const options = totalIngredientes.map(item => ({ nombre: item.nombre, id: item._id })) 
+    // Filtramos y se queda así
+    /*
+    [{nombre:'Tomate', id;'13123adsd},{},{}...]
+    */ 
+
+    const handleSubmit = (event, estado) => {
+      event.preventDefault();    
+      //actualizo la propiedad de ingredientes con el ID del Ingrediente y su cantidad
+      addIngredient({ ingrediente:estado.id, cantidad:amount }); // [{}]
       setIngredient("");
       setAmount("");
     };
+
+    // el newValue evalua a {nombre: 'Huevo', id: '63810a897ef4db1713b09135'}
   
-    return (
-      <form onSubmit={handleSubmit} style={{display: 'flex', justifyContent: 'space-between'}}>
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <TextField
-                label="Ingrediente"
-                value={ingredient}
-                onChange={(event) => setIngredient(event.target.value)}
-                margin="normal"
+  
+    return (      
+      <form onSubmit={(event) => handleSubmit(event, value)} style={{display: 'flex', justifyContent: 'space-between'}}>
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">        
+       
+          <Autocomplete                
+                options={options}
+                getOptionLabel={(option) => option.nombre}
+                renderInput={(params) => <TextField {...params} label="Elige una opción" />}
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);                  
+                }}                 
+                
             />
             <TextField
                 label="Cantidad"

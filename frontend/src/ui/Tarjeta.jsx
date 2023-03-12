@@ -50,21 +50,24 @@ const commentCard = ()=>{
 }
 
 
-export default function RecipeReviewCard({nombre, autor, receta}) {
+export default function RecipeReviewCard({nombre, autor, receta, descripcion, likes, comments}) {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
 
   const { startActiveRecipe } = useRecipeStore();
 
-  const handleCardActionAreaClick = () => {
-    console.log('Card action area clicked con esta receta', receta);
-    dispatch(startActiveRecipe(receta)); 
-    handleClickOpen() ;   
+  const handleCardActionAreaClick = async() => {    
+    console.log("Has pinchado la receta con el otro ID: ", receta._id);
+    console.log('Card action area clicked con esta receta', receta);      
+    navigate(`/receta/${receta._id}`);
+    //handleClickOpen() ;   
   };
 
   const handleAvatarClick = () => {
     console.log("Has pinchado en el avatar");
+    
     
   };
 
@@ -107,21 +110,17 @@ export default function RecipeReviewCard({nombre, autor, receta}) {
         
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            This impressive paella is a perfect party dish and a fun meal to cook
-            together with your guests. Add 1 cup of frozen peas along with the mussels,
-            if you like.
+            {descripcion}
           </Typography>
         </CardContent>
         <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{nombre}</DialogTitle>
                 <DialogContent>
                 <Typography variant="body2" color="text.secondary">
-                This impressive paella is a perfect party dish and a fun meal to cook
-                together with your guests. Add 1 cup of frozen peas along with the mussels,
-                if you like.
+                  {descripcion}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                Autor:{autor}
+                 Autor:{autor}
                 </Typography>
                 </DialogContent>
         </Dialog>
@@ -131,13 +130,15 @@ export default function RecipeReviewCard({nombre, autor, receta}) {
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites" onClick={addFavorite}>
             <FavoriteIcon />
+            {likes}
+          </IconButton>
+          <IconButton aria-label="message" onClick={commentCard}>            
+            <MessageIcon />
+            {comments}
           </IconButton>
           <IconButton aria-label="share" onClick={shareRecipe}>
             <ShareIcon />
-          </IconButton>  
-          <IconButton aria-label="message" onClick={commentCard}>
-            <MessageIcon />
-          </IconButton>       
+          </IconButton>                  
         </CardActions>      
       </Card>
     
