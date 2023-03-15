@@ -7,6 +7,8 @@ import RegisterInside from '../pages/login/Register';
 import { RecipePage } from '../pages/recipe/RecipePage';
 import  UserPage from '../pages/user/UserPage';   
 import HomePage from '../pages/home/HomePage';
+import Mainete from '../components/Mainete';
+
 
  
 
@@ -45,7 +47,8 @@ export const AppRouter = () => {
                             <Route path="/receta/:recipeid" element={ <RecipePage /> } />
                             <Route path="/user/:userid" element={ <UserPage /> } />
                             <Route path="/receta" element={ <RecipePage /> } />
-                            <Route path="/crearReceta" element={ <CrearReceta /> } />
+                            <Route path="/crearReceta" element={ <CrearReceta /> } /> 
+                            <Route path="/loles" element={ <Mainete /> } />                               
                             <Route path="/*" element={ <Navigate to="/" /> } />
                         </>
                     )
