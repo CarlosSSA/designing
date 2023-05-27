@@ -1,0 +1,72 @@
+const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
+
+const RecipeSchema = new Schema({
+  nombre: {
+    type: String,
+     
+  }, 
+  autor: { type: Schema.Types.ObjectId, ref: 'Usuario' },
+  
+  ingredientes:[
+    {
+      ingrediente:{type: Schema.Types.ObjectId, ref: 'Ingrediente'},
+      cantidad:{type: Number, required: true}
+    }
+  ],  
+
+  likes: {
+    type: Number,
+    default:0      
+  },
+  descripcion: {
+    type: String,     
+  },
+  pasos: {
+    type: Array,     
+  },
+  dificultad: {
+    type: Number,
+    default:0     
+  },
+  tiempo: {
+    type: Number, 
+    default:0     
+  },
+  porciones: {
+    type: Number, 
+    default:1    
+  },
+  comments: {
+    type: Array, 
+    default:[]  
+  },
+  kcal:{
+    type: Number,
+  },
+  proteinas: {
+    type: Number,        
+  },
+  hcs: {
+    type: Number,         
+  },
+  totales: {
+    type: Schema.Types.Mixed,  
+    default:{}       
+  },
+  grasas: {
+    type: Number,          
+  },
+ 
+});
+
+module.exports = model('Receta', RecipeSchema); 
+
+
+/* Esto lo rompe
+ingredients: [{
+	ingredientObject: {type: Schema.Types.ObjectId, ref: 'Ingrediente'},
+	quantity: {type: Number, default: 1},
+	unit: {type: String, default: 'unit'}
+}]
+*/ 
