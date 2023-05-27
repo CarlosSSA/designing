@@ -15,7 +15,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import PrimarySearchAppBar from '../../ui/NavBar.jsx'
 import RecipeReviewCard from '../../ui/Tarjeta.jsx'
 import { useRecipeStore } from '../../hooks/useRecipeStore.js';
 import { useEffect } from 'react';
@@ -58,8 +57,7 @@ export default function HomePage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <PrimarySearchAppBar/>        
+      <CssBaseline />             
       <main>
         {/* Hero unit */}
      

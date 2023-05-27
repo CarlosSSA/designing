@@ -61,6 +61,7 @@ Header.propTypes = {
     }),
   ).isRequired,
   title: PropTypes.string.isRequired,
+  
 };
 
 export default Header;

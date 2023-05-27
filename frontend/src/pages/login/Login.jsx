@@ -47,8 +47,8 @@ export default function LoginInside() {
       password: data.get('password'), 
     }, "Formulario Enviado");
 
-    // Vamos a probar con el Hook que remplazaría al thunk
-    console.log("Ahora con el Hook");
+    
+    console.log("startLogin con los datos del formulario");
     startLogin({email: data.get('email'),password: data.get('password')});
   }; 
 

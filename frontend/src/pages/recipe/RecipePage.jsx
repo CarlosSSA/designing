@@ -1,4 +1,4 @@
-import { Avatar, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import { Avatar, Card, CardActionArea, Grid, CardActions, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogTitle, IconButton, Typography, TextField, Button } from '@mui/material';
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -9,18 +9,19 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import MessageIcon from '@mui/icons-material/Message';
-import { Cell, PieChart, Pie , Tooltip, LineChart, Line ,RadarChart , PolarGrid, PolarAngleAxis,PolarRadiusAxis, Radar, Legend, ResponsiveContainer   } from 'recharts';
+import { Cell, PieChart, Pie , Tooltip, LabelList,LineChart, Line ,RadarChart , PolarGrid, PolarAngleAxis,PolarRadiusAxis, Radar, Legend, ResponsiveContainer    } from 'recharts';
 import './recipePage.css'
 import { DataGrid } from '@mui/x-data-grid';
 
-//dummy data
-let data01 = {}
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import ContenidoCard from './ContenidoCard';
 
-const COLORS = ['#FFC300','#FF5733','#C70039']
 
-
-
-//dummy data
+import Comment from './Comment';
 
 const columns = [  
   { field: 'Ingrediente', headerName: 'Ingredientes', width: 130 },
@@ -29,118 +30,67 @@ const columns = [
 ];
 
 
-
   export const RecipePage = () => {
 
- const {startSelectRecipe} = useRecipeStore()
- const {recipeid} = useParams()
- const [data, setData] = useState({})
+    // Guardar Receta
+    const [recipeSaved, setRecipeSaved] = useState(false); 
+    const handleSaveRecipe = () => {
+    setRecipeSaved(!recipeSaved); // Actualizar el estado para indicar que la receta ha sido guardada
+    if(recipeSaved === true){
+      console.log("receta borrada")
+    }else
+    console.log("receta guardada")
+};
+
+  const {startSelectRecipe} = useRecipeStore()
+  const {recipeid} = useParams()
+  const [fetchedData, setFetchedData] = useState()
+ 
  
   // Llamada a BBDD para recoger datos de esta receta en concreto
-
-console.log("antes del useeffect", recipeid);
- useEffect(() => {
-   const fetchData = async() =>{
-    try {
-      const data = await startSelectRecipe(recipeid)
-      setData(data);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log("el recipeid ", recipeid);
+    console.log("Antes de Lanzar el useEffect en la receta, para ver si recibo el id desde los parámetros", recipeid);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const data = await startSelectRecipe(recipeid);
+          console.log("el data del padre 2", data);
+          return data;
+        } catch (error) {
+          console.log("error");
+        }
+      };
+      fetchData().then((data) => {
+        setFetchedData(data);
+      });
+    }, []);
     
-   } 
-   fetchData()
- }, [])
+    console.log("fetchedData", fetchedData);
+
+
 
  const handleCardActionAreaClick = () => {
   console.log("Pinchado");
  }
 
- const [open, setOpen] = useState(false);
-
- const handleClickOpen = () => {
-   setOpen(true);
- };
-
- const handleClose = () => {
-   setOpen(false);
- };
- 
- 
-  console.log("lo que me llega del hook!", data);
- 
- 
- 
-
-   // construir la pagina, meterle los valores nutricionales, la lista de ing y el boton de ADD y EDIt
-
-   // investigar como meter imagenes, va con multer
-    // hacer una subida a git si eso xD
-    // Hacer el listado de recetas
-
-   let rows;
-   if (data.receta) {
-    
-    data01 = [{
-      "name": "Proteinas",
-      "value": data.receta.totales.proteinas,
-    },
-    {
-      "name": "Hidratos",
-      "value": data.receta.totales.hcs,
-    },
-    {
-      "name": "Grasas",
-      "value": data.receta.totales.grasas,
-    },
-  ]
-
-
-
-     rows = data.receta.ingredientes.map(ing => {
-      return(
-        {
-          id:ing.ingrediente._id,
-          Ingrediente:ing.ingrediente.nombre,
-          Cantidad:ing.cantidad
-        }
-      )
-    })
+ const renderBookmarkIcon = () => {
+  if (recipeSaved) {
+    return <BookmarkAddedIcon fontSize="large"/>;
+  } else {
+    return <BookmarkBorderIcon fontSize="large" />;
+  }
+};
 
    
-
-      console.log("rower");
-      console.log("totales",data01 );
-   } 
-   /*data01 = [
-    {
-      "name": "Proteinas",
-      "value": 400
-    },
-    {
-      "name": "Hidratos",
-      "value": 300
-    },
-    {
-      "name": "Grasas",
-      "value": 300
-    },
-    
-  ];
-  */
-   
-   
-
-
   return (
     <>
-    {data.receta ? (      
+    {fetchedData ? (      
       <Card sx={{ maxWidth: 345 }}>
               
         <CardHeader
           avatar={
-            <Avatar aria-label="recipe" onClick={handleClickOpen}>
-              <div>{data.receta.autor.nombre[0]}</div>
+            <Avatar aria-label="recipe">
+              <div>{fetchedData.receta.autor.nombre[0]}</div>
             </Avatar>
           }
           action={
@@ -148,9 +98,10 @@ console.log("antes del useeffect", recipeid);
               <MoreVertIcon />
             </IconButton>
           }
-          title= {data.receta.titulo}
-          subheader={data.receta.autor.nombre}
+          title= {fetchedData.receta.titulo}
+          subheader={fetchedData.receta.autor.nombre}
         />
+
         <CardActionArea onClick={handleCardActionAreaClick }>
         <CardMedia
           sx={{
@@ -162,59 +113,52 @@ console.log("antes del useeffect", recipeid);
           component="img"
           height="194"
           image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdcKQZxEQg-EWoF50h2Nk6lLYLL34BBUwi7_7fqsdwBQ&s"
-          alt="Paella dish"
+          alt="Paella dish"          
         />
-        
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-          {data.receta.descripcion}
-          </Typography>
-        </CardContent>
-        <CardContent className="card-content" >                
 
-          <PieChart width={730} height={150}>
-            <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={20} outerRadius={75} fill="#8884d8">
-            {data01.map((entrada,index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-              
-            </Pie>  
-            <Tooltip />
-          </PieChart>       
-          
-        </CardContent> 
-        <CardContent>
-          <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              checkboxSelection
-            />
-       </div>
-        </CardContent> 
-              
-      
-      </CardActionArea>
-      
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites" onClick={handleCardActionAreaClick}>
             <FavoriteIcon />
-            {data.likes ? data.likes.length : 0}
+            {fetchedData.receta.likes ? fetchedData.receta.likes.length : 0}
           </IconButton>
           <IconButton aria-label="message" onClick={handleCardActionAreaClick}>            
             <MessageIcon />
-            {data.comments ? data.comments.length : 0}
+            {fetchedData.receta.comments ? fetchedData.receta.comments.length : 0}
+          </IconButton>
+          <IconButton onClick={handleSaveRecipe}>
+            {renderBookmarkIcon()}
           </IconButton>
           <IconButton aria-label="share" onClick={handleCardActionAreaClick}>
             <ShareIcon />
-          </IconButton>                  
-        </CardActions>      
-      </Card>
+          </IconButton> 
+          <Typography variant="h6" component="h8" fontSize="12px" style={{ marginLeft: 'auto' }}>
+            <AccessTimeIcon /> 60 minutos
+          </Typography> 
+          
+            <Typography variant="h6" component="h8" fontSize="12px" style={{ marginLeft: 'auto' }}>
+            <LocalFireDepartmentIcon />150 kcal
+            </Typography>                        
+        </CardActions> 
+        
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+          {fetchedData.receta.descripcion}
+          </Typography>
+          {fetchedData !== null ? (
+            <ContenidoCard datos={fetchedData} />
+          ) : (
+            <p>No hay datos disponibles</p>
+          )}
+          
+        </CardContent>   
+      </CardActionArea>      
+             
+    </Card>
     ) : (
       <div>Cargando...</div>
     )}
+    
+    
   </>
   )
 }

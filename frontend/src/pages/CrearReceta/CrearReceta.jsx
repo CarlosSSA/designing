@@ -59,7 +59,9 @@ const CrearReceta = () => {
   const [ingredientes, setIngredientes] = useState([]);
   const [allIngredients, setAllIngredients] = useState([])  
   
-  
+  /*
+  // Esto lo necesito???
+
   useEffect(async() => {
     // quiero recibir todo pero luego filtrar el nombre para la lista     
     const ingredientesDb = await startAllIngredients()    
@@ -68,7 +70,7 @@ const CrearReceta = () => {
     console.log("Crear Receta - En el estado de ingredientes con un UseEffect", allIngredients);  
   }, []);
 
-  
+  */
   
   
  

@@ -5,8 +5,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   status: 'no autenticado', //autenticado, no-autenticado
   user: {},
-  errorMessage:undefined,
-  premium: false
+  errorMessage:undefined, 
+  valoresTotales: {a:1}, 
 }
 
 export const counterSlice = createSlice({
@@ -23,6 +23,7 @@ export const counterSlice = createSlice({
     onLogin: (state, {payload}) => { 
         state.status = 'autenticado';
         state.user = payload;  //aqui meto el payload
+        console.log("payload", payload)
         state.errorMessage = undefined;
     }, 
     //intento de thunk un poco fail, ver midu
@@ -40,11 +41,15 @@ export const counterSlice = createSlice({
     onLoosePremium: (state) => { //necesito identificar al usuario por payload?
       state.premium = false
     },
+    onValoresTotales: (state, {payload}) => {  //recibe payload.totales
+      state.valoresTotales = payload.totales
+      
+    },
 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { onChecking, onLogin, onThunk, onLogout, onclearErrorMessage, onPremium, onLoosePremium } = counterSlice.actions
+export const { onChecking, onLogin, onThunk, onLogout, onclearErrorMessage, onPremium, onLoosePremium, onValoresTotales } = counterSlice.actions
 
 export default counterSlice.reducer

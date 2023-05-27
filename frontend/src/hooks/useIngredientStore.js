@@ -16,7 +16,7 @@ export const useIngredientStore = () => {
             console.log(data);
             localStorage.setItem('token',data.token);
             localStorage.setItem('token-init-date',new Date().getTime());        
-            dispatch(onLogin({nombre:data.name, id:data.uid}))
+            dispatch(onLogin({nombre:data.name, uid:data.uid}))
 
         } catch (error) {
             console.log("error", error);
