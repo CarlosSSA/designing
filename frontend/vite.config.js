@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  root: './frontend', // ajusta esto a la ubicación correcta
+  root: './', // ajusta esto a la ubicación correcta
   base: './', // ruta base para los import
   plugins: [react()],
   build: {
