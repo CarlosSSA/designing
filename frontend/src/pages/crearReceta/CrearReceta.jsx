@@ -2,7 +2,7 @@ import { Box, Button, Rating, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import IngredientForm from "./IngredientForm";
 import IngredientTable from "./IngredientTable";
-import PasosForm from "./pasosForm";
+import PasosForm from "./PasosForm";
 import PasosTable from "./PasosTable";
 import TimeComponent from "./TimeComponent";
 import PorcionesComponent from "./PorcionesComponent";
