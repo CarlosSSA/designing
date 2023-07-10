@@ -252,53 +252,93 @@ const getRecipeLikedYFavs = async (req,res) => {
 
 const updateUserLikes = async (req,res) => {
 
-  const {uid, likedRecipes} = req.body  
+  const {uid, likedRecipe} = req.body  
   console.log("que me llega en el body en el BE?", req.body)
  
   let usuario = await Usuario.findOne({_id:uid})  
        
   // aqui debería actualizar el contador de likes
-   if (usuario) {    
-    usuario.likedRecipes = likedRecipes; // tiene que ser un [rid,rid...]
-    usuario.save();  
+  if (!likedRecipe) {
+    // Si favRecipe es null, envía una respuesta con un error apropiado
+    return res.status(400).json({
+      ok: false,
+      mensaje: "El likedRecipe no se proporcionó correctamente",
+    });
+  }
+
+   if (usuario && usuario.likedRecipes.includes(likedRecipe)) {    
+    usuario.likedRecipes = usuario.likedRecipes.filter(id => id.toString() !== likedRecipe) // tiene que ser un [rid,rid...]
+    await usuario.save();  
     
  
     res.status(200).json({
       ok: true,
-      mensaje: "Actualizados los likes del usuario " ,
+      mensaje: "Quitado un like del usuario " ,
       likes: usuario.likedRecipes
     });
 
-  } else {
-    res.status(404).json({
+  } else if (usuario) {
+
+    usuario.likedRecipes = [...usuario.likedRecipes, likedRecipe]
+    await usuario.save();
+
+    res.status(200).json({
+      ok: true,
+      mensaje: "Añadido un like al usuario " ,
+      likes: usuario.likedRecipes
+    });
+  }
+  else {
+
+      res.status(404).json({
       ok: false,
       mensaje: "No se han podido actualizar los likes del usuario"
     });
   }
-
 }
 
 const updateUserFavs = async (req,res) => {
 
-  const {uid, favrecipes} = req.body  
-  console.log("que me llega en el body en el BE?", req.body)
+  const {uid, favRecipe} = req.body  
+  console.log("que me llega en el body de favs en el BE?", req.body)
  
   let usuario = await Usuario.findOne({_id:uid})  
        
   // aqui debería actualizar el contador de likes
-   if (usuario) {    
-    usuario.favRecipes = favrecipes; // tiene que ser un [rid,rid...]
-    usuario.save();  
+
+  if (!favRecipe) {
+    // Si favRecipe es null, envía una respuesta con un error apropiado
+    return res.status(400).json({
+      ok: false,
+      mensaje: "El favRecipe no se proporcionó correctamente",
+    });
+  }
+
+  if (usuario && usuario.favRecipes.includes(favRecipe)) {    
+    usuario.favRecipes = usuario.favRecipes.filter(id => id.toString() !== favRecipe);
+    await usuario.save();  
     
  
     res.status(200).json({
       ok: true,
-      mensaje: "Actualizados los favs del usuario " ,
+      mensaje: "Quitado un fav en el usuario" ,
       favs: usuario.favRecipes
     });
 
-  } else {
-    res.status(404).json({
+  } else if (usuario) {
+
+    usuario.favRecipes = [...usuario.favRecipes, favRecipe]
+    usuario.save();
+
+    res.status(200).json({
+      ok: true,
+      mensaje: "Añadido un fav al usuario " ,
+      favs: usuario.favRecipes
+    });
+  }
+  else {
+
+      res.status(404).json({
       ok: false,
       mensaje: "No se han podido actualizar los favs del usuario"
     });

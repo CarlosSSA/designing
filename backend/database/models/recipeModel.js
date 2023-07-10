@@ -14,11 +14,10 @@ const RecipeSchema = new Schema({
       cantidad:{type: Number, required: true}
     }
   ],  
+  comentarios: [{ type: Schema.Types.ObjectId, ref: 'Comentario' }],
 
-  likes: {
-    type: Number,
-    default:0      
-  },
+  likes: [{type: Schema.Types.ObjectId, ref: 'Usuario' }],         
+  
   descripcion: {
     type: String,     
   },
@@ -37,10 +36,7 @@ const RecipeSchema = new Schema({
     type: Number, 
     default:1    
   },
-  comments: {
-    type: Array, 
-    default:[]  
-  },
+
   kcal:{
     type: Number,
   },

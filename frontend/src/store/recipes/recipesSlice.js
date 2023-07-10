@@ -21,6 +21,8 @@ export const recipesSlice = createSlice({
         recipes: [
             // tempEvent
         ],
+        liked: [],
+        favs: [],
         activeRecipe: null,
         createRecipe: {}
     },

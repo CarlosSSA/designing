@@ -103,6 +103,72 @@ export const useRecipeStore = () => {
         
     }
 
+    const startUpdateLikesRecetaPost = async( rid, recipeLikes ) => {    
+        
+
+        try {  
+            const {data} = await recetaApi.post('/recipe/updateRecetaIndividualPost, {rid, recipeLikes}')   
+                   
+            console.log("Esto me llega del servidor con startUpdateRecipeLikes", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema actualizando los likes de la receta", error);
+        }
+            
+        
+    }
+
+    const startUpdateRecipeLikes = async( {rid, userLike} ) => {   
+
+        try { 
+            
+            console.log(`HOOK RECETA : que recibo de la card: ${rid} y el usuario que ha dado like: ${userLike}`)
+            const {data} = await recetaApi.post('/recipe/updateRecipeLikes', { rid, userLike})   
+                   
+            console.log("Respuesta BE vs HOOK Receta: startUpdateRecipeLikes Hook:", data);  
+            return data           
+        } catch (error) {
+            console.log("Error en el startUpdateRecipeLikes", error);
+        }
+            
+        
+    }
+
+
+    const startGetRecipePost = async( rid ) => {   
+
+        try {  
+            //necesito llamar por el recipe id y recoger el receta.likes
+            // aqui puedo hacer la lógica 
+            const {data} = await recetaApi.post('/getRecetaIndividualPost',{rid})   
+                   
+            console.log("FE: Hook: Esto me llega si busco una receta por post", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema modificando los likes de la receta", error);
+        }
+            
+        
+    }
+
+    
+    const startUpdateRecipeComments = async( {rid, comentarioID} ) => {   
+
+        try {  
+            console.log(`Vamos a ver qué envío al BE para que me actualice los comentarios de la receta, el rid es: ${rid} y el ID de comentario es: ${comentarioID}`)
+            const {data} = await recetaApi.post('/recipe/updateRecipeComments',{rid,comentarioID})   
+                   
+            console.log("startUpdateRecipeComments Hook: Lo que me devuelve el BE", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema modificando los comentarios de la receta", error);
+        }
+            
+        
+    }
+
+    
+
     return {
      
         startActiveRecipe ,
@@ -111,6 +177,10 @@ export const useRecipeStore = () => {
         startFormRecipe,
         startAllRecipes,
         startSelectRecipe,
+        startUpdateLikesRecetaPost,
+        startUpdateRecipeLikes,
+        startGetRecipePost,
+        startUpdateRecipeComments
         
         
     }

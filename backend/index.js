@@ -21,6 +21,7 @@ app.use( express.json() );
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/recipe', require('./routes/recipesRoutes'))
 app.use('/api/createIngredient', require('./routes/ingredientRoute'))
+app.use('/api/createComment', require('./routes/commentsRoute'))
 
 // Directorio Público
 

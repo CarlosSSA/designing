@@ -1,9 +1,11 @@
 const { default: mongoose } = require('mongoose')
 const Receta = require('../database/models/recipeModel')
 const Usuario = require('../database/models/userModel')
+const Comentario = require('../database/models/commentModel')
 
 
 const crearReceta = async (req,res) => {
+
   // está esperando el autor en el body, ahí el problema!
     const {autor} = req.body  
 
@@ -14,7 +16,7 @@ const crearReceta = async (req,res) => {
     
    
     const userFound = await Usuario.findById(mongoose.Types.ObjectId(autor)) // lo encuentra
-    console.log("RecipeController: hago un findbyID con el id del usuario ",userFound );
+    console.log("RecipeController: hago un findbyID con el id del usuario XDD",userFound );
 
     let totalVacio = {
       kcal:0,
@@ -36,11 +38,16 @@ const crearReceta = async (req,res) => {
       magnesio:0,
       vitaminaB12:0,
       fosforo:0,
-      vitaminaB1,
-      vitaminaB2,
-      vitaminaB3,
-      vitaminaB5,
-      vitaminaB7,
+      vitaminaB1:0,
+      vitaminaB2:0,
+      vitaminaB3:0,
+      vitaminaB5:0,
+      vitaminaB7:0,
+      selenio:0,
+      cobre:0,
+      acidoFolico:0,
+      yodo:0
+
 
     }
 
@@ -174,8 +181,16 @@ const crearReceta = async (req,res) => {
     const recetaIndividual = async (req,res) => {
 
       const {rid} = req.params   //id    
-      const receta = await Receta.findById(rid).populate('ingredientes.ingrediente').populate('autor')
-            
+      const receta = await Receta.findById(rid)
+      .populate('ingredientes.ingrediente')
+      .populate('autor')
+      .populate({
+        path: 'comentarios',
+        populate: {
+          path: 'autor',
+          model: 'Usuario'
+        }
+      });            
             
       console.log(receta);
        // Esto te devuelve el array con todas las recetas del usuario      
@@ -186,6 +201,41 @@ const crearReceta = async (req,res) => {
             receta                
           }) 
     }
+
+    const updateRecetaIndividualPost = async (req,res) => {
+
+      const {rid, recipeLikes} = req.body   //id    
+      const receta = await Receta.findById(rid)            
+      console.log(receta);
+       // Esto te devuelve el array con todas las recetas del usuario      
+      receta.likes = recipeLikes
+      receta.save()
+
+         res.status(201).json({
+            ok: true,
+            mensaje: "Encontrada la receta por POST",
+            receta,
+            likes: receta.likes               
+          }) 
+    }
+
+    const getRecetaIndividualPost = async (req,res) => {
+
+      const {rid} = req.body   //id    
+      
+      const receta = await Receta.findById(rid)            
+      console.log(receta);
+       // Esto te devuelve el array con todas las recetas del usuario     
+     
+
+         res.status(201).json({
+            ok: true,
+            mensaje: "Encontrada la receta por POST",
+            receta,
+                       
+          }) 
+    }
+
      // OK
     const updateReceta = async (req,res) => {
       const {id, nombre} = req.body   // se puede inicializar a 0 desde aqui?       
@@ -261,9 +311,88 @@ const crearReceta = async (req,res) => {
           
       }
 
+      const updateRecipeLikes = async (req,res) => {
+
+        const {rid, userLike} = req.body  
+        console.log("BE: updateRecipeLikes controller: ", req.body)
+       
+        let recipe = await Receta.findOne({_id:rid}) 
+             
+        // aqui debería actualizar el contador de likes
+        
+         if (recipe && recipe.likes.includes(userLike)) { 
+           
+          recipe.likes = recipe.likes.filter(id => id.toString() !== userLike) // tiene que ser un [uid,uid...]
+          recipe.save();  
+          
+       
+          res.status(200).json({
+            ok: true,
+            mensaje: "Quitado el usuario a la receta, ya la tenia " ,
+            recipeLikes: recipe.likes
+          });
+      
+        } else if (recipe) {
+         
+          recipe.likes = [...recipe.likes, userLike] // tiene que ser un [uid,uid...]
+          recipe.save(); 
+
+          res.status(200).json({
+            ok: true,
+            mensaje: "Añadido un usuario a la receta " ,
+            recipeLikes: recipe.likes
+          });
+
+        } else {
+          res.status(404).json({
+            ok: false,
+            mensaje: "No se han podido actualizar los likes de la receta"
+          });
+        } 
+          
+        
+      
+      }
+
+      const updateRecipeComments = async (req,res) => {
+
+        const {rid, comentarioID} = req.body      
+        console.log("Que recibo en eL BE de la receta para actualizar comentario?", comentarioID, rid)   
+       
+        let recipe = await Receta.findOne({_id:rid}) 
+             
+        // aqui debería actualizar el contador de likes
+        
+         if (recipe) {     
+         
+           
+          recipe.comentarios = [...recipe.comentarios, comentarioID]
+          recipe.save(); 
+          
+       
+          res.status(200).json({
+            ok: true,
+            mensaje: "Actualizada la receta con el comentario " ,
+            receta: rid,
+            comentario: comentarioID,           
+          });
+      
+        }  else {
+
+          res.status(404).json({
+            ok: false,
+            mensaje: "No se han podido actualizar el comentario de la receta"
+          });
+          
+        } 
+          
+        
+      
+      }
+
 
    
 
 
 
- module.exports = { crearReceta, recetasUsuario, recetaIndividual, updateReceta, deleteReceta,todasRecetas }
+ module.exports = { updateRecipeComments, crearReceta, getRecetaIndividualPost,updateRecetaIndividualPost, updateRecipeLikes, recetasUsuario, recetaIndividual, updateReceta, deleteReceta,todasRecetas }

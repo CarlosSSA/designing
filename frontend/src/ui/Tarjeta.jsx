@@ -19,12 +19,12 @@ import { CardActionArea, Dialog, DialogContent, DialogTitle } from '@mui/materia
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRecipeStore } from '../hooks/useRecipeStore';
-import { useState } from 'react';
+import { useAuthStore } from '../hooks/useAuthStore';
+import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import Modal from '@mui/material/Modal';
 import "./tarjeta.css"
 import BotonCalendario from './BotonCalendario';
-import { useEffect } from 'react';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -61,22 +61,23 @@ const commentCard = ()=>{
     console.log("Comentando una card")
 }
 
+// que hacia recipeLikedList y setRecipeLikedList?
 
-export default function RecipeReviewCard({nombre, autor, receta, descripcion, likes, comments}) {
+export default function RecipeReviewCard({usuario,userFavRecipes,setUserFavRecipes, userLikedRecipes, setUserLikedRecipes, nombre, autor, receta, descripcion, likes, comments}) {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const usuario = useSelector(state => state.auth.user);
 
 
-useEffect(() => {
-  console.log("usuario", usuario)
-  console.log("usuario uid", usuario.uid)
+  const { startUpdateRecipeLikes, startUpdateLikesRecetaPost, startGetRecipePost } = useRecipeStore(); 
+  const {startUpdateUserLikes, startUpdateUserFavs} = useAuthStore(); 
 
- 
-}, [])
+  const [likesReceta, setLikesReceta] = useState(receta.likes); // [u1,u2,u3] guardo los usuarios  
+  const [recipeLiked, setRecipeLiked] = useState(false); // Flag para activar los Hooks
+  const [recipeSaved, setRecipeSaved] = useState(false);
+  
+  //esto hay que moverlo al elemento padre
 
-  const { startActiveRecipe, startUpdateUserLikes, startUpdateUserFavs } = useRecipeStore();  
 
   const handleCardActionAreaClick = async() => {    
     console.log("Has pinchado la receta con el otro ID: ", receta._id);
@@ -84,15 +85,61 @@ useEffect(() => {
     navigate(`/recipe/${receta._id}`);
     //handleClickOpen() ;   
   };
+ 
 
-   // Guardar Receta
-   const [recipeSaved, setRecipeSaved] = useState(false); 
-   const handleSaveRecipe = () => {
-   setRecipeSaved(!recipeSaved); // Actualizar el estado para indicar que la receta ha sido guardada
-   if(recipeSaved === true){
-     console.log("receta borrada")
-   }else
-   console.log("receta guardada")
+  useEffect(() => {
+   
+    console.log("TARJETA: que recibo en la prop receta?", receta)
+    console.log("TARJETA:y en la prop usuario?", usuario)
+    console.log("TARJETA:como interpreta esto el receta._id?", String(receta._id))
+    console.log("TARJETA: Typeof normal", typeof receta._id)
+    console.log("TARJETA: Typeof stringed", typeof String(receta._id))
+
+    console.log("TARJETA: y el receta.likes?", receta.likes)
+    // setLikesReceta(receta.likes) esto hace falta?
+    setLikesReceta(receta.likes);
+
+    //compruebo si la receta ha sido likeada
+    if (userLikedRecipes.includes(receta._id)) {
+      setRecipeLiked(true)
+      
+    }
+    if (userFavRecipes.includes(receta._id)) {
+      setRecipeSaved(true);      
+    }
+   
+  }, [])
+
+
+     //CLICK SAVE AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+
+   
+
+   const handleSaveRecipe = async() => {   
+
+  // Si ya la tiene se la borro
+   if (userFavRecipes.includes(receta._id)) {
+    
+      setUserFavRecipes(userFavRecipes.filter(id => id !== receta._id));      
+      setRecipeSaved(false);
+      console.log("receta des");
+      
+      // Actualizar likes en la BBDD
+      await startUpdateUserFavs({uid: usuario.uid, favRecipe: receta._id});  
+      console.log(`me aseguro que mando los datos bien, estaba en el save: uid:${usuario.uid} + favRecipe: ${receta._id}`); 
+            
+    } else {
+      // Si la receta no está en la lista, la añadimos
+      setUserFavRecipes(estadoPrevio => [...estadoPrevio, receta._id]);
+      setRecipeSaved(true);
+      console.log("FAV NUEVO: receta favved");     
+
+      // Actualizar likes en la BBDD 
+      await startUpdateUserFavs({uid: usuario.uid, favRecipe: receta._id});
+      console.log(`me aseguro que mando los datos bien, no estaba en el save: uid:${usuario.uid} + favRecipe: ${receta._id}`); 
+      
+      
+    }
 };
 
 const renderSaveIcon = () => {
@@ -102,19 +149,7 @@ const renderSaveIcon = () => {
     return <BookmarkBorderIcon fontSize="large" />;
   }
 };
-
-  // Like Receta
-  const [recipeLiked, setrecipeLiked] = useState(false); 
-
-  const handleLikeRecipe = () => {
-    setrecipeLiked(!recipeLiked); // Actualizar el estado para indicar que la receta ha sido guardada
-  if(recipeLiked === true){
-    console.log("receta deslikeada")
-  }else
-  console.log("receta likeada")
-  startUpdateUserLikes(usuario.uid, recipeLiked);
-};
-
+  
 const renderLikeIcon = () => {
   if (recipeLiked) {
     return <FavoriteIcon fontSize="large"/>;
@@ -122,6 +157,54 @@ const renderLikeIcon = () => {
     return <FavoriteBorderIcon fontSize="large" />;
   }
 };
+
+  //CLICK LIKE
+
+  const handleLikeRecipe = async() => {
+    
+    console.log("LIKE CLICK: Has pinchado en la receta", receta)
+    console.log("LIKE CLICK: Que usuario mantendo? con uid", usuario.uid)
+    console.log("LIKE CLICK: Que usuario mantendo? con _id", usuario._id)
+    console.log("LIKE CLICK: Que receta mantendo? con rid", receta.rid)
+    console.log("LIKE CLICK: Que receta mantendo? con _id", receta._id)
+    console.log("Que tengo en el estado, debería ser receta.likes", receta.likes)
+
+    // Comprobar si la rid ya está en la lista de recetas que te gustan
+    if (userLikedRecipes.includes(receta._id)) {
+    
+      setUserLikedRecipes(userLikedRecipes.filter(id => id !== receta._id));
+      setLikesReceta(likesReceta.filter(id => id !== usuario.uid))
+      setRecipeLiked(false);
+      console.log("receta deslikeada");
+      console.log(`me aseguro que mando los datos del like bien, sí estaba en el like: uid:${usuario.uid} + likedRecipe: ${receta._id}`); 
+
+      // Actualizar likes en la BBDD
+      await startUpdateUserLikes({uid: usuario.uid, likedRecipe:  receta._id});
+      await startUpdateRecipeLikes({rid:receta._id, userLike: usuario.uid}); 
+      
+      
+            
+    } else {
+      // Si la receta no está en la lista, la añadimos
+      setUserLikedRecipes(estadoPrevio => [...estadoPrevio, receta._id]);
+      setLikesReceta(prevState => [...prevState, usuario.uid])
+      setRecipeLiked(true);
+      console.log("LIKE NUEVO: receta likeada");
+      console.log("LIKE NUEVO: estoy mandando este rid", receta._id);
+      console.log(`LIKE NUEVO: que mando en recipeLikes? ${likesReceta} y que uid tengo? ${usuario.uid} y en receta.likes? ${receta.likes} y en receta? ${JSON.stringify(receta.likes)}`);
+      console.log(`me aseguro que mando los datos del like bien, no estaba en el like: uid:${usuario.uid} + likedRecipe: ${receta._id}`); 
+
+
+      // Actualizar likes en la BBDD
+      await startUpdateUserLikes({uid: usuario.uid, likedRecipe: receta._id});
+      await startUpdateRecipeLikes({rid:receta._id, userLike: usuario.uid}); 
+      
+      
+    }
+    
+  };  
+
+
 
   const handleAvatarClick = () => {
     console.log("Has pinchado en el avatar");
@@ -216,14 +299,15 @@ const renderLikeIcon = () => {
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites" onClick={handleLikeRecipe}>
             {renderLikeIcon()}
-            {likes}
+            {receta.likes.length}
           </IconButton>
           <IconButton onClick={handleSaveRecipe} >
             {renderSaveIcon()}
           </IconButton>
           <IconButton aria-label="message" onClick={commentCard}>            
-            <MessageIcon />
+            <MessageIcon onClick={handleCardActionAreaClick} />
             {comments}
+            
           </IconButton>
           <IconButton aria-label="share" onClick={shareRecipe}>
             <ShareIcon />

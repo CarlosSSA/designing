@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const recetaApi = axios.create({
     //baseURL:import.meta.env.VITE_API_URL 
-    baseURL:'http://localhost:4001/api/'
+    baseURL:'http://localhost:4001/api/' 
 
 });
 

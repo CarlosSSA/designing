@@ -117,7 +117,7 @@ const IngredientSchema = new Schema({
   },
   vitaminaB7: {
     type: Number     
-  }
+  },
  
                  
 });

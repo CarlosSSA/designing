@@ -19,6 +19,8 @@ import RecipeReviewCard from '../../ui/Tarjeta.jsx'
 import { useRecipeStore } from '../../hooks/useRecipeStore.js';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+
 
 
 function Copyright() {
@@ -44,14 +46,26 @@ const theme = createTheme();
 export default function HomePage() { 
   const {startAllRecipes} = useRecipeStore();
   const [recetasiniciales, setRecetasIniciales] = useState([])
+  const [userLikedRecipes, setUserLikedRecipes] = useState([]);
+  const [userFavRecipes, setUserFavRecipes] = useState([]);
+  const usuario = useSelector(state => state.auth.user);
 
+
+  
   useEffect(() => {
     const obtenerRecetas = async () => {
       const allRecipes = await startAllRecipes();      
       console.log("Esto me hace el useEffect de la Home?: ", allRecipes);
       setRecetasIniciales(allRecipes)
+      setUserLikedRecipes(usuario.likedRecipes)
+      setUserFavRecipes(usuario.favRecipes)
+      
     };
     obtenerRecetas();
+    console.log("usuario desde la HOME, que me llega?", usuario)
+    console.log("usuario uid", usuario.uid)
+    console.log("esto da algo? inicialmente?", usuario.likedRecipes)
+    
   }, [])  
 
 
@@ -65,8 +79,8 @@ export default function HomePage() {
           {/* End hero unit */}
           <Grid container spacing={6}>
             {recetasiniciales.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4} >
-                <RecipeReviewCard nombre = {card.nombre} autor = {card.autor.nombre} receta = {card} descripcion={card.descripcion} likes = {card.likes} comments = {card.comments}/>
+              <Grid item key={card} xs={12} sm={6} md={6} >
+                <RecipeReviewCard usuario = {usuario} userLikedRecipes={userLikedRecipes} userFavRecipes={userFavRecipes} setUserFavRecipes={setUserFavRecipes} setUserLikedRecipes={setUserLikedRecipes} nombre = {card.nombre} autor = {card.autor.nombre} receta = {card} descripcion={card.descripcion} likes = {card.likes} comments = {card.comments}/>
               </Grid>
             ))}
           </Grid>

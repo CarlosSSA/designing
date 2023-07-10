@@ -26,13 +26,20 @@ export const useAuthStore = () => {
             console.log("startLogin, el BE me devuelve este data: ",data);
             localStorage.setItem('token',data.token);
             localStorage.setItem('token-init-date',new Date().getTime());        
-            dispatch(onLogin({nombre:data.usuario.nombre,
+            dispatch(onLogin({
+                nombre:data.usuario.nombre,
+                email:data.usuario.email,
                 uid:data.usuario._id,
                 recetasCalendar:calendarRecipesEspaña,
                 premium:data.usuario.premium,
                 publicaciones: data.usuario.publicaciones,
                 kcalObjetivo: data.usuario.kcalObjetivo,
                 recetas:data.usuario.recetas,
+                likedRecipes: data.usuario.likedRecipes,
+                favRecipes: data.usuario.favRecipes,
+                registroPeso: data.usuario.registroPeso,
+                following: data.usuario.following,
+                followers: data.usuario.followers,
             
             }))
             
@@ -66,7 +73,6 @@ export const useAuthStore = () => {
             const { data } = await recetaApi.get('auth/renew');
             localStorage.setItem('token', data.token );
             localStorage.setItem('token-init-date', new Date().getTime() );
-            dispatch( onLogin({ name: data.name, uid: data.uid }) );
         } catch (error) {
             localStorage.clear();
             dispatch( onLogout() );
@@ -188,22 +194,22 @@ const startAddRecetaCalendar = async({recipeid, uid, fecha}) => {
        
    }
 
-   const startUpdateUserLikes = async({uid}) => {        
+   const startUpdateUserLikes = async({uid, likedRecipe}) => {        
      
-    try {            
-        const {data} = await recetaApi.post('/auth/updateUserLikes', {uid})
-        console.log("El Hook del updateUserLikes me devuelve esto: ",data);
+    try {                  
+        const {data} = await recetaApi.post('/auth/updateUserLikes', {uid, likedRecipe})
+        console.log("BE startUpdateUserLikes Hook: ",data);
         return data
     } catch (error) {
-       console.log(error) 
+       console.log("Error en el startUpdateUserLikes", error) 
     }
     
 }
 
-const startUpdateUserFavs = async({uid}) => {        
+const startUpdateUserFavs = async({uid, favRecipe}) => {        
      
     try {            
-        const {data} = await recetaApi.post('/auth/updateUserFavs', {uid})
+        const {data} = await recetaApi.post('/auth/updateUserFavs', {uid, favRecipe})
         console.log("El Hook del startUpdateUserFavs me devuelve esto: ",data);
         return data
     } catch (error) {

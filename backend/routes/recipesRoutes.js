@@ -7,7 +7,7 @@ const {Router} = require('express');
 const router = Router();
 const { validarJWT } = require('../middlewares/jwt-validator')
 
-const {crearReceta, deleteReceta, recetaIndividual, recetasUsuario, updateReceta, todasRecetas} = require('../controllers/recipeController')
+const {updateRecipeComments,crearReceta, getRecetaIndividualPost, updateRecetaIndividualPost, deleteReceta, recetaIndividual, recetasUsuario, updateReceta, todasRecetas, updateRecipeLikes} = require('../controllers/recipeController')
 
 // Todas las recetas de un usuario --OK
 router.post('/', 
@@ -44,5 +44,22 @@ deleteReceta)
 router.get('/', 
 validacion, 
 todasRecetas) 
+
+router.post('/updateRecipeLikes',
+updateRecipeLikes);
+
+router.post('/updateRecetaIndividualPost',
+updateRecetaIndividualPost);
+
+router.post('/getRecetaIndividualPost',
+getRecetaIndividualPost);
+
+router.post('/updateRecipeComments',
+updateRecipeComments);
+
+
+ 
+ 
+
 
  module.exports = router;

@@ -21,7 +21,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ContenidoCard from './ContenidoCard';
 
 
-import Comment from './Comment';
+
 
 const columns = [  
   { field: 'Ingrediente', headerName: 'Ingredientes', width: 130 },
@@ -102,7 +102,7 @@ const columns = [
           subheader={fetchedData.receta.autor.nombre}
         />
 
-        <CardActionArea onClick={handleCardActionAreaClick }>
+        
         <CardMedia
           sx={{
             height: 'calc(75vh - 160px)', // ajustar altura de imagen
@@ -117,18 +117,18 @@ const columns = [
         />
 
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites" onClick={handleCardActionAreaClick}>
+          <IconButton aria-label="add to favorites" onClick={() => console.log("hola")}>
             <FavoriteIcon />
             {fetchedData.receta.likes ? fetchedData.receta.likes.length : 0}
           </IconButton>
-          <IconButton aria-label="message" onClick={handleCardActionAreaClick}>            
+          <IconButton aria-label="message" onClick={() => console.log("hola")}>            
             <MessageIcon />
             {fetchedData.receta.comments ? fetchedData.receta.comments.length : 0}
           </IconButton>
           <IconButton onClick={handleSaveRecipe}>
             {renderBookmarkIcon()}
           </IconButton>
-          <IconButton aria-label="share" onClick={handleCardActionAreaClick}>
+          <IconButton aria-label="share" onClick={() => console.log("hola")}>
             <ShareIcon />
           </IconButton> 
           <Typography variant="h6" component="h8" fontSize="12px" style={{ marginLeft: 'auto' }}>
@@ -151,7 +151,7 @@ const columns = [
           )}
           
         </CardContent>   
-      </CardActionArea>      
+           
              
     </Card>
     ) : (
