@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+console.log(`la variable de enterno de VITE_BACKEND_URL es ${import.meta.env.VITE_BACKEND_URL}`)
 const recetaApi = axios.create({
     //baseURL:import.meta.env.VITE_API_URL 
-    baseURL:'http://localhost:4001/api/' 
+   // baseURL:'http://localhost:4001/api/'  si lo pongo así funciona
+    baseURL:`${import.meta.env.VITE_BACKEND_URL}/api/`
 
 });
 

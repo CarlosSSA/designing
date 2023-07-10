@@ -27,6 +27,7 @@ app.use('/api/createComment', require('./routes/commentsRoute'))
 
 app.use(express.static('public'));
 
-app.listen(process.env.PORT, ()=>{
+app.listen(process.env.PORT || 4001, ()=>{
+
     console.log(`Servidor funcionando en puerto ${process.env.PORT}`)
 })  
