@@ -1,23 +1,24 @@
-const express = require("express");
+const express = require('express')
 const {dbConnection} = require('./database/config')
 const cors = require('cors')
+
+const app = express();
+
+// CORS
+//app.use(cors({})); // ojo con esto que está abierto a to kiski
+//app.use(cors());
 
 //Para las variables de entorno
 require('dotenv').config()
 
-const app = express();
 
 //Hay que llamar a la conexion del archivo database
 dbConnection();
 
-// CORS
-//app.use(cors({})); // ojo con esto que está abierto a to kiski
-app.use(cors({
-    origin: 'https://funny-pithivier-e13c4a.netlify.app'
-  }));
-
 // Parseo del body 1.)Middleware y ya con esto te sale el "body" en el req BIEN
 app.use( express.json() );
+
+app.use(cors());
 
 // Rutas => me lo llevo a /routes
 
