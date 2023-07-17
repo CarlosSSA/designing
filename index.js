@@ -1,16 +1,12 @@
 const express = require('express')
 const {dbConnection} = require('./database/config')
 const cors = require('cors')
+const path = require('path');  // Nueva dependencia requerida
 
 const app = express();
 
-// CORS
-//app.use(cors({})); // ojo con esto que está abierto a to kiski
-//app.use(cors());
-
 //Para las variables de entorno
 require('dotenv').config()
-
 
 //Hay que llamar a la conexion del archivo database
 dbConnection();
@@ -27,11 +23,14 @@ app.use('/api/recipe', require('./routes/recipesRoutes'))
 app.use('/api/createIngredient', require('./routes/ingredientRoute'))
 app.use('/api/createComment', require('./routes/commentsRoute'))
 
-// Directorio Público
+// Sirve los archivos estáticos del frontend
+app.use(express.static(path.join(__dirname, 'frontend/build')));
 
-app.use(express.static('public'));
+// Maneja cualquier solicitud que no coincida con las anteriores
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+});
 
 app.listen(process.env.PORT || 4001, ()=>{
-
     console.log(`Servidor funcionando en puerto ${process.env.PORT}`)
-})  
+})
