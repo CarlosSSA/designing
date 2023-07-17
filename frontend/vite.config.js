@@ -9,5 +9,8 @@ export default defineConfig({
   build: {
     outDir: 'dist', // directorio de salida
     emptyOutDir: true, // limpiar el directorio de salida antes de construir
+    rollupOptions: {
+      input: '/path/to/your/project/frontend/index.html', // cambia esto a la ruta de tu archivo index.html
+    },
   },
 })
