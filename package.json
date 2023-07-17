@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development --dotenv .env.development",
-    "build": "vite build",
+    "build": "cd frontend && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
