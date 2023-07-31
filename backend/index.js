@@ -1,7 +1,7 @@
-const express = require('express')
-const {dbConnection} = require('./database/config')
-const cors = require('cors')
-const path = require('path');  // Nueva dependencia requerida
+import express from 'express';
+import { dbConnection } from './database/config';
+import cors from 'cors';
+import path from 'path';
 
 const app = express();
 
@@ -24,13 +24,17 @@ app.use('/api/createIngredient', require('./routes/ingredientRoute'))
 app.use('/api/createComment', require('./routes/commentsRoute'))
 
 // Sirve los archivos estáticos del frontend
-app.use(express.static(path.join(__dirname, 'frontend/build')));
+app.use(express.static(path.resolve(__dirname, '../frontend/dist')));
 
-// Maneja cualquier solicitud que no coincida con las anteriores
+// Maneja cualquier otra ruta con la aplicación frontend
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '../frontend/dist/index.html'));
 });
 
+
+// Maneja cualquier solicitud que no coincida con las anteriores
+
+
 app.listen(process.env.PORT || 4001, ()=>{
-    console.log(`Servidor funcionando en puerto ${process.env.PORT}`)
+    console.log(`Servidor funcionando en puerto ${process.env.PORT}, no pilla nada?`)
 })
