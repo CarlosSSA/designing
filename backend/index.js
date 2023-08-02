@@ -34,7 +34,7 @@ console.log(`que me devuelve __dirname? ${__dirname}`)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend/dist'))); //sirvo los archivos estáticos desde aqui si estamos en produccion
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')); // cualquier ruta get la mando al index para que la maneje React luego
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html')); // cualquier ruta get la mando al index para que la maneje React luego
   });
 } else {
    // Servir los archivos estáticos en modo de desarrollo
