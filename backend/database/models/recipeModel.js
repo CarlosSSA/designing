@@ -1,62 +1,31 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 const { Schema, model } = mongoose;
 
 const RecipeSchema = new Schema({
-  nombre: {
-    type: String,
-     
-  }, 
+  nombre: { type: String },
   autor: { type: Schema.Types.ObjectId, ref: 'Usuario' },
-  
-  ingredientes:[
+  ingredientes: [
     {
-      ingrediente:{type: Schema.Types.ObjectId, ref: 'Ingrediente'},
-      cantidad:{type: Number, required: true}
+      ingrediente: { type: Schema.Types.ObjectId, ref: 'Ingrediente' },
+      cantidad: { type: Number, required: true }
     }
-  ],  
+  ],
   comentarios: [{ type: Schema.Types.ObjectId, ref: 'Comentario' }],
-
-  likes: [{type: Schema.Types.ObjectId, ref: 'Usuario' }],         
-  
-  descripcion: {
-    type: String,     
-  },
-  pasos: {
-    type: Array,     
-  },
-  dificultad: {
-    type: Number,
-    default:0     
-  },
-  tiempo: {
-    type: Number, 
-    default:0     
-  },
-  porciones: {
-    type: Number, 
-    default:1    
-  },
-
-  kcal:{
-    type: Number,
-  },
-  proteinas: {
-    type: Number,        
-  },
-  hcs: {
-    type: Number,         
-  },
-  totales: {
-    type: Schema.Types.Mixed,  
-    default:{}       
-  },
-  grasas: {
-    type: Number,          
-  },
- 
+  likes: [{ type: Schema.Types.ObjectId, ref: 'Usuario' }],
+  descripcion: { type: String },
+  pasos: { type: Array },
+  dificultad: { type: Number, default: 0 },
+  tiempo: { type: Number, default: 0 },
+  porciones: { type: Number, default: 1 },
+  kcal: { type: Number },
+  proteinas: { type: Number },
+  hcs: { type: Number },
+  totales: { type: Schema.Types.Mixed, default: {} },
+  grasas: { type: Number },
 });
 
-module.exports = model('Receta', RecipeSchema); 
+export default model('Receta', RecipeSchema);
 
 
 /* Esto lo rompe

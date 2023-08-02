@@ -1,7 +1,7 @@
-const { default: mongoose } = require('mongoose')
-const Receta = require('../database/models/recipeModel')
-const Usuario = require('../database/models/userModel')
-const Comentario = require('../database/models/commentModel')
+import mongoose from 'mongoose';
+import Receta from '../database/models/recipeModel.js';
+import Usuario from '../database/models/userModel.js';
+import Comentario from '../database/models/commentModel.js';
 
 
 const crearReceta = async (req,res) => {
@@ -388,11 +388,19 @@ const crearReceta = async (req,res) => {
           
         
       
-      }
-
-
-   
+      }  
 
 
 
- module.exports = { updateRecipeComments, crearReceta, getRecetaIndividualPost,updateRecetaIndividualPost, updateRecipeLikes, recetasUsuario, recetaIndividual, updateReceta, deleteReceta,todasRecetas }
+      export {
+        updateRecipeComments,
+        crearReceta,
+        getRecetaIndividualPost,
+        updateRecetaIndividualPost,
+        updateRecipeLikes,
+        recetasUsuario,
+        recetaIndividual,
+        updateReceta,
+        deleteReceta,
+        todasRecetas
+      };

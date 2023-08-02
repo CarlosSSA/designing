@@ -1,4 +1,4 @@
-const Ingrediente = require('../database/models/ingredientModel')
+import Ingrediente from '../database/models/ingredientModel.js';
 
 const crearIngrediente = async (req,res) => {       
 
@@ -58,4 +58,4 @@ const getIngredientes = async (req,res) => {
 
 
 
- module.exports = { getIngredientes,crearIngrediente, actualizarIngrediente }
+export { getIngredientes, crearIngrediente, actualizarIngrediente };

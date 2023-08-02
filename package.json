@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node backend/index.js",
+    "backend": "node backend/index.js",
+    "frontend": "cd frontend && vite",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "build": "cd frontend && vite build",
     "preview": "vite preview",
     "start": "node backend/index.js"
@@ -22,6 +24,7 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.3.0",
     "chartjs-adapter-date-fns": "^3.0.0",
+    "concurrently": "^8.2.0",
     "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.7",

@@ -1,55 +1,53 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 const { Schema, model } = mongoose;
 
-  const UsuarioSchema = new Schema({
-    nombre: {
-      type: String,
-      required: true,
-      unique: true
-    }, 
-    email: {
-      type: String,
-      required: true,
-      unique: true 
-    },
-    password: {
-      type: String,
-      required: true,     
-    },
-    recetas:[{ type: Schema.Types.ObjectId, ref: 'Receta' }],
-    publicaciones:{ type: Number, default: function() { return this.recetas.length }},  
-    favRecipes: [{ type: Schema.Types.ObjectId, ref: 'Receta' }],
-    likedRecipes: [{ type: Schema.Types.ObjectId, ref: 'Receta' }],
-    commentedRecipes: [{ type: Schema.Types.ObjectId, ref: 'Receta' }],
-    calendarRecipes:[
-      {
-        receta:{ type: Schema.Types.ObjectId, ref: 'Receta' },
-        fecha:{type: Date, required: true}
-      }
-    ],
+const UsuarioSchema = new Schema({
+  nombre: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true 
+  },
+  password: {
+    type: String,
+    required: true,     
+  },
+  recetas: [{ type: Schema.Types.ObjectId, ref: 'Receta' }],
+  publicaciones: { type: Number, default: function() { return this.recetas.length }},
+  favRecipes: [{ type: Schema.Types.ObjectId, ref: 'Receta' }],
+  likedRecipes: [{ type: Schema.Types.ObjectId, ref: 'Receta' }],
+  commentedRecipes: [{ type: Schema.Types.ObjectId, ref: 'Receta' }],
+  calendarRecipes: [
+    {
+      receta: { type: Schema.Types.ObjectId, ref: 'Receta' },
+      fecha: { type: Date, required: true }
+    }
+  ],
+  kcalObjetivo: {
+    type: Number,
+    default: null
+  },
+  registroPeso: {
+    pesos: [Number],
+    fechas: [Date]
+  },
+  premium: {
+    type: Boolean,
+    fechaAlta: { type: Date, default: null },
+    fechaBaja: { type: Date, default: null },
+    tipoSubscripcion: { type: String, default: null },
+    default: false
+  },
+  following: [{ type: Schema.Types.ObjectId, ref: 'Usuario', default: 0 }],
+  followers: [{ type: Schema.Types.ObjectId, ref: 'Usuario', default: 0 }],
+});
 
-    kcalObjetivo:{
-      type: Number,
-       default: null}, 
-    
-    registroPeso: {
-      pesos: [Number],
-      fechas: [Date]
-    },
-
-    premium:{
-      type: Boolean,
-      fechaAlta:{type: Date, default: null},
-      fechaBaja:{type: Date, default: null},
-      tipoSubscripcion:{type: String, default: null}, //mensual, anual
-      default: false}, 
-    
-    following:[{ type: Schema.Types.ObjectId, ref: 'Usuario', default: 0 }],
-    followers:[{ type: Schema.Types.ObjectId, ref: 'Usuario', default: 0 }],
-
-  });
-
-module.exports = model('Usuario', UsuarioSchema);  //exportas el modelo
+export default model('Usuario', UsuarioSchema);
 
 
 /*

@@ -1,6 +1,6 @@
-const Usuario = require('../database/models/userModel')
-const bcrypt = require('bcryptjs')
-const { generarJWT } = require('../helpers/jwt')
+import Usuario from '../database/models/userModel.js';
+import bcrypt from 'bcryptjs';
+import { generarJWT } from '../helpers/jwt.js';
 
 //Este lleva el validationResult aqui mismo, el de login lo lleva en un middleware chulo :)
 const crearUsuario = async (req,res) => {
@@ -382,4 +382,15 @@ const addRegistroPeso = async (req,res) => {
 }
  
 
- module.exports = {crearUsuario, updateUserFavs, updateUserLikes, getRecipeLikedYFavs, updateUsuarioCalendarRecipes, loginUsuario, revalidarToken, addRecetaCalendario, usuarioIndividual, addRegistroPeso}
+export {
+  crearUsuario,
+  updateUserFavs,
+  updateUserLikes,
+  getRecipeLikedYFavs,
+  updateUsuarioCalendarRecipes,
+  loginUsuario,
+  revalidarToken,
+  addRecetaCalendario,
+  usuarioIndividual,
+  addRegistroPeso
+};

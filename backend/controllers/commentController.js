@@ -1,4 +1,4 @@
-const Comentario = require('../database/models/commentModel')
+import Comentario from '../database/models/commentModel.js';
 
 
 
@@ -63,4 +63,4 @@ const crearComentario = async (req,res) => {
 
  
 
- module.exports = { crearComentario, addLikeComentario }
+    export { crearComentario, addLikeComentario };
