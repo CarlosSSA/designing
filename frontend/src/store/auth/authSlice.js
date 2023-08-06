@@ -9,7 +9,7 @@ const initialState = {
   valoresTotales: {a:1}, 
 }
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -50,6 +50,6 @@ export const counterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { onChecking, onLogin, onThunk, onLogout, onclearErrorMessage, onPremium, onLoosePremium, onValoresTotales } = counterSlice.actions
+export const { onChecking, onLogin, onThunk, onLogout, onclearErrorMessage, onPremium, onLoosePremium, onValoresTotales } = authSlice.actions
 
-export default counterSlice.reducer
+export default authSlice.reducer

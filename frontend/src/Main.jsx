@@ -9,14 +9,21 @@ import '@fontsource/roboto/700.css';
 <meta name="viewport" content="initial-scale=1, width=device-width" />
 
 import RecipeApp from './App.jsx';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
+
+import { persistor, store } from './store/store.js'
 
  
 ReactDOM.createRoot(document.getElementById('root')).render(
- //  <React.StrictMode>
-    <RecipeApp />  
+  // <React.StrictMode>
+      <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+              <RecipeApp />
+          </PersistGate>
+      </Provider>
   // </React.StrictMode>
-        
-  
 )
 
 
