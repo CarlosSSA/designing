@@ -174,8 +174,26 @@ const crearUsuario = async (req,res) => {
  const usuarioIndividual = async (req,res) => {
 
   const {uid} = req.body   //id usuario desde el Store   
-  const usuario = await Usuario.findById(uid).populate('calendarRecipes.receta')
-        
+  const usuario = await Usuario.findById(uid)
+  .populate({
+    path: 'recetas',
+    populate: {
+      path: 'autor'
+    }
+  })
+  .populate({
+    path: 'likedRecipes',
+    populate: {
+      path: 'autor'
+    }
+  })
+  .populate({
+    path: 'favRecipes',
+    populate: {
+      path: 'autor'
+    }
+  })
+  .populate('calendarRecipes.receta');        
         
   console.log("Usuario que encuentro por id", usuario);
    // Esto te devuelve el array con todas las recetas del usuario      

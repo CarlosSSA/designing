@@ -98,7 +98,7 @@ const columns = [
               <MoreVertIcon />
             </IconButton>
           }
-          title= {fetchedData.receta.titulo}
+          title= {fetchedData.receta.nombre}
           subheader={fetchedData.receta.autor.nombre}
         />
 

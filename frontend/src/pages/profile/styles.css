@@ -1,9 +1,0 @@
-    card {
-      margin: theme.spacing(1),
-      width: '100%',
-    },
-      
-    title {
-      fontSize: 14,
-      fontWeight: 'bold',
-    }

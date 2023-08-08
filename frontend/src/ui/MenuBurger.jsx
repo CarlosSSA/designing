@@ -38,8 +38,8 @@ export default function MenuBurger() {
     const handleListItemClick = (text) => {
         console.log(`Clicked on ${text}`);
         switch (text) {
-            case 'Mis Datos':
-                navigate('/misdatos');
+            case 'Mi Perfil':
+                navigate('/miperfil');
                 break;
             case 'Mi Diario':
                 navigate('/midiario');
@@ -76,7 +76,7 @@ export default function MenuBurger() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['Mis Datos', 'Mi Diario', 'Cesta Compra', 'Explorar Categorías'].map((text, index) => (
+        {['Mi Perfil', 'Mi Diario', 'Cesta Compra', 'Explorar Categorías'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleListItemClick(text)}>
               <ListItemIcon>

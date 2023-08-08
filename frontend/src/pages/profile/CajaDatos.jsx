@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
-import './styles.css'
+
 
 // Son cajas donde ponemos los datos del usuario
 

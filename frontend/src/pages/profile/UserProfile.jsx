@@ -1,75 +1,178 @@
-import React, { useState } from 'react';
-import CajaDatos from './CajaDatos';
-import CalorieChart from './CalorieChart';
-import { useSelector } from 'react-redux';
-import Formulario from './Formulario';
+import React from 'react';
+import './UserProfile.css';
+import {useDispatch, useSelector} from 'react-redux';
+import { useEffect,useState } from 'react';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import GraficoPeso from '../miDiario/GraficoPeso';
+import RecipeReviewCard from '../../ui/Tarjeta'
+import recipeModel from '../../../../backend/database/models/recipeModel';
+import { useAuthStore } from '../../hooks/useAuthStore';
+import RecipeCalendarCard from '../calendar/RecipeCalendarCard';
+import TarjetaRecetaProfile from './TarjetaRecetaProfile';
 
 
 
 
-const UserProfile = () =>{
+const UserProfile = () => {
   
-    const goalCalories = 2000;
-    const currentCalories = 1500;
-    const age = 20;
-    const height = 1.70;
-    const weight = 70;
-    const activityLevel = 1.2;
 
-    const auth = useSelector(state => state.auth);
+  const { user } = useSelector(state => state.auth) // con esto pillo el slice
+  console.log("que me viene en user?", user);
 
-    // Si el campo calorías objetivo no viene definido, entoences muestro el componente de formulario
-    const tabNames = ["Liked", "Favoritas"];
-    const [value, setValue] = useState(tabNames[0]);
-    const handleChange = (event, newValue) => {
-      setValue(tabNames[newValue]);
-    };
+  const [usuarioPopulado, setUsuarioPopulado] = useState()
 
-    return (
-      <>
-       <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                <Tabs value={value} onChange={handleChange} centered>
-                <Tab label="Me gustan" />
-                <Tab label="Mis favoritos" />            
-                </Tabs>
-        </Box>
-        {value === "Liked" ? (
-        
-          <div>
-            <h1>Mi Perfil</h1>
+  // tengo que recoger todos los datos de las recetas una vez tengo el user
+  // ver si me popula llamando a usuarioIndividual pasandole el uid simplemente
+  const {startUsuarioIndividual} = useAuthStore();
 
-            <GraficoPeso />
+  const popularUsuario = async () => {
+    
+    const usuarioPopulado = await startUsuarioIndividual({uid:user.uid});
+    console.log("El usuario populado que me llega", usuarioPopulado);      
+    setUsuarioPopulado(usuarioPopulado)
+    
+  }; 
 
-              <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+  useEffect(() => {
+    popularUsuario();
+  }, []);
+
+  // Si el campo calorías objetivo no viene definido, entoences muestro el componente de formulario
+  const tabNames = ["Mis Recetas","Me Gustan", "Favoritas"];
+  const [value, setValue] = useState(tabNames[0]);
+  const handleChange = (event, newValue) => {
+    setValue(tabNames[newValue]);
+  };
+
+  // me falta definir el prop de user, necesito al usuario? o casi mejor hago un Selector del auth y una llamada a la BBDD y recojo todo
+
+  return (
+    <div className="profile-container">
+      
+      <div className="profile-header">
+        <img src={user.nombre || "ruta/default/avatar.jpg"} alt="Avatar del usuario" className="user-avatar" />
+        <div className="profile-info">
+          <h2>{user.nombre}</h2>
+          <div className="profile-stats">
+            <span>{user.recetas.length} publicaciones</span>
+            <span>{user.followers.length} seguidores</span>
+            <span>{user.following.length} seguidos</span>
+            
+          </div>
+        </div>
+      </div>
+
+      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                   <Tabs value={value} onChange={handleChange} centered>
-                  <Tab label="Me gustan" />
+                  <Tab label="Mis Recetas" />
+                  <Tab label="Me Gustan" />
                   <Tab label="Favoritas" />            
                   </Tabs>
-              </Box>
-
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                <CajaDatos label="Edad" value={age} />
-                <CajaDatos label="Altura" value={height} />
-                <CajaDatos label="Peso" value={weight} />
-                <CajaDatos label="Nivel de actividad física" value={activityLevel} />
-              </div>
-              <CalorieChart goal={goalCalories} current={currentCalories} />
-          </div>
-        
+        </Box>
       
-      
-        ) : (
-          <div>
-            Favoritos
-          </div>
-        )}
-      </>
-    );
-  }
+        {value === "Mis Recetas" ? (
+        <div>
 
+          Mis Recetas
+            
+          {
+        usuarioPopulado && usuarioPopulado.recetas.length > 0 
+        ? 
+        usuarioPopulado.recetas.map((recipe) => (
+            <TarjetaRecetaProfile 
+                key={recipe.id} 
+                nombre={recipe.nombre} 
+                autor={recipe.autor.nombre} 
+                receta={recipe} 
+                descripcion={recipe.descripcion} 
+                likes={recipe.likes.length} 
+                comments={recipe.comments.length}
+            />
+        ))
+        : 
+        <p>Aun no has creado ninguna receta</p>
+    }
+
+        </div>               
+           
+      ) : value === "Me Gustan" ? (
+        <div>
+
+          Recetas que Me Gustan
+          
+          {
+        usuarioPopulado && usuarioPopulado.likedRecipes.length > 0 
+        ? 
+        usuarioPopulado.likedRecipes.map((recipe) => (
+            <TarjetaRecetaProfile 
+                key={recipe.id} 
+                nombre={recipe.nombre} 
+                autor={recipe.autor.nombre} 
+                receta={recipe} 
+                descripcion={recipe.descripcion} 
+                likes={recipe.likes.length} 
+                comments={recipe.comments.length}
+            />
+        ))
+        : 
+        <p>Aun no has dado Like a ninguna receta</p>
+    }
+          
+
+        </div>
+      ) : value === "Favoritas" ? (
+        <div>
+
+          Recetas Favoritas
+
+          {
+        usuarioPopulado && usuarioPopulado.favRecipes.length > 0 
+        ? 
+        usuarioPopulado.favRecipes.map((recipe) => (
+            <TarjetaRecetaProfile 
+                key={recipe.id} 
+                nombre={recipe.nombre} 
+                autor={recipe.autor.nombre} 
+                receta={recipe} 
+                descripcion={recipe.descripcion} 
+                likes={recipe.likes.length} 
+                comments={recipe.comments.length}
+            />
+        ))
+        : 
+        <p>Aun no has guardado en favoritos ninguna receta</p>
+    }
+
+        </div>
+      ) : (
+        <div>
+
+          Mis Recetas
+
+          {
+        usuarioPopulado && usuarioPopulado.recetas.length > 0 
+        ? 
+        usuarioPopulado.recetas.map((recipe) => (
+            <TarjetaRecetaProfile 
+                key={recipe.id} 
+                nombre={recipe.nombre} 
+                autor={recipe.autor.nombre} 
+                receta={recipe} 
+                descripcion={recipe.descripcion} 
+                likes={recipe.likes.length} 
+                comments={recipe.comments.length}
+            />
+        ))
+        : 
+        <p>Aun no has creado ninguna receta</p>
+    }
+
+        </div>
+      )}
+     
+    </div>
+  );
+}
 
 export default UserProfile;

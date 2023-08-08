@@ -18,6 +18,7 @@ import MiDiario from '../pages/miDiario/MiDiario';
 
 
 
+
  
 
 
@@ -63,7 +64,8 @@ export const AppRouter = () => {
                             <Route path="/busquedaAvanzada" element={ <BusquedaAvanzada /> } />
                             <Route path="/misdatos" element={ <MiDiario /> } />
                             <Route path="/midiario" element={ <MiDiario /> } />
-                            <Route path="/userCalendar" element={ <UserCalendar /> } />                
+                            <Route path="/userCalendar" element={ <UserCalendar /> } /> 
+                            <Route path="/miperfil" element={ <UserProfile /> } />                
                             <Route path="/*" element={ <Navigate to="/" /> } />
                             
                         </>
