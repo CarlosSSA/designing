@@ -1,23 +1,61 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Button, Typography, Paper, Grid } from '@mui/material';
 
+const CajaDatos = () => {
+    return (
+        <Paper elevation={3} style={{ padding: '20px', margin: '20px', maxWidth: '400px', width: '100%' }}>
+            <Typography variant="h5" align="center" gutterBottom>
+                Tu Perfil
+            </Typography>
+            <Grid container spacing={3}>
+                <Grid item xs={6}>
+                    <Typography>Edad:</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography>25 años</Typography>
+                </Grid>
 
-// Son cajas donde ponemos los datos del usuario
+                <Grid item xs={6}>
+                    <Typography>Altura:</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography>1.75 m</Typography>
+                </Grid>
 
-const CajaDatos = ({ label, value }) => {
-  
-  return (
-    <Card className="card">
-      <CardContent>
-        <Typography className="title" color="textSecondary" gutterBottom>
-          {label}
-        </Typography>
-        <Typography variant="h5" component="h2">
-          {value}
-        </Typography>
-      </CardContent>
-    </Card>
-  );
-};
+                <Grid item xs={6}>
+                    <Typography>Peso:</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography>70 kg</Typography>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <Typography>Nivel de Actividad:</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography>Moderado</Typography>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <Typography>Objetivo:</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography>Mantener peso</Typography>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <Typography>Kcals:</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography>2500</Typography>
+                </Grid>
+            </Grid>
+            <Button variant="contained" color="primary" style={{ marginTop: '20px', width: '100%' }}>
+                Hacer Test
+            </Button>
+        </Paper>
+    );
+}
 
 export default CajaDatos;
+

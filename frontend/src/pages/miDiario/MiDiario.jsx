@@ -28,12 +28,7 @@ const MiDiario = () =>{
     const auth = useSelector(state => state.auth);
 
     // Si el campo calorías objetivo no viene definido, entoences muestro el componente de formulario
-    const tabNames = ["Seguimiento","Liked", "Favoritas"];
-    const [value, setValue] = useState(tabNames[0]);
-    const handleChange = (event, newValue) => {
-      setValue(tabNames[newValue]);
-    };
-
+    
     useEffect(() => {
       console.log("que me viene en auth? en el useEFFECT XD", auth.user.uid)
       startGetRecipeLikesYFavs({uid:auth.user.uid})
@@ -50,42 +45,22 @@ const MiDiario = () =>{
     return (
       <>
       <h1>Mi Diario</h1>
-         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                  <Tabs value={value} onChange={handleChange} centered>
-                  <Tab label="Seguimiento" />
-                  <Tab label="Me gustan" />
-                  <Tab label="Favoritas" />            
-                  </Tabs>
-          </Box>
+         
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            <CajaDatos label="Edad" value={age} />
-            <CajaDatos label="Altura" value={height} />
-            <CajaDatos label="Peso" value={weight} />
-            <CajaDatos label="Nivel de actividad física" value={activityLevel} />
+
+            <CajaDatos label="Edad" value={age} />  
+
         </div>
         <h4>Cambiar los textos por iconos</h4>
         <h4>Llevarme los datos y el test a Mis Datos</h4>
         <h4>hacer el grafico este de kcal pero con barras</h4>
        
-       {value === "Seguimiento" ? (
+       
         <div> 
           <GraficoKcal kcalData = {[1500,3000,6000,2300]} kcalGoal={2000} />                  
           <GraficoPeso />  
-        </div>               
-           
-      ) : value === "Liked" ? (
-        <div>
-          Artículos gustados
-        </div>
-      ) : value === "Guardadas" ? (
-        <div>
-          Artículos guardados
-        </div>
-      ) : (
-        <div>
-          Favoritos
-        </div>
-      )}
+        </div>              
+                
       </>
     );
   }
