@@ -59,6 +59,10 @@ const MiDiario = () =>{
         <div> 
           <GraficoKcal kcalData = {[1500,3000,6000,2300]} kcalGoal={2000} />                  
           <GraficoPeso />  
+          <div>
+            
+        </div>
+          
         </div>              
                 
       </>

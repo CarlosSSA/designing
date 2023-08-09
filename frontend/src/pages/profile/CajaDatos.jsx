@@ -1,7 +1,15 @@
 import React from 'react';
 import { Button, Typography, Paper, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
 
 const CajaDatos = () => {
+  const navigate = useNavigate();
+
+  const nuevoTest = () => {
+    navigate('/test/');
+  }
+
     return (
         <Paper elevation={3} style={{ padding: '20px', margin: '20px', maxWidth: '400px', width: '100%' }}>
             <Typography variant="h5" align="center" gutterBottom>
@@ -50,8 +58,12 @@ const CajaDatos = () => {
                     <Typography>2500</Typography>
                 </Grid>
             </Grid>
-            <Button variant="contained" color="primary" style={{ marginTop: '20px', width: '100%' }}>
-                Hacer Test
+            <Button 
+              variant="contained" 
+              color="primary" 
+              style={{ marginTop: '20px', width: '100%' }} 
+              onClick={nuevoTest}>
+              Hacer Test
             </Button>
         </Paper>
     );

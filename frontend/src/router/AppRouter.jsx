@@ -15,11 +15,7 @@ import BusquedaAvanzada from '../pages/avanzada/BusquedaAvanzada';
 import UserProfile from '../pages/profile/UserProfile';
 import UserCalendar from '../pages/calendar/UserCalendar';
 import MiDiario from '../pages/miDiario/MiDiario';
-
-
-
-
- 
+import HarrisTest from '../pages/test/HarrisTest'; 
 
 
 export const AppRouter = () => {
@@ -65,7 +61,8 @@ export const AppRouter = () => {
                             <Route path="/misdatos" element={ <MiDiario /> } />
                             <Route path="/midiario" element={ <MiDiario /> } />
                             <Route path="/userCalendar" element={ <UserCalendar /> } /> 
-                            <Route path="/miperfil" element={ <UserProfile /> } />                
+                            <Route path="/miperfil" element={ <UserProfile /> } />  
+                            <Route path="/test" element={ <HarrisTest /> } />                
                             <Route path="/*" element={ <Navigate to="/" /> } />
                             
                         </>
