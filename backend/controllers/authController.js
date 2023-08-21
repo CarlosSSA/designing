@@ -398,6 +398,65 @@ const addRegistroPeso = async (req,res) => {
   }
 
 }
+
+const updateHarris = async (req, res) => {
+  const { uid, datosHarris } = req.body;
+
+  try {
+    let usuario = await Usuario.findOne({ _id: uid });
+
+    if (usuario) {
+      console.log(`El usuario ${usuario} fue localizado para actualizar su Harris Benedict`, datosHarris);
+
+      if (datosHarris.altura) {
+        usuario.altura = parseFloat(datosHarris.altura);
+      }
+      
+      if (datosHarris.pesoActual) {
+        usuario.pesoActual = parseFloat(datosHarris.pesoActual);
+      }
+      
+      if (datosHarris.genero) {
+        usuario.genero = datosHarris.genero;
+      }
+      
+      if (datosHarris.nivelActividad) {
+        usuario.nivelActividad = datosHarris.nivelActividad;
+      }
+      
+      if (datosHarris.objetivo) {
+        usuario.objetivo = datosHarris.objetivo;
+      }
+
+      if (datosHarris.kcalObjetivo) {
+        usuario.kcalObjetivo = datosHarris.kcalObjetivo;
+      }
+
+      if (datosHarris.edad) {
+        usuario.edad = parseInt(datosHarris.edad, 10);
+      }
+
+      await usuario.save();
+
+      res.status(200).json({
+        ok: true,
+        mensaje: "Actualizados los datos de Harris Benedict para el usuario"
+      });
+    } else {
+      res.status(404).json({
+        ok: false,
+        mensaje: "No se ha encontrado al usuario para actualizar los datos de Harris Benedict"
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      mensaje: "Error al actualizar los datos de Harris Benedict",
+      error
+    });
+  }
+}
+
  
 
 export {
@@ -410,5 +469,7 @@ export {
   revalidarToken,
   addRecetaCalendario,
   usuarioIndividual,
-  addRegistroPeso
+  addRegistroPeso,
+  updateHarris
+
 };

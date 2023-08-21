@@ -48,13 +48,10 @@ const MiDiario = () =>{
          
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
 
-            <CajaDatos label="Edad" value={age} />  
+            <CajaDatos/>  
 
         </div>
-        <h4>Cambiar los textos por iconos</h4>
-        <h4>Llevarme los datos y el test a Mis Datos</h4>
-        <h4>hacer el grafico este de kcal pero con barras</h4>
-       
+           
        
         <div> 
           <GraficoKcal kcalData = {[1500,3000,6000,2300]} kcalGoal={2000} />                  

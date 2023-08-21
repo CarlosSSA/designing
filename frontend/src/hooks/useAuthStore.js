@@ -6,7 +6,7 @@ import { onclearErrorMessage, onChecking, onLogin, onLogout, onValoresTotales } 
 import { format, parseISO } from 'date-fns';
 
 export const useAuthStore = () => {
-
+    
    const {status, user, errorMessage, premium} = useSelector(state => state.auth) // con esto pillo el slice
    const dispatch = useDispatch();
    
@@ -40,6 +40,12 @@ export const useAuthStore = () => {
                 registroPeso: data.usuario.registroPeso,
                 following: data.usuario.following,
                 followers: data.usuario.followers,
+                altura: data.usuario.altura,
+                edad: data.usuario.edad,
+                nivelActividad: data.usuario.nivelActividad,
+                objetivo: data.usuario.objetivo,
+                pesoActual: data.usuario.pesoActual,
+                genero: data.usuario.genero,
             
             }))
             
@@ -218,6 +224,22 @@ const startUpdateUserFavs = async({uid, favRecipe}) => {
     
 }
 
+const startUpdateHarris = async({ uid, datosHarris}) => {
+    console.log("startUpdateHarris, lo que recibo en uid",{uid});
+    console.log("startUpdateHarris, lo que recibo en datosHarris", {datosHarris});
+    
+    
+    try {        
+              
+        const {data} = await recetaApi.post('/auth/updateHarris', { uid, datosHarris})
+        console.log("startUpdateHarris, lo que me devuelve el backend: ",data);
+                
+
+    } catch (error) {
+        console.log("error", error);        
+    }
+}
+
     
 
   return {
@@ -240,6 +262,7 @@ const startUpdateUserFavs = async({uid, favRecipe}) => {
     startGetRecipeLikesYFavs,
     startUpdateUserLikes,
     startUpdateUserFavs,
+    startUpdateHarris
     
   }
 

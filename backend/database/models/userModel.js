@@ -8,6 +8,19 @@ const UsuarioSchema = new Schema({
     required: true,
     unique: true
   },
+  altura: { type: Number }, // en centímetros
+  pesoActual: { type: Number }, // en kilogramos
+  edad: { type: Number },
+  genero: { type: String, enum: ['male', 'female'] },
+  nivelActividad: {
+    type: String,
+    enum: ['sedentario', 'ligera', 'moderada', 'muy activo', 'extra activo']
+  },
+  objetivo: {
+    type: String,
+    enum: ['perder', 'mantener', 'ganar']
+  },
+  
   email: {
     type: String,
     required: true,
@@ -30,7 +43,7 @@ const UsuarioSchema = new Schema({
   ],
   kcalObjetivo: {
     type: Number,
-    default: null
+    default: 0
   },
   registroPeso: {
     pesos: [Number],

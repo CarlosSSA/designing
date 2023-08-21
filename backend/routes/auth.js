@@ -1,3 +1,5 @@
+// Rutas /api/auth
+
 import { validacion } from '../middlewares/validator.js';
 import { body } from 'express-validator';
 import { validarJWT } from '../middlewares/jwt-validator.js';
@@ -12,7 +14,8 @@ import {
   revalidarToken,
   addRecetaCalendario,
   usuarioIndividual,
-  updateUsuarioCalendarRecipes
+  updateUsuarioCalendarRecipes,
+  updateHarris
 } from '../controllers/authController.js';
 
 // Creamos el objeto Router
@@ -49,6 +52,8 @@ router.post('/getRecipeLikesYFavs', getRecipeLikedYFavs);
 router.post('/updateUserFavs', updateUserFavs);
 
 router.post('/updateUserLikes', updateUserLikes);
+
+router.post('/updateHarris', updateHarris);
 
 // Renew Token JWT Ruta + Controllers --> Esto habría que utilizarlo
 router.get('/renew', validarJWT, revalidarToken);

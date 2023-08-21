@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { Container, Typography, TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Select, MenuItem } from '@mui/material';
+import {useAuthStore} from '../../hooks/useAuthStore'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 const HarrisTest = () => {
+
   const [age, setAge] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
@@ -9,12 +16,22 @@ const HarrisTest = () => {
   const [activity, setActivity] = useState('');
   const [objective, setObjective] = useState('');
 
-  const handleSubmit = () => {
+  const navigate = useNavigate();
+
+  //metodo para actualizar los datos de Harris Benedict
+  const { startUpdateHarris } = useAuthStore();  // {uid, datosHarris}
+  // me traigo al user del state
+  const {user} = useSelector(state => state.auth)
+
+
+  const handleSubmit = async() => {
     let BMR;
     if (gender === 'male') {
         BMR = 66.5 + (13.75 * weight) + (5.003 * height) - (6.75 * age)
+        console.log("BRM si es male", BMR)
     } else if (gender === 'female') {
         BMR = 655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age)    
+        console.log("BRM si es female", BMR)
     }
   
     let totalCalories;
@@ -48,8 +65,32 @@ const HarrisTest = () => {
         break;
       // No es necesario un caso para 'Mantener Peso' ya que totalCalories se queda igual
     }
+
+    //aqui debería LANZAR el startUpdateHarris  !!!!!!!!!
+
+    const numWeight = parseFloat(weight);
+    const numHeight = parseFloat(height);
+    const numAge = parseInt(age, 10);
+
+    console.log('Weight:', weight, 'Converted:', numWeight);
+    console.log('Height:', height, 'Converted:', numHeight);
+    console.log('Age:', age, 'Converted:', numAge);
+    console.log('BMR:', BMR);
+    console.log('Total calories:', totalCalories);
+    console.log("operacion", 66.5 + (13.75 * weight) + (5.003 * height) - (6.75 * age))
+
+    await startUpdateHarris({uid:user.uid, datosHarris:{
+        altura: height,
+        pesoActual: weight,
+        edad: age,
+        genero: gender,
+        nivelActividad: activity,
+        objetivo: objective,
+        kcalObjetivo:totalCalories
+    
+    }});    
   
-    alert(`Necesitas aproximadamente ${Math.round(totalCalories)} kcal diarias para ${objective.toLowerCase()}.`);
+    navigate('/miDiario');
   };
 
   return (
@@ -73,20 +114,20 @@ const HarrisTest = () => {
       <FormControl fullWidth margin="normal">
         <FormLabel component="legend">Nivel de actividad</FormLabel>
         <Select value={activity} onChange={(e) => setActivity(e.target.value)}>
-          <MenuItem value="Sedentaria (poco o nada de ejercicio)">Sedentaria (poco o nada de ejercicio)</MenuItem>
-          <MenuItem value="Actividad Ligera (1-3 dias deporte ligero)">Actividad Ligera (1-3 dias deporte ligero)</MenuItem>
-          <MenuItem value="Actividad Moderada (3-5 dias deporte moderado)">Actividad Moderada (3-5 dias deporte moderado)</MenuItem>
-          <MenuItem value="Muy Activo (6-7 dias deporte intenso)">Muy Activo (6-7 dias deporte intenso)</MenuItem>
-          <MenuItem value="Extra Activo (Ejercicio y Trabajos muy duros)">Extra Activo (Ejercicio y Trabajos muy duros)</MenuItem>
+          <MenuItem value="sedentario">Sedentaria (poco o nada de ejercicio)</MenuItem>
+          <MenuItem value="ligera">Actividad Ligera (1-3 dias deporte ligero)</MenuItem>
+          <MenuItem value="moderada">Actividad Moderada (3-5 dias deporte moderado)</MenuItem>
+          <MenuItem value="muy activo">Muy Activo (6-7 dias deporte intenso)</MenuItem>
+          <MenuItem value="extra activo">Extra Activo (Ejercicio y Trabajos muy duros)</MenuItem>
         </Select>
       </FormControl>
 
       <FormControl fullWidth margin="normal">
         <FormLabel component="legend">Objetivo</FormLabel>
         <Select value={objective} onChange={(e) => setObjective(e.target.value)}>
-          <MenuItem value="Perder Peso">Perder Peso</MenuItem>
-          <MenuItem value="Mantener Peso">Mantener Peso</MenuItem>
-          <MenuItem value="Ganar Peso">Ganar Peso</MenuItem>
+          <MenuItem value="perder">Perder Peso</MenuItem>
+          <MenuItem value="mantener">Mantener Peso</MenuItem>
+          <MenuItem value="ganar">Ganar Peso</MenuItem>
         </Select>
       </FormControl>
 
