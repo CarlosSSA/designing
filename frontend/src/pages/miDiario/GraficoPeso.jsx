@@ -23,12 +23,12 @@ const GraficoPeso = () => {
             setWeights(miUsuario.registroPeso.pesos);
             setDates(miUsuario.registroPeso.fechas);
             setStateUid(user.uid);
-            console.log(" USE EFFECTme llega esto del usuario", miUsuario)
+            console.log(" UseEffect en Grafico Peso me llega esto del usuario", miUsuario)
         }
         };
         obtenerUsuario();
-        console.log("USE EFFECT que tengo en pesos", weights);
-        console.log("USE EFFECT que tengo en fechas", dates);
+        console.log("UseEffect en Grafico Peso que tengo en pesos", weights);
+        console.log("UseEffect en Grafico Peso que tengo en fechas", dates);
       }, []);
   
 

@@ -15,7 +15,9 @@ import {
   addRecetaCalendario,
   usuarioIndividual,
   updateUsuarioCalendarRecipes,
-  updateHarris
+  updateHarris,
+  getKcalsPerWeek,
+  getUsuarioCalendarRecipes
 } from '../controllers/authController.js';
 
 // Creamos el objeto Router
@@ -54,6 +56,12 @@ router.post('/updateUserFavs', updateUserFavs);
 router.post('/updateUserLikes', updateUserLikes);
 
 router.post('/updateHarris', updateHarris);
+
+router.post('/getKcalsPerWeek', getKcalsPerWeek);
+
+router.post('/getUsuarioCalendarRecipes', getUsuarioCalendarRecipes);
+
+
 
 // Renew Token JWT Ruta + Controllers --> Esto habría que utilizarlo
 router.get('/renew', validarJWT, revalidarToken);

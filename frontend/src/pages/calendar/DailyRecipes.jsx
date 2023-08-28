@@ -26,10 +26,11 @@ const user = useSelector(state => state.auth.user);
 
   
 // veo los parámteros que nos llegan
-  useEffect(() => {    
-    console.log("Parametros que nos llegan a Daily Recipes hijo: fecha: ", fecha.toDateString()) //Thu Apr 06 2023       
-    console.log("Parametros que nos llegan a Daily Recipes hijo: Itero sobre: ", recetas) //Array(2) [ {…}, {…} ]
-    console.log("Parametros que nos llegan a Daily Recipes hijo: estado con la fecha que me llega: ", selectedFecha) //Thu Apr 06 2023
+  useEffect(() => {   
+ 
+    console.log("useEffect  Daily Recipes : fecha: ", fecha.toDateString()) //Thu Apr 06 2023   
+    console.log("useEffect  Daily Recipes : fecha: recetas sobre las que itero: ", recetas) //Array(2) [ {…}, {…} ]
+    console.log("useEffect  Daily Recipes : fecha: estado con la fecha que me llega: ", selectedFecha) //Thu Apr 06 2023
     
   }, [])
 

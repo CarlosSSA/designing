@@ -1,4 +1,5 @@
 import Usuario from '../database/models/userModel.js';
+import Receta from '../database/models/recipeModel.js'
 import bcrypt from 'bcryptjs';
 import { generarJWT } from '../helpers/jwt.js';
 
@@ -238,6 +239,41 @@ const updateUsuarioCalendarRecipes = async (req,res) => {
      
 }
 
+const getUsuarioCalendarRecipes = async (req,res) => {
+
+  const { uid } = req.body; //id usuario desde el Store    
+
+  try {
+    // Encuentra el usuario por el id y popular la receta y luego los ingredientes
+    let usuario = await Usuario.findOne({_id: uid})
+      .populate({
+        path: 'calendarRecipes.receta',
+        model: 'Receta', // Asegúrate de cambiar 'Receta' por el nombre de tu modelo de recetas si es diferente.
+        populate: {
+          path: 'ingredientes.ingrediente',
+          model: 'Ingrediente' // Cambia 'Ingrediente' por el nombre de tu modelo de ingredientes si es diferente.
+        }
+      });
+
+    console.log("Usuario que updateo!", usuario);
+    console.log("que recibo como uid", uid);
+
+    res.status(201).json({
+      ok: true,
+      mensaje: "Encontrado el Usuario y updateado",
+      usuario                
+    }); 
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(404).json({
+      ok: false,
+      mensaje: "No se pudo actualizar las Calendar Recipes del usuario"              
+    }); 
+  }  
+};
+
 // para la grafica de evolucion de pesos
 
 const getRecipeLikedYFavs = async (req,res) => {
@@ -248,8 +284,7 @@ const getRecipeLikedYFavs = async (req,res) => {
   let usuario = await Usuario.findOne({_id:uid})  
        
    if (usuario) {    
-    let recetas = {liked:usuario.likedRecipes, favs:usuario.favRecipes}
-      
+    let recetas = {liked:usuario.likedRecipes, favs:usuario.favRecipes}     
     
     
  
@@ -457,6 +492,57 @@ const updateHarris = async (req, res) => {
   }
 }
 
+const getKcalsPerWeek = async (req, res) => {
+  const { uid, datesArray } = req.body;
+
+  try {
+    // Buscamos el usuario y rellenamos los detalles de las recetas
+    const usuario = await Usuario.findOne({ _id: uid }).populate('calendarRecipes.receta');
+    
+    if (!usuario) {
+      return res.status(404).json({
+        ok: false,
+        mensaje: "No se ha encontrado al usuario para calcular las kcal"
+      });
+    }
+
+    const kcalsArray = await Promise.all(datesArray.map(date => {
+      // Filtramos las recetas que coinciden con la fecha especificada
+      const recetasParaLaFecha = usuario.calendarRecipes.filter(recipe => normalizeDate(recipe.fecha) === normalizeDate(date));
+
+      if (recetasParaLaFecha.length === 0) return 0;  // Si no hay recetas para la fecha, devolvemos 0
+
+      // Ahora, sumamos las kcal de todas las recetas filtradas (sin tener que hacer consultas adicionales porque ya tenemos los datos)
+      const totalKcalForDate = recetasParaLaFecha.reduce((sum, currentRecipe) => {
+        return sum + (currentRecipe.receta.totales.kcal || 0);
+      }, 0);
+
+      return totalKcalForDate;
+    }));
+
+    res.status(200).json({
+      ok: true,
+      mensaje: "Kcal totales para las fechas dadas",
+      kcals: kcalsArray
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      mensaje: "Ha ocurrido un error al procesar la solicitud",
+      error: error.message
+    });
+  }
+}
+
+function normalizeDate(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const year = date.getUTCFullYear();
+  return `${year}-${month}-${day}`;
+}
+
  
 
 export {
@@ -470,6 +556,8 @@ export {
   addRecetaCalendario,
   usuarioIndividual,
   addRegistroPeso,
-  updateHarris
+  updateHarris,
+  getKcalsPerWeek,
+  getUsuarioCalendarRecipes
 
 };

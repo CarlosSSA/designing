@@ -58,6 +58,7 @@
 
 
   export default function RecipeCalendarCard({nombre, autor, receta, descripcion, likes, comments, deleteRecipe}) {
+  
 
     const navigate = useNavigate();
     const dispatch = useDispatch();

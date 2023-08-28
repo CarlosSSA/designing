@@ -1,31 +1,11 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
-const GraficoKcal = ({ kcalData, kcalGoal }) => {
+const GraficoKcal = ({ kcalData, kcalGoal, weekDates }) => {
     const goalData = new Array(kcalData.length).fill(kcalGoal);
 
     //Días de la semana
 
-    const getWeekDates = () => {
-        let now = new Date();
-        let dayOfWeek = now.getDay(); // 0-6, 0 es domingo, 6 es sábado
-        let numDay = now.getDate();
-    
-        let start = new Date(now); // Copiar la fecha actual
-        start.setDate(numDay - dayOfWeek + (dayOfWeek === 0 ? -6 : 1)); // Ajustar al lunes anterior
-    
-        let end = new Date(now);  // Copiar la fecha actual
-        end.setDate(numDay + (7 - dayOfWeek)); // Ajustar al próximo domingo
-    
-        let days = [];
-        for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
-            days.push(new Date(d));
-        }
-    
-        return days;
-    }
-    
-    const weekDates = getWeekDates().map(d => `${d.getDate()}/${d.getMonth() + 1}`); // Formato: día/mes
     
 
     const data = {

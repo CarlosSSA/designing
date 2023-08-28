@@ -1,0 +1,67 @@
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
+  
+  ul {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  li:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  span {
+    flex-grow: 1;
+    font-size: 1rem;
+    color: #333;
+    transition: color 0.3s ease-in-out, text-decoration 0.3s ease-in-out;
+  }
+  
+  .checked {
+    text-decoration: line-through;
+    color: red;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    h1 {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+  
+    ul {
+      padding: 0 10px;
+    }
+    
+    li {
+      font-size: 0.9rem;
+    }
+  }
+  

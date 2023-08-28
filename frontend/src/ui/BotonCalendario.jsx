@@ -14,102 +14,66 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-const BotonCalendario = ({recetaID, autorID})=> {
+const BotonCalendario = ({ recetaID, autorID }) => {
+  const [value, setValue] = useState(null);
+  const [open, setOpen] = useState(false);
 
-    const [value, setValue] = useState(null);
-    const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
+  const { startAddRecetaCalendar, user } = useAuthStore();
 
-    const {startAddRecetaCalendar, user} = useAuthStore();
+  useEffect(() => {
+    if (value) {
+      const date = value.$d;
+      const formattedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds())).toISOString();
 
-    // cada vez que cambia el valor de la fecha ejecuto el Hook para que la almacene en el perfil del usuario
-    useEffect(() => {
-      if (value) {
-        console.log("el value desde el use Effect", value);
-        console.log("el user desde el use Effect", user);
-        console.log("el body que mando al starAddCalendar", {fecha:value.$d.toDateString(), uid:autorID, recipeid:recetaID});
-        window.location.reload();
-       
-
-        try {
-          
-          //new
-          const formattedDate = format(value.$d, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
-
-          startAddRecetaCalendar({fecha:formattedDate, uid:autorID, recipeid:recetaID})
-          console.log("fecha guardada correctamente en el usuario" + user);
-          //alert(`Receta agendada correctamente al día ${formattedDate}`)
-          Swal.fire(
-            'Receta agendada correctamente',
-            `You clicked the button! En la fecha ${formattedDate}`,
-            'success'
-          ).then((result) => {
-            if (result.isConfirmed) {
-              console.log("hola");
-            }
-          })
-          
-        } catch (error) {
-          setAlerta({ type: 'error', message: 'Error al guardar la fecha.' });
-          console.log("Algo se ha roto actualizando las recetas del calendario");
-
-        }       
-       
-        //aqui faltaría añadir alguna alerta de OK
+      try {
+        startAddRecetaCalendar({
+          fecha: formattedDate,
+          uid: autorID,
+          recipeid: recetaID
+        });
+        Swal.fire(
+          'Receta agendada correctamente',
+          `You clicked the button! En la fecha ${formattedDate}`,
+          'success'
+        );
+      } catch (error) {
+        console.error("Algo se ha roto actualizando las recetas del calendario", error);
       }
-    }, [value]);
-  
-    const handleIconClick = () => {
-      setOpen(true);
-    };
-  
-   
-    const handleDatePickerClose = () => {
-      setOpen(false);
-      //aqui el value es la fecha
-      if(value){  
-      console.log("el value",value);
-      console.log(" el user", user);
-      
-      }
-      
-      //guardar en base de datos estea receta + fecha
-      /* 
-            calendarRecipes:[
-                {
-                    receta:{ type: Schema.Types.ObjectId, ref: 'Receta' },
-                    fecha:{type: Date, required: true}
-                }
-            ],  
-      */
-      // llamar al Hook de guardado
-            
 
-    };
-  
-    return (
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <div style={{ display: 'flex' }}>
-          <IconButton onClick={handleIconClick}>
-            <CalendarMonthIcon />
-          </IconButton>
-          {open && (
-            <div style={{ position: 'absolute', zIndex: 1 }}>
-              <DatePicker
-                value={value}
-                onChange={(newValue) => {
-                  setValue(newValue);
-                  handleDatePickerClose();
-                }}
-                onClose={handleDatePickerClose}
-                open={open}
-                
-              />
-            </div>
-          )}          
-        </div>
-      </LocalizationProvider>
-    );
-  }
+      window.location.reload();
+    }
+  }, [value]);
 
-  export default BotonCalendario
+  const handleIconClick = () => {
+    setOpen(true);
+  };
+
+  const handleDatePickerClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div style={{ display: 'flex' }}>
+        <IconButton onClick={handleIconClick}>
+          <CalendarMonthIcon />
+        </IconButton>
+        {open && (
+          <div style={{ position: 'absolute', zIndex: 1 }}>
+            <DatePicker
+              value={value}
+              onChange={(newValue) => {
+                setValue(newValue);
+                handleDatePickerClose();
+              }}
+              onClose={handleDatePickerClose}
+              open={open}
+            />
+          </div>
+        )}
+      </div>
+    </LocalizationProvider>
+  );
+};
+
+export default BotonCalendario;

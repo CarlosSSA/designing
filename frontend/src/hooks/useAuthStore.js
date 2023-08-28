@@ -6,7 +6,7 @@ import { onclearErrorMessage, onChecking, onLogin, onLogout, onValoresTotales } 
 import { format, parseISO } from 'date-fns';
 
 export const useAuthStore = () => {
-    
+
    const {status, user, errorMessage, premium} = useSelector(state => state.auth) // con esto pillo el slice
    const dispatch = useDispatch();
    
@@ -240,6 +240,36 @@ const startUpdateHarris = async({ uid, datosHarris}) => {
     }
 }
 
+const startGetKcalsPerWeek = async({ uid, datesArray}) => {
+      
+    
+    try {        
+              
+        const {data} = await recetaApi.post('/auth/getKcalsPerWeek', { uid, datesArray})
+        console.log("Hook getKcalsPerWeek: que recibo en el Hook y envío al backend: ",uid, datesArray);      
+        console.log("Hook getKcalsPerWeek: lo que me devuelve el backend: ",data);
+        return data
+
+    } catch (error) {
+        console.log("error en el Hook startGetKcalsPerWeek ", error);        
+    }
+}
+
+const startGetUsuarioCalendarRecipes = async({ uid }) => {
+      
+    
+    try {        
+              
+        const {data} = await recetaApi.post('/auth/getUsuarioCalendarRecipes', { uid })
+        console.log("Hook startGetUsuarioCalendarRecipes: que recibo en el Hook y envío al backend: ",uid);      
+        console.log("Hook startGetUsuarioCalendarRecipes: lo que me devuelve el backend: ",data);
+        return data
+
+    } catch (error) {
+        console.log("error en el Hook startGetKcalsPerWeek ", error);        
+    }
+}
+
     
 
   return {
@@ -262,7 +292,9 @@ const startUpdateHarris = async({ uid, datosHarris}) => {
     startGetRecipeLikesYFavs,
     startUpdateUserLikes,
     startUpdateUserFavs,
-    startUpdateHarris
+    startUpdateHarris,
+    startGetKcalsPerWeek,
+    startGetUsuarioCalendarRecipes
     
   }
 

@@ -7,37 +7,43 @@ import { useSelector } from 'react-redux';
 
 
 function DatePickerSection({recetasCalendario, obtenerRecetas}) {
+  const currentDate = new Date();
+  const [selectedDate, setSelectedDate] = useState(new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate())));
+  const [showDailyRecipes, setShowDailyRecipes] = useState(false);
 
-  const [selectedDate, setSelectedDate] = useState(new Date());  
+  useEffect(() => {
+    setShowDailyRecipes(true);
+    console.log("DatepickerSection: Useeffect fecha :", selectedDate.toUTCString());
+  }, [selectedDate]);
 
   const sigFecha = () => {
     const newDate = new Date(selectedDate);
-    newDate.setDate(selectedDate.getDate() + 1);
+    newDate.setUTCDate(selectedDate.getUTCDate() + 1);
     setSelectedDate(newDate);
-    console.log("Nueva Fecha  +1 selectedDate" ,selectedDate);
-    console.log("selectedDate.toDateString", selectedDate.toDateString())
+    setShowDailyRecipes(false);
   };
   
   const prevFecha = () => {
     const newDate = new Date(selectedDate);
-    newDate.setDate(selectedDate.getDate() - 1);
+    newDate.setUTCDate(selectedDate.getUTCDate() - 1);
     setSelectedDate(newDate);
-    console.log("Nueva fecha -1", selectedDate);
-    console.log(selectedDate.toDateString());
+    setShowDailyRecipes(false);
   };
- 
+
   return (
     <>
       <h3>Tus recetas diarias</h3>
       <div style={{ display: "inline-block" }}>
-        <button onClick={prevFecha}>&lt;</button>      
-        <p style={{ display: "inline-block" }}>{selectedDate.toDateString()}</p>
+        <button onClick={prevFecha}>&lt;</button>
+        <p style={{ display: "inline-block" }}>{selectedDate.toUTCString().split(' ').slice(0, 4).join(' ')}</p>
         <button onClick={sigFecha}>&gt;</button>
       </div>
-      {recetasCalendario && <DailyRecipes fecha={selectedDate} recetas={recetasCalendario} obtenerRecetas={obtenerRecetas} />}      
+      {recetasCalendario && showDailyRecipes && 
+         <DailyRecipes fecha={selectedDate} recetas={recetasCalendario} obtenerRecetas={obtenerRecetas} />
+      }      
     </>
   );
-  }
+}
 
-export default DatePickerSection;
+export default DatePickerSection; 
 
