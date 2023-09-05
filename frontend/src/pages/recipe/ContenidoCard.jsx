@@ -29,116 +29,110 @@ const comments = [
     },
   ];
 
-const ContenidoCard = ({datos}) => {
-
-    const {user} = useSelector(state => state.auth) // con esto pillo el slice
-
-
-    const {startAddComentario} =  useCommentStore();
-    const {startUpdateRecipeComments} =  useRecipeStore();
-    
-
-    const [data, setData] = useState()
+  const ContenidoCard = ({ datos }) => {
+    const { user } = useSelector((state) => state.auth);
+  
+    const { startAddComentario } = useCommentStore();
+    const { startUpdateRecipeComments } = useRecipeStore();
+  
+    const [data, setData] = useState();
     const [comentario, setComentario] = useState('');
     const [isButtonDisabled, setButtonDisabled] = useState(false);
-    const [estadoComentario, setEstadoComentario] = useState(false);
     const [maxLength, setMaxLength] = useState(60);
-
-
+    const [localComments, setLocalComments] = useState([]); // nuevo estado para comentarios
+  
     useEffect(() => {
-        console.log("recibo el data en ContenidoCard?", datos)
-        console.log("y en el user", user)
-        console.log("esto me ignora???")
-        setData(datos)
-    }, [])
-    
-
-
+      setData(datos);
+      setLocalComments(datos.receta.comentarios); // inicializa con los comentarios de la receta
+    }, [datos]);
+  
     const tabNames = ["Pasos", "Ingredientes"];
     const [value, setValue] = useState(tabNames[0]);
     const handleChange = (event, newValue) => {
       setValue(tabNames[newValue]);
     };
-
+  
     const handleComentarioChange = (event) => {
-        setComentario(event.target.value);
-      };
-
-      const addComentario = async () => {
-        if (!isButtonDisabled) {
-          setButtonDisabled(true); // Deshabilita el botón
-      
-          console.log("Se supone que llamo a useCommentStore ")
-          let nuevoComentario = await startAddComentario({texto:comentario, autor: user.uid})
-          startUpdateRecipeComments({rid: datos.receta._id, comentarioID: nuevoComentario.comentario._id})
-      
-          setComentario('');
-          
-
-          setTimeout(() => {
-            setButtonDisabled(false); // Habilita el botón después de 10 segundos
-          }, 5000);
-          
-        }
+      setComentario(event.target.value);
+    };
+  
+    const addComentario = async () => {
+      if (!isButtonDisabled) {
+        setButtonDisabled(true);
+  
+        const nuevoComentario = await startAddComentario({
+          texto: comentario,
+          autor: user.uid,
+        });
+        startUpdateRecipeComments({
+          rid: datos.receta._id,
+          comentarioID: nuevoComentario.comentario._id,
+        });
+  
+        const comentarioCompleto = {
+          ...nuevoComentario.comentario,
+          autor: {
+            ...nuevoComentario.comentario.autor,
+            nombre: user.nombre, // Suponiendo que 'nombre' está en el objeto 'user'
+          },
+        };
+  
+        setLocalComments([...localComments, comentarioCompleto]);
+        setComentario('');
+  
+        setTimeout(() => {
+          setButtonDisabled(false);
+        }, 5000);
       }
-
-
-
-
+    };
+  
     return (
-        <>            
-            <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                <Tabs value={value} onChange={handleChange} centered>
-                <Tab label="Pasos" />
-                <Tab label="Ingredientes" />            
-                </Tabs>
+      <>
+        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          <Tabs value={value} onChange={handleChange} centered>
+            <Tab label="Pasos" />
+            <Tab label="Ingredientes" />
+          </Tabs>
+        </Box>
+        {value === "Pasos" ? (
+          <CardContent>
+            <PasosList pasos={datos.receta.pasos} />
+            <Box mt={2}>
+              <Typography variant="h6" component="div">
+                Comentarios
+                {localComments.map((comentario) => (
+                  <Comentarios key={comentario._id} comentario={comentario} user={user} />
+                ))}
+              </Typography>
+              <Typography variant="h6" component="div">
+                Añadir un Comentario
+              </Typography>
+              <TextField
+                multiline
+                rows={4}
+                variant="outlined"
+                fullWidth
+                value={comentario}
+                onChange={handleComentarioChange}
+                placeholder="Escribe un comentario..."
+                inputProps={{ maxLength: maxLength }}
+              />
+              <div>
+                {comentario.length}/{maxLength}
+              </div>
+              <Button variant="contained" color="primary" style={{ marginTop: 8 }} onClick={addComentario} disabled={isButtonDisabled}>
+                {isButtonDisabled ? 'Comentario Enviado' : 'Publicar comentario'}
+              </Button>
             </Box>
-                {value === "Pasos" ? (
-            
-                <CardContent>
-                    <PasosList pasos={datos.receta.pasos} />
-                    <Box mt={2}>
-                    <Typography variant="h6" component="div">
-                        Comentarios
-                        {datos.receta.comentarios.map((comentario) => (
-                        <Comentarios key={comentario._id} comentario={comentario} user={user}/>
-                        ))}
-                    </Typography> 
-
-                        <Typography variant="h6" component="div">
-                        Añadir un Comentario
-                        </Typography>                       
-
-                        <TextField
-                            multiline
-                            rows={4}
-                            variant="outlined"
-                            fullWidth
-                            value={comentario}
-                            onChange={handleComentarioChange}
-                            placeholder="Escribe un comentario..."
-                            inputProps={{ maxLength: maxLength }} // propiedades para el input
-                        />
-                        <div>
-                            {comentario.length}/{maxLength}
-                        </div>
-
-                        <Button variant="contained" color="primary" style={{ marginTop: 8 }} onClick={addComentario} disabled={isButtonDisabled}>
-                            {isButtonDisabled ? 'Comentario Enviado' : 'Publicar comentario'}
-                        </Button>
-                    </Box>
-                </CardContent>
-            ) : (
-                <CardContent>                    
-                    <IngredientList ingredients={datos.receta.ingredientes} />
-                    <Grafica datos={datos} />
-                </CardContent>
-            )}
-        </>
-    )  
-} 
-
-
-
-export default ContenidoCard;
-
+          </CardContent>
+        ) : (
+          <CardContent>
+            <IngredientList ingredients={datos.receta.ingredientes} />
+            <Grafica datos={datos} />
+          </CardContent>
+        )}
+      </>
+    );
+  };
+  
+  export default ContenidoCard;

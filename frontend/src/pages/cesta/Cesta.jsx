@@ -39,7 +39,6 @@ const Cesta = () => {
     setRecetasCalendario(miUsuario.usuario.calendarRecipes);
   };
 
-  // useEffect se ejecuta después del renderizado inicial y se utiliza para efectos secundarios.
   useEffect(() => {
     // Función que devuelve todas las fechas de la semana actual.
     const getWeekDates = () => {
