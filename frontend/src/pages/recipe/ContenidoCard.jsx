@@ -2,9 +2,9 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Divider from '@mui/material/Divider'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,} from "@mui/material";
+import { Avatar, Card, CardActionArea, Grid, CardActions, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogTitle, IconButton, Typography, TextField, Button, LinearProgress } from "@mui/material";
 import { useEffect, useState } from 'react';
-import { Avatar, Card, CardActionArea, Grid, CardActions, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogTitle, IconButton, Typography, TextField, Button } from '@mui/material';
+
 import IngredientList from './IngredientList';
 import { Cell, PieChart, Pie , Tooltip, LabelList,LineChart, Line ,RadarChart , PolarGrid, PolarAngleAxis,PolarRadiusAxis, Radar, Legend, ResponsiveContainer    } from 'recharts';
 import PasosList from './PasosList';
@@ -13,6 +13,7 @@ import Comentarios from './Comentarios';
 import { useCommentStore } from '../../hooks/useCommentStore'
 import { useRecipeStore } from '../../hooks/useRecipeStore'
 import {useDispatch, useSelector} from 'react-redux';
+import './ContenidoCard.css'
 
 
 
@@ -39,11 +40,40 @@ const comments = [
     const [comentario, setComentario] = useState('');
     const [isButtonDisabled, setButtonDisabled] = useState(false);
     const [maxLength, setMaxLength] = useState(60);
-    const [localComments, setLocalComments] = useState([]); // nuevo estado para comentarios
+    const [localComments, setLocalComments] = useState([]);
+    const [showMicronutrients, setShowMicronutrients] = useState(false);
+
+    const [numCommentsToShow, setNumCommentsToShow] = useState(5); // Mostrar inicialmente 5 comentarios
+    const [hasMoreComments, setHasMoreComments] = useState(true); // Asumir que hay más comentarios al principio
   
+    // Actualizacion de los pasos para que PasosList sea reactivo
+    const [steps, setSteps] = useState(datos.receta.pasos);
+    const updateSteps = (newSteps) => {
+      setSteps(newSteps);
+  };
+
+    // Para el botón de Ver mas comentarios
+    const handleShowMoreComments = () => {
+      if (numCommentsToShow >= localComments.length) {
+          setHasMoreComments(false); // Ya no hay más comentarios para mostrar
+          return;
+      }
+      setNumCommentsToShow(prevCount => prevCount + 5); // Mostrar 5 comentarios más
+  };
+
+  // Para que los comentarios de uno mismo aparezcan siempre primeros en la lista
+  const sortedComments = () => {
+    return [...localComments].sort((a, b) => {
+      if (a.autor._id === user.uid) return -1;
+      if (b.autor._id === user.uid) return 1;
+      return 0;
+    });
+  };
+
     useEffect(() => {
       setData(datos);
-      setLocalComments(datos.receta.comentarios); // inicializa con los comentarios de la receta
+      setLocalComments(datos.receta.comentarios);
+      console.log("que me viene en Contenido Card en datos?", datos)
     }, [datos]);
   
     const tabNames = ["Pasos", "Ingredientes"];
@@ -73,7 +103,7 @@ const comments = [
           ...nuevoComentario.comentario,
           autor: {
             ...nuevoComentario.comentario.autor,
-            nombre: user.nombre, // Suponiendo que 'nombre' está en el objeto 'user'
+            nombre: user.nombre,
           },
         };
   
@@ -96,14 +126,23 @@ const comments = [
         </Box>
         {value === "Pasos" ? (
           <CardContent>
-            <PasosList pasos={datos.receta.pasos} />
+            <PasosList 
+                pasos={steps} 
+                recipeID={datos.receta._id} 
+                userRecipeID={datos.receta.autor._id} 
+                userID={user.uid} 
+                onUpdateSteps={updateSteps} 
+            />
             <Box mt={2}>
-              <Typography variant="h6" component="div">
+            <Typography variant="h6" component="div">
                 Comentarios
-                {localComments.map((comentario) => (
+                {sortedComments().slice(0, numCommentsToShow).map((comentario) => (
                   <Comentarios key={comentario._id} comentario={comentario} user={user} />
                 ))}
-              </Typography>
+            </Typography>
+
+            {hasMoreComments && <Button onClick={handleShowMoreComments}>Más Comentarios</Button>}
+              
               <Typography variant="h6" component="div">
                 Añadir un Comentario
               </Typography>
@@ -128,8 +167,25 @@ const comments = [
         ) : (
           <CardContent>
             <IngredientList ingredients={datos.receta.ingredientes} />
-            <Grafica datos={datos} />
-          </CardContent>
+              <Grafica datos={datos} />
+              <Divider style={{ margin: "20px 0" }} />
+              
+              <Button variant="contained" color="primary" onClick={() => setShowMicronutrients(!showMicronutrients)}>
+                Completa la Información de tus macros
+              </Button>
+              {showMicronutrients && (
+              <div style={{ marginTop: '20px' }}>
+                <div className="micronutrient-container">
+                  <LinearProgress variant="determinate" value={50} />
+                  <Typography variant="caption" className="micronutrient-label">Vitamina B</Typography>
+                </div>
+                <div className="micronutrient-container">
+                  <LinearProgress variant="determinate" value={75} />
+                  <Typography variant="caption" className="micronutrient-label">Vitamina C</Typography>
+                </div>
+              </div>
+          )}
+        </CardContent>
         )}
       </>
     );

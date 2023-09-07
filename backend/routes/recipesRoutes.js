@@ -14,6 +14,7 @@ import {
   updateReceta,
   todasRecetas,
   updateRecipeLikes,
+  updateRecipeSteps,
 } from '../controllers/recipeController.js';
 
 // Creamos el objeto Router
@@ -53,5 +54,6 @@ router.post('/updateRecipeLikes', updateRecipeLikes);
 router.post('/updateRecetaIndividualPost', updateRecetaIndividualPost);
 router.post('/getRecetaIndividualPost', getRecetaIndividualPost);
 router.post('/updateRecipeComments', updateRecipeComments);
+router.post('/updateRecipeSteps', updateRecipeSteps);
 
 export default router;

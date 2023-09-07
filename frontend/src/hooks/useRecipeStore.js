@@ -167,6 +167,21 @@ export const useRecipeStore = () => {
         
     }
 
+    const startUpdateRecipeSteps = async( {rid, pasos} ) => {   
+
+        try {  
+            console.log(`Vamos a ver qué envío al BE para que me actualice los pasos de la receta, el rid es: ${rid} y los pasos son: ${pasos}`)
+            const {data} = await recetaApi.post('/recipe/updateRecipeSteps',{rid,pasos})   
+                   
+            console.log("startUpdateRecipeSteps Hook: Lo que me devuelve el BE", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema modificando los pasos de la receta", error);
+        }
+            
+        
+    }
+
     
 
     return {
@@ -180,7 +195,8 @@ export const useRecipeStore = () => {
         startUpdateLikesRecetaPost,
         startUpdateRecipeLikes,
         startGetRecipePost,
-        startUpdateRecipeComments
+        startUpdateRecipeComments,
+        startUpdateRecipeSteps
         
         
     }
