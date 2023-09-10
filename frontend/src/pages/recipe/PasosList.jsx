@@ -151,13 +151,27 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
                   </Typography>
                 }
                 secondary={
-                  <Typography
-                    variant="body2"
-                    component="div"
-                    color="text.secondary"
-                  >
-                    {step}
-                  </Typography>
+                  <div>
+                    <Typography
+                      variant="body2"
+                      component="div"
+                      color="text.secondary"
+                    >
+                      {step.texto}
+                    </Typography>
+                    {step.imgURL && step.imgURL.length > 0 ? (
+                      <img
+                        src={step.imgURL}
+                        alt={`Imagen del Paso ${index + 1}`}
+                        style={{
+                          width: '100%',
+                          borderRadius: '4px',  // un pequeño borde redondeado
+                          marginTop: '8px',     // espacio en la parte superior
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)', // sombra ligera
+                        }}
+                      />
+                    ) : null}
+                  </div>
                 }
               />
 

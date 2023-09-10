@@ -48,6 +48,19 @@ const comments = [
   
     // Actualizacion de los pasos para que PasosList sea reactivo
     const [steps, setSteps] = useState(datos.receta.pasos);
+
+    /* datos.receta.pasos:
+    0
+    : 
+    {texto: 'Paso 1 Nuevo', imgURL: '', _id: '64fd7acbf9d7e106f20f1a0e'}
+    1
+    : 
+    {texto: 'Paso 2 Nuevo', imgURL: '', _id: '64fd7acbf9d7e106f20f1a0f'}
+    2
+    : 
+    {texto: 'Paso 3 Nuevo', imgURL: '', _id: '64fd7acbf9d7e106f20f1a10'}
+    */
+
     const updateSteps = (newSteps) => {
       setSteps(newSteps);
   };
