@@ -15,7 +15,7 @@ const crearReceta = async (req,res) => {
     console.log("RecipeController: que trae el req.body con stringify JSON?", JSON.stringify(req.body)); // me llega
     
    
-    const userFound = await Usuario.findById(mongoose.Types.ObjectId(autor)) // lo encuentra
+    const userFound = await Usuario.findById(autor)
     console.log("RecipeController: hago un findbyID con el id del usuario XDD",userFound );
 
     let totalVacio = {

@@ -7,6 +7,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import './PasosList.css'
 import { useRecipeStore } from '../../hooks/useRecipeStore';
+import { uploadImage } from '../../hooks/useFireBase'
+import { useEffect } from 'react';
+
 
 /*
 Explicación Funcionalidad Editar/Borrar Pasos:
@@ -26,6 +29,13 @@ Al llegar al "Paso 2" (índice 1), se verifica si index (que es 1 en este caso) 
 // la receta es fetchedData.receta.autor._id
 // el usuario viene del useSelector -> auth -> uid
 const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => {
+
+  useEffect(() => {
+    console.log("que recibo en pasos?", pasos)
+  
+    
+  }, [])
+  
 
   console.log("hola", userRecipeID, userID )
   console.log("recipeID", recipeID )
@@ -57,7 +67,18 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
     setTempStep(pasos[index]);
   };
 
-  // Dedinir handleSave
+  // Firebase Storage
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    try {
+      const imageURL = await uploadImage(file);
+      console.log("Imagen subida con éxito. URL:", imageURL);
+      // Guardamos la foto en la BBDD en el paso en cuestiónS
+    } catch (error) {
+      console.error("Hubo un error al subir la imagen:", error);
+    }
+  };
 
   const handleSave = async (index) => {
     // Aquí el código para guardar en la base de datos...
@@ -111,9 +132,10 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
 
           {index === editingIndex ? (
             <div>
-              <textarea value={tempStep} onChange={(e) => setTempStep(e.target.value)} />
-              <Button onClick={() => handleSave(index)}>Guardar cambios</Button>
-            </div>
+            <textarea value={tempStep} onChange={(e) => setTempStep(e.target.value)} />
+            <input type="file" onChange={handleImageUpload} />
+            <Button onClick={() => handleSave(index)}>Guardar cambios</Button>
+          </div>
           ) : (
             <>
               <ListItemText

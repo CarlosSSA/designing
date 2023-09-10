@@ -14,7 +14,12 @@ const RecipeSchema = new Schema({
   comentarios: [{ type: Schema.Types.ObjectId, ref: 'Comentario' }],
   likes: [{ type: Schema.Types.ObjectId, ref: 'Usuario' }],
   descripcion: { type: String },
-  pasos: { type: Array },
+  pasos: [
+    { 
+      texto: { type: String, required: true },
+      imgURL: { type: String, default: "" } 
+    
+    }],
   dificultad: { type: Number, default: 0 },
   tiempo: { type: Number, default: 0 },
   porciones: { type: Number, default: 1 },
