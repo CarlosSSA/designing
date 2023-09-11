@@ -1,6 +1,6 @@
 // StepList.js
 import React from 'react';
-import { Typography, List, ListItem, ListItemAvatar, ListItemText, Avatar, Button, DialogTitle, DialogContent, Dialog } from '@mui/material';
+import { Typography, Modal , List, ListItem, ListItemAvatar, ListItemText, Avatar, Button, DialogTitle, DialogContent, Dialog } from '@mui/material';
 import { useState } from 'react';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,6 +9,8 @@ import './PasosList.css'
 import { useRecipeStore } from '../../hooks/useRecipeStore';
 import { uploadImage } from '../../hooks/useFireBase'
 import { useEffect } from 'react';
+
+
 
 
 /*
@@ -40,6 +42,17 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
   console.log("hola", userRecipeID, userID )
   console.log("recipeID", recipeID )
 
+  // Apertura modales de imagen
+  const [openModal, setOpenModal] = useState(false); // Para controlar si el modal está abierto o no
+  const [modalImage, setModalImage] = useState(''); // URL de la imagen a mostrar en el modal
+
+  // Manejo del click en la imagen
+
+  const handleImageClick = (imgURL) => {
+    setModalImage(imgURL);
+    setOpenModal(true);
+    console.log("imagen")
+  };
   const { startUpdateRecipeSteps } = useRecipeStore();
   
 
@@ -129,13 +142,13 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
               {index + 1}
             </Avatar>
           </ListItemAvatar>
-
+  
           {index === editingIndex ? (
             <div>
-            <textarea value={tempStep} onChange={(e) => setTempStep(e.target.value)} />
-            <input type="file" onChange={handleImageUpload} />
-            <Button onClick={() => handleSave(index)}>Guardar cambios</Button>
-          </div>
+              <textarea value={tempStep} onChange={(e) => setTempStep(e.target.value)} />
+              <input type="file" onChange={handleImageUpload} />
+              <Button onClick={() => handleSave(index)}>Guardar cambios</Button>
+            </div>
           ) : (
             <>
               <ListItemText
@@ -165,32 +178,44 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
                         alt={`Imagen del Paso ${index + 1}`}
                         style={{
                           width: '100%',
-                          borderRadius: '4px',  // un pequeño borde redondeado
-                          marginTop: '8px',     // espacio en la parte superior
-                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)', // sombra ligera
+                          borderRadius: '4px',
+                          marginTop: '8px',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                         }}
+                        onClick={() => handleImageClick(step.imgURL)} // Aquí agregamos el onClick
                       />
                     ) : null}
                   </div>
                 }
               />
-
+  
               {userRecipeID === userID && (
                 <div>
-                <IconButton onClick={() => handleEdit(index)} aria-label="editar">
-                  <ModeEditIcon className="custom-icon-size"/>
-                </IconButton>
-                <IconButton onClick={() => handleDelete(index)} aria-label="borrar">
-                  <DeleteIcon className="custom-icon-size"/>
-                </IconButton>
-              </div>
+                  <IconButton onClick={() => handleEdit(index)} aria-label="editar">
+                    <ModeEditIcon className="custom-icon-size"/>
+                  </IconButton>
+                  <IconButton onClick={() => handleDelete(index)} aria-label="borrar">
+                    <DeleteIcon className="custom-icon-size"/>
+                  </IconButton>
+                </div>
               )}
             </>
           )}
         </ListItem>
       ))}
-
-      {/* Agregamos el Dialog para borrar aquí */}
+  
+      {/* Modal para visualizar la imagen */}
+      <Dialog
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <img src={modalImage} alt="Modal Imagen" style={{ width: '100%', maxHeight: '500px' }} />
+        <Button onClick={() => setOpenModal(false)}>Cerrar</Button>
+      </Dialog>
+  
+      {/* Modal para borrar */}
       <Dialog
         open={deleteIndex !== -1}
         onClose={() => setDeleteIndex(-1)}
@@ -203,6 +228,7 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
       </Dialog>
     </List>
   );
+  
 };
 
 export default PasosList;
