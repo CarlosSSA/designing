@@ -9,6 +9,7 @@ import './PasosList.css'
 import { useRecipeStore } from '../../hooks/useRecipeStore';
 import { uploadImage } from '../../hooks/useFireBase'
 import { useEffect } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 
@@ -211,20 +212,22 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
         maxWidth="md"
         fullWidth
       >
-        <img src={modalImage} alt="Modal Imagen" style={{ width: '100%', maxHeight: '500px' }} />
-        <Button onClick={() => setOpenModal(false)}>Cerrar</Button>
-      </Dialog>
-  
-      {/* Modal para borrar */}
-      <Dialog
-        open={deleteIndex !== -1}
-        onClose={() => setDeleteIndex(-1)}
-      >
-        <DialogTitle>¿Estás seguro de que quieres eliminar este paso?</DialogTitle>
-        <DialogContent>
-          <Button onClick={confirmDelete}>Confirmar</Button>
-          <Button onClick={() => setDeleteIndex(-1)}>Cancelar</Button>
-        </DialogContent>
+        <div style={{ position: 'relative' }}>
+          <img src={modalImage} alt="Modal Imagen" style={{ width: '100%', maxHeight: '500px' }} />
+
+          {/* Aspa (Close Icon) en la esquina superior derecha */}
+          <IconButton
+            onClick={() => setOpenModal(false)}
+            style={{
+              position: 'absolute',
+              top: '8px',
+              right: '8px',
+              backgroundColor: 'rgba(255, 255, 255, 0.6)',  // Fondo ligeramente blanco para asegurar visibilidad en cualquier imagen
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
       </Dialog>
     </List>
   );
