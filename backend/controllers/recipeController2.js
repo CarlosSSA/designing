@@ -7,7 +7,7 @@ import Comentario from '../database/models/commentModel.js';
 const crearReceta = async (req,res) => {
 
   // está esperando el autor en el body, ahí el problema!
-    const {autor, ingredientes} = req.body  
+    const {autor} = req.body  
 
      
     console.log("RecipeController: que trae autor?", autor); //me llega
@@ -16,6 +16,7 @@ const crearReceta = async (req,res) => {
     
    
     const userFound = await Usuario.findById(autor)
+    console.log("RecipeController: hago un findbyID con el id del usuario XDD",userFound );
 
     let totalVacio = {
       kcal:0,
@@ -50,43 +51,42 @@ const crearReceta = async (req,res) => {
 
     }
 
-    const receta = new Receta(req.body);       
+    const receta = new Receta(req.body);
+    console.log("el req.body con el que relleno la receta en la API", req.body)  
+    console.log("la receta que construyo con el new Receta", receta)    
   
   // Funcion que calcula un {} con la suma de todos los valores de cada ingrediente
   // Recibe [{ingrediente:{nombre, grasas}, cantidad}, {}, {}]
   let calculoTotales = (array) =>{
-
-
     array.map( i=>{
-      
-      totalVacio.kcal = Math.round(totalVacio.kcal + (i.ingrediente.kcal ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad]))  
-      totalVacio.hcs = Math.round(totalVacio.hcs + (i.ingrediente.hcs ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.proteinas = Math.round(totalVacio.proteinas + (i.ingrediente.proteinas ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.grasas = Math.round(totalVacio.grasas + (i.ingrediente.grasas ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad]))   
-      totalVacio.grasasSaturadas = Math.round(totalVacio.grasasSaturadas + (i.ingrediente.grasasSaturadas ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.colesterol = Math.round(totalVacio.colesterol + (i.ingrediente.colesterol ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.sodio = Math.round(totalVacio.sodio + (i.ingrediente.sodio ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.potasio = Math.round(totalVacio.potasio + (i.ingrediente.potasio ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.fibra = Math.round(totalVacio.fibra + (i.ingrediente.fibra ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.azucares = Math.round(totalVacio.azucares + (i.ingrediente.azucares ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.sal = Math.round(totalVacio.sal + (i.ingrediente.sal ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])  )    
-      totalVacio.vitaminaC = Math.round(totalVacio.vitaminaC + (i.ingrediente.vitaminaC ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.vitaminaD = Math.round(totalVacio.vitaminaD + (i.ingrediente.vitaminaD ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.hierro = Math.round(totalVacio.hierro + (i.ingrediente.hierro ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.calcio = Math.round(totalVacio.calcio + (i.ingrediente.calcio ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.vitaminaB6 = Math.round(totalVacio.vitaminaB6 + (i.ingrediente.vitaminaB6 ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.magnesio = Math.round(totalVacio.magnesio + (i.ingrediente.magnesio ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.vitaminaB12 = Math.round(totalVacio.vitaminaB12 + (i.ingrediente.vitaminaB12 ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.fosforo = Math.round(totalVacio.fosforo + (i.ingrediente.fosforo   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.selenio = Math.round(totalVacio.selenio + (i.ingrediente.selenio   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.yodo = Math.round(totalVacio.yodo + (i.ingrediente.yodo   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.acidoFolico = Math.round(totalVacio.acidoFolico + (i.ingrediente.acidoFolico   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.cobre = Math.round(totalVacio.cobre + (i.ingrediente.cobre   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.vitaminaB1 = Math.round(totalVacio.vitaminaB1 + (i.ingrediente.vitaminaB1   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.vitaminaB2 = Math.round(totalVacio.vitaminaB2 + (i.ingrediente.vitaminaB2   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.vitaminaB3 = Math.round(totalVacio.vitaminaB3 + (i.ingrediente.vitaminaB3   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.vitaminaB5 = Math.round(totalVacio.vitaminaB5 + (i.ingrediente.vitaminaB5  ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
-      totalVacio.vitaminaB7 = Math.round(totalVacio.vitaminaB7 + (i.ingrediente.vitaminaB7   ?? 0) /100 * (i.cantidad * i.ingrediente.unidad[i.unidad])) 
+      totalVacio.kcal = Math.round(totalVacio.kcal + (i.ingrediente.kcal ?? 0) /100 * i.cantidad)
+      totalVacio.hcs = Math.round(totalVacio.hcs + (i.ingrediente.hcs ?? 0) /100 * i.cantidad)
+      totalVacio.proteinas = Math.round(totalVacio.proteinas + (i.ingrediente.proteinas ?? 0) /100 * i.cantidad)
+      totalVacio.grasas = Math.round(totalVacio.grasas + (i.ingrediente.grasas ?? 0) /100 * i.cantidad)      
+      totalVacio.grasasSaturadas = Math.round(totalVacio.grasasSaturadas + (i.ingrediente.grasasSaturadas ?? 0) /100 * i.cantidad)
+      totalVacio.colesterol = Math.round(totalVacio.colesterol + (i.ingrediente.colesterol ?? 0) /100 * i.cantidad)
+      totalVacio.sodio = Math.round(totalVacio.sodio + (i.ingrediente.sodio ?? 0) /100 * i.cantidad)
+      totalVacio.potasio = Math.round(totalVacio.potasio + (i.ingrediente.potasio ?? 0) /100 * i.cantidad)
+      totalVacio.fibra = Math.round(totalVacio.fibra + (i.ingrediente.fibra ?? 0) /100 * i.cantidad)
+      totalVacio.azucares = Math.round(totalVacio.azucares + (i.ingrediente.azucares ?? 0) /100 * i.cantidad)
+      totalVacio.sal = Math.round(totalVacio.sal + (i.ingrediente.sal ?? 0) /100 * i.cantidad    )     
+      totalVacio.vitaminaC = Math.round(totalVacio.vitaminaC + (i.ingrediente.vitaminaC ?? 0) /100 * i.cantidad)
+      totalVacio.vitaminaD = Math.round(totalVacio.vitaminaD + (i.ingrediente.vitaminaD ?? 0) /100 * i.cantidad)
+      totalVacio.hierro = Math.round(totalVacio.hierro + (i.ingrediente.hierro ?? 0) /100 * i.cantidad)
+      totalVacio.calcio = Math.round(totalVacio.calcio + (i.ingrediente.calcio ?? 0) /100 * i.cantidad)
+      totalVacio.vitaminaB6 = Math.round(totalVacio.vitaminaB6 + (i.ingrediente.vitaminaB6 ?? 0) /100 * i.cantidad)
+      totalVacio.magnesio = Math.round(totalVacio.magnesio + (i.ingrediente.magnesio ?? 0) /100 * i.cantidad)
+      totalVacio.vitaminaB12 = Math.round(totalVacio.vitaminaB12 + (i.ingrediente.vitaminaB12 ?? 0) /100 * i.cantidad)
+      totalVacio.fosforo = Math.round(totalVacio.fosforo + (i.ingrediente.fosforo   ?? 0) /100 * i.cantidad)
+      totalVacio.selenio = Math.round(totalVacio.selenio + (i.ingrediente.selenio   ?? 0) /100 * i.cantidad)
+      totalVacio.yodo = Math.round(totalVacio.yodo + (i.ingrediente.yodo   ?? 0) /100 * i.cantidad)
+      totalVacio.acidoFolico = Math.round(totalVacio.acidoFolico + (i.ingrediente.acidoFolico   ?? 0) /100 * i.cantidad)
+      totalVacio.cobre = Math.round(totalVacio.cobre + (i.ingrediente.cobre   ?? 0) /100 * i.cantidad)
+      totalVacio.vitaminaB1 = Math.round(totalVacio.vitaminaB1 + (i.ingrediente.vitaminaB1   ?? 0) /100 * i.cantidad)
+      totalVacio.vitaminaB2 = Math.round(totalVacio.vitaminaB2 + (i.ingrediente.vitaminaB2   ?? 0) /100 * i.cantidad)
+      totalVacio.vitaminaB3 = Math.round(totalVacio.vitaminaB3 + (i.ingrediente.vitaminaB3   ?? 0) /100 * i.cantidad)
+      totalVacio.vitaminaB5 = Math.round(totalVacio.vitaminaB5 + (i.ingrediente.vitaminaB5  ?? 0) /100 * i.cantidad)
+      totalVacio.vitaminaB7 = Math.round(totalVacio.vitaminaB7 + (i.ingrediente.vitaminaB7   ?? 0) /100 * i.cantidad)
 
     })
     return totalVacio

@@ -8,7 +8,8 @@ const RecipeSchema = new Schema({
   ingredientes: [
     {
       ingrediente: { type: Schema.Types.ObjectId, ref: 'Ingrediente' },
-      cantidad: { type: Number, required: true }
+      cantidad: { type: Number, required: true },
+      unidad:{ type: String, required: true , default:"lol"}
     }
   ],
   comentarios: [{ type: Schema.Types.ObjectId, ref: 'Comentario' }],

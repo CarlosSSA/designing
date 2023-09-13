@@ -6,6 +6,15 @@ const IngredientSchema = new Schema({
   nombre: { type: String, required: true, unique: true },
   descripcion: { type: String, required: true },
   cantidad: { type: Number, default: 100 },
+  unidad: {
+    gramos: { type: Number, default: 1 },
+    pieza: { type: Number },
+    cucharada: { type: Number },
+    cucharadita: { type: Number },
+    vaso: { type: Number },
+    litros: { type: Number },
+    mililitros: { type: Number },
+  },
   kcal: { type: Number, required: true },
   proteinas: { type: Number, required: true },
   hcs: { type: Number, required: true },
@@ -38,6 +47,11 @@ const IngredientSchema = new Schema({
   vitaminaB3: { type: Number },
   vitaminaB5: { type: Number },
   vitaminaB7: { type: Number },
+  cromo: { type: Number },
+  autor:{ type: String, default:"Sistema" },
+  marca:{ type: String, default:"" },
+  supermercado: { type: String, default:"" },
+  precio: { type: Number, default: 0 },
 });
 
 export default model('Ingrediente', IngredientSchema);

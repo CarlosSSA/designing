@@ -58,6 +58,148 @@ const UsuarioSchema = new Schema({
   },
   following: [{ type: Schema.Types.ObjectId, ref: 'Usuario', default: 0 }],
   followers: [{ type: Schema.Types.ObjectId, ref: 'Usuario', default: 0 }],
+  CDR: {
+    proteinas: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    hcs: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    grasas: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    grasasSaturadas: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    colesterol: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    sodio: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    potasio: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    fibra: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    azucares: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    sal: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    vitaminaC: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    vitaminaD: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    hierro: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    calcio: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    vitaminaB6: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    magnesio: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    vitaminaB12: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    fosforo: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    vitaminaA: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    vitaminaE: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    vitaminaK: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    zinc: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    selenio: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    yodo: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    acidoFolico: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    cobre: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    vitaminaB1: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    vitaminaB2: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    vitaminaB3: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    vitaminaB5: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'miligramos' }
+    },
+    vitaminaB7: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    cromo: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'microgramos' }
+    },
+    omega3: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    omega6: {
+      cantidad: { type: Number, default: 0 },
+      unidad: { type: String, default: 'gramos' }
+    },
+    omega9: {
+      cantidad: { type: Number, default: 0 }, // Tiene que ser el 8% (0.08) de las kcal totales
+      unidad: { type: String, default: 'gramos' }
+    },
+  },
 });
 
 export default model('Usuario', UsuarioSchema);
