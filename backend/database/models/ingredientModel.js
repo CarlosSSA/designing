@@ -16,38 +16,146 @@ const IngredientSchema = new Schema({
     mililitros: { type: Number },
   },
   kcal: { type: Number, required: true },
-  proteinas: { type: Number, required: true },
-  hcs: { type: Number, required: true },
-  grasas: { type: Number, required: true },
-  grasasSaturadas: { type: Number },
-  colesterol: { type: Number },
-  sodio: { type: Number },
-  potasio: { type: Number },
-  fibra: { type: Number },
-  azucares: { type: Number },
-  sal: { type: Number },
-  vitaminaC: { type: Number },
-  vitaminaD: { type: Number },
-  hierro: { type: Number },
-  calcio: { type: Number },
-  vitaminaB6: { type: Number },
-  magnesio: { type: Number },
-  vitaminaB12: { type: Number },
-  fosforo: { type: Number },
-  vitaminaA: { type: Number },
-  vitaminaE: { type: Number },
-  vitaminaK: { type: Number },
-  zinc: { type: Number },
-  selenio: { type: Number },
-  yodo: { type: Number },
-  acidoFolico: { type: Number },
-  cobre: { type: Number },
-  vitaminaB1: { type: Number },
-  vitaminaB2: { type: Number },
-  vitaminaB3: { type: Number },
-  vitaminaB5: { type: Number },
-  vitaminaB7: { type: Number },
-  cromo: { type: Number },
+  proteinas: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  hcs: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  grasas: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  grasasSaturadas: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  colesterol: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  sodio: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  potasio: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  fibra: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  azucares: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  sal: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  vitaminaC: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  vitaminaD: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  hierro: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  calcio: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  vitaminaB6: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  magnesio: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  vitaminaB12: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  fosforo: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  vitaminaA: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  vitaminaE: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  vitaminaK: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  zinc: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  selenio: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  yodo: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  acidoFolico: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  cobre: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  vitaminaB1: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  vitaminaB2: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  vitaminaB3: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  vitaminaB5: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'miligramos' }
+  },
+  vitaminaB7: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  cromo: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'microgramos' }
+  },
+  omega3: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  omega6: {
+    cantidad: { type: Number, default: 0 },
+    unidad: { type: String, default: 'gramos' }
+  },
+  omega9: {
+    cantidad: { type: Number, default: 0 }, 
+    unidad: { type: String, default: 'gramos' }
+  },
   autor:{ type: String, default:"Sistema" },
   marca:{ type: String, default:"" },
   supermercado: { type: String, default:"" },

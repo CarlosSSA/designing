@@ -196,7 +196,7 @@ const UsuarioSchema = new Schema({
       unidad: { type: String, default: 'gramos' }
     },
     omega9: {
-      cantidad: { type: Number, default: 0 }, // Tiene que ser el 8% (0.08) de las kcal totales
+      cantidad: { type: Number, default: 0 }, // Tiene que ser el 8% (0.08) de las kcal totales-
       unidad: { type: String, default: 'gramos' }
     },
   },
