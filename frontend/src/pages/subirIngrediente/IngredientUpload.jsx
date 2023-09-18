@@ -3,11 +3,14 @@ import './IngredientUpload.css';
 import { uploadImage } from '../../hooks/useFireBase'
 import { Button } from '@mui/material';
 import { useIngredientStore } from '../../hooks/useIngredientStore';
+import { useSelector } from 'react-redux';
+
 
 
 
 const IngredientUpload = () => { 
 
+    const { user } = useSelector((state) => state.auth);
     const {startCreateIngredient} = useIngredientStore()
 
   const [selectedImage, setSelectedImage] = useState(null); // Nuevo estado para la imagen seleccionada
@@ -60,7 +63,7 @@ const IngredientUpload = () => {
       omega3: { cantidad: 0 },
       omega6: { cantidad: 0 },
       omega9: { cantidad: 0 },
-      autor: "",
+      autor: user.uid,
       marca: "",
       supermercado:"",
       precio:0,
@@ -131,6 +134,10 @@ const IngredientUpload = () => {
       } catch (error) {
         console.error("Error uploading the image:", error);
       }
+    
+    }
+    else{
+        alert("Sube una imagen")
     }
 
     // Aquí también puedes guardar el nombre y la descripción en una base de datos si es necesario
@@ -375,10 +382,7 @@ const IngredientUpload = () => {
           {/* ... [Puedes seguir de manera similar con todos los otros campos de unidades] ... */}
 
           {/* Otros campos */}
-          <div className="form-group">
-              <label>Autor:</label>
-              <input type="text" name="autor" onChange={handleChange} />
-          </div>
+      
 
           <div className="form-group">
               <label>Marca:</label>

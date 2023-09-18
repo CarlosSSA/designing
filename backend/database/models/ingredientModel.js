@@ -156,7 +156,7 @@ const IngredientSchema = new Schema({
     cantidad: { type: Number, default: 0 }, 
     unidad: { type: String, default: 'gramos' }
   },
-  autor:{ type: String, default:"Sistema" },
+  autor:{ type: Schema.Types.ObjectId, ref: 'Usuario' },
   marca:{ type: String, default:"" },
   supermercado: { type: String, default:"" },
   precio: { type: Number, default: 0 },
