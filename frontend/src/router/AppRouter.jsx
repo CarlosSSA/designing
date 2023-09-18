@@ -16,6 +16,7 @@ import UserProfile from '../pages/profile/UserProfile';
 import UserCalendar from '../pages/calendar/UserCalendar';
 import MiDiario from '../pages/miDiario/MiDiario';
 import HarrisTest from '../pages/test/HarrisTest'; 
+import IngredientUpload from '../pages/subirIngrediente/IngredientUpload';
 
 
 export const AppRouter = () => {
@@ -62,7 +63,8 @@ export const AppRouter = () => {
                             <Route path="/midiario" element={ <MiDiario /> } />
                             <Route path="/userCalendar" element={ <UserCalendar /> } /> 
                             <Route path="/miperfil" element={ <UserProfile /> } />  
-                            <Route path="/test" element={ <HarrisTest /> } />                
+                            <Route path="/test" element={ <HarrisTest /> } />   
+                            <Route path="/ingredientUpload" element={ <IngredientUpload /> } />                
                             <Route path="/*" element={ <Navigate to="/" /> } />
                             
                         </>

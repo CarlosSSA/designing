@@ -160,6 +160,8 @@ const IngredientSchema = new Schema({
   marca:{ type: String, default:"" },
   supermercado: { type: String, default:"" },
   precio: { type: Number, default: 0 },
+  imagenUrl: { type: String, default: "" },
+
 });
 
 export default model('Ingrediente', IngredientSchema);

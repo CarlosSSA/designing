@@ -200,6 +200,8 @@ const UsuarioSchema = new Schema({
       unidad: { type: String, default: 'gramos' }
     },
   },
+  avatarUrl: { type: String, default: "" }
+
 });
 
 export default model('Usuario', UsuarioSchema);

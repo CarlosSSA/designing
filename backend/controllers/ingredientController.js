@@ -1,29 +1,30 @@
 import Ingrediente from '../database/models/ingredientModel.js';
 
-const crearIngrediente = async (req,res) => {       
+const crearIngrediente = async (req,res) => {  
+   
+   console.log("BE crearIngrediente, que me llega en el body? ", req.body)
 
-      let nuevoIngrediente = new Ingrediente(req.body);   
-        
-      try {
-         await nuevoIngrediente.save();
-         console.log(nuevoIngrediente)
-       } catch (error) {
-        console.log(error)
-         console.log("Ha habido un error creando el ingrediente");
-         res.status(500).json({
-            ok:false,
-            mensaje: "Ha habido un error creando el ingrediente"
-         })
-       }
-
+   let nuevoIngrediente = new Ingrediente(req.body);   
+       
+   try {
+      await nuevoIngrediente.save();
+      console.log("BE nuevoIngrediente: ", nuevoIngrediente)
+      
       res.status(201).json({
          ok: true,
-         mensaje: "Creada un nuevo ingrediente",
-         nombre:nuevoIngrediente.nombre,
-         descripcion: nuevoIngrediente.descripcion        
-        
-        }) 
-    } 
+         mensaje: "Creado un nuevo ingrediente",
+         nuevoIngrediente        
+      }) 
+ 
+    } catch (error) {
+      console.log(error)
+      console.log("Ha habido un error en el BE creando un ingrediente");
+      return res.status(500).json({
+         ok:false,
+         mensaje: "Ha habido un error creando el ingrediente"
+      })
+    }
+ } 
     
    const actualizarIngrediente = async (req,res) => {  
       const {nombre, newName} = req.body
