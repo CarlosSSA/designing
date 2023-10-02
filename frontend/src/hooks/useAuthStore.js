@@ -11,54 +11,58 @@ export const useAuthStore = () => {
    const dispatch = useDispatch();
    
    // Start Login
-   const startLogin = async({email,password}) => {
-        console.log("Esto es lo que mando desde el Hook de startLogin",{email, password});
-        dispatch(onChecking())
+   const startLogin = async({email,password, socialLogin}) => {
+    console.log("Esto es lo que mando desde el Hook de startLogin", {email, password});
+    dispatch(onChecking())
+    
+    try {     
+        
+        let datos; 
 
-        try {           
-            
-            const {data} = await recetaApi.post('/auth', {email, password})
-            const calendarRecipesEspaña = data.usuario.calendarRecipes.map(({ receta, fecha, _id }) => ({
+        if(socialLogin) {
+            // Si socialLogin es true, hace esta petición omitiendo el password
+            const {data} = await recetaApi.post('/auth', {email, socialLogin})
+            console.log(" startLogindata socialLogin=true", data)
+            datos = data
+        } else {
+            // Si socialLogin es false o undefined, hace la petición original
+            const {data} = await recetaApi.post('/auth', {email, password, socialLogin})
+            console.log(" startLogindata socialLogin=true", data)
+            datos = data
+        }        
+        
+        if(datos.usuario && datos.usuario.calendarRecipes) {
+            const calendarRecipesEspaña = datos.usuario.calendarRecipes.map(({ receta, fecha, _id }) => ({
                 receta,
                 fecha: format(parseISO(fecha), 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Europe/Madrid' }),
                 _id,
-              }));
-            console.log("startLogin, el BE me devuelve este data: ",data);
-            localStorage.setItem('token',data.token);
+            }));
+            
+            console.log("startLogin, el BE me devuelve este data: ", datos);
+            
+            localStorage.setItem('token',datos.token);
             localStorage.setItem('token-init-date',new Date().getTime());        
+            
             dispatch(onLogin({
-                nombre:data.usuario.nombre,
-                email:data.usuario.email,
-                uid:data.usuario._id,
+                nombre:datos.usuario.nombre,
+                email:datos.usuario.email,
+                uid:datos.usuario._id,
                 recetasCalendar:calendarRecipesEspaña,
-                premium:data.usuario.premium,
-                publicaciones: data.usuario.publicaciones,
-                kcalObjetivo: data.usuario.kcalObjetivo,
-                recetas:data.usuario.recetas,
-                likedRecipes: data.usuario.likedRecipes,
-                favRecipes: data.usuario.favRecipes,
-                registroPeso: data.usuario.registroPeso,
-                following: data.usuario.following,
-                followers: data.usuario.followers,
-                altura: data.usuario.altura,
-                edad: data.usuario.edad,
-                nivelActividad: data.usuario.nivelActividad,
-                objetivo: data.usuario.objetivo,
-                pesoActual: data.usuario.pesoActual,
-                genero: data.usuario.genero,
-            
-            }))
-            
-
-        } catch (error) {
-            console.log("error", error);
-            dispatch(onLogout('Credenciales Incorrectas'));
-            setTimeout( () =>{
-                dispatch(onclearErrorMessage());
-            },10)
+                //... (otros campos)
+            }));
+        } else {
+            console.log("data: ", datos)
+            console.log("Error: data.usuario o data.usuario.calendarRecipes no definidos", datos);
         }
-
+        
+    } catch (error) {
+        console.log("error", error);
+        dispatch(onLogout('Credenciales Incorrectas'));
+        setTimeout(() => {
+            dispatch(onclearErrorMessage());
+        },10)
     }
+  }
 
     const startLogout = () => {        
         dispatch(onLogout('Credenciales Incorrectas')); 
@@ -85,23 +89,30 @@ export const useAuthStore = () => {
         }
     }
 
-   const startRegister = async({ email, password, nombre}) => {
-    dispatch( onChecking() );
-   
-    try {
-        const { data } = await recetaApi.post('/auth/new',{ email, password, nombre }); //registra al usuario  - NO VA      
-        localStorage.setItem('token', data.token );
-        localStorage.setItem('token-init-date', new Date().getTime() );
-        dispatch( onLogin({ name: data.nombre, uid: data.uid }) ); // esto es lo que guardaré en el payload
-        
-    } catch (error) {
-        console.log("Ha fallado en el catch del StartRegister");
-        dispatch( onLogout( error.response.data?.msg || '--' ) );
-        setTimeout(() => {
-            dispatch( onclearErrorMessage() );
-        }, 10);
-    }
-}
+    const startRegister = async({ email, password, nombre, uid, socialLogin }) => {
+        dispatch( onChecking() );
+        console.log(`Que me llega en el HOOK startRegister?? email:${email}, password:${password}, nombre:${nombre}, uid:${uid}, socialLogin:${socialLogin}`)
+      
+        try {
+          const body = socialLogin ? { email, nombre, uid, socialLogin } : { email, password, nombre };
+          console.log(`Que me llega en el HOOK startRegister por SocialLogin?? body: ${JSON.stringify(body)}`);
+
+          const { data } = await recetaApi.post('/auth/new', body);
+          console.log("Que me viene en el nuevo data social?", data)
+          
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('token-init-date', new Date().getTime());
+          
+          dispatch( onLogin({ name: data.nombre, uid: data.uid }) );
+          
+        } catch (error) {
+          console.log("Ha fallado en el catch del StartRegister", error);
+          dispatch( onLogout( error.response.data?.msg || '--' ) );
+          setTimeout(() => {
+              dispatch( onclearErrorMessage() );
+          }, 10);
+        }
+      }
 
 // /api/auth/addRecetaUsuario !!!!!
 

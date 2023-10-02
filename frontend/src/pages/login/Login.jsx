@@ -16,7 +16,10 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAuthStore } from '../../hooks/useAuthStore';
 import Swal from 'sweetalert2';
- 
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { GoogleLoginButton  } from "react-social-login-buttons";
+
+
 
 
 function Copyright(props) {
@@ -35,9 +38,35 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginInside() {
+  const auth = getAuth();  //Firebase
+  const provider = new GoogleAuthProvider();
 
-  // usamos el Hook :)
-  const {startLogin, errorMessage} = useAuthStore();
+  // usamos los Hooks :)
+  const {startLogin, startRegister, errorMessage} = useAuthStore();
+
+  // Login Social con Firebase
+  const call_login_google = () => {
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const user = result.user;
+
+        console.log("que mando ahora al BE social login?", user)
+        console.log("email? ", user.email)
+        console.log("nombre: ", user.displayName)
+        console.log("uid: ", user.uid)
+        
+        // Llama a startRegister con la información del usuario de Google
+        startLogin({
+          email: user.email,       
+          socialLogin: true // Asumiendo que tienes un flag para indicar registro social
+        });
+        
+      })
+      .catch((error) => {
+        console.error("Error en Google SignIn:", error);
+        // Maneja los errores de Google SignIn
+      });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,17 +76,15 @@ export default function LoginInside() {
       password: data.get('password'), 
     }, "Formulario Enviado");
 
-    
     console.log("startLogin con los datos del formulario");
-    startLogin({email: data.get('email'),password: data.get('password')});
+    startLogin({email: data.get('email'), password: data.get('password'), sociaLogin: false});
   }; 
 
-  // Alerta de sweetalerts si cambia el errorMsaage del Hook
+  // Alerta de sweetalerts si cambia el errorMessage del Hook
   useEffect(() => {
     if (errorMessage !== undefined) {
       Swal.fire('Error en la autenticacion', errorMessage, 'error')
     } 
-    
   }, [errorMessage])
   
 
@@ -129,6 +156,8 @@ export default function LoginInside() {
               >
                 Sign In
               </Button>
+              <GoogleLoginButton onClick={() => call_login_google()} />
+
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
@@ -147,5 +176,5 @@ export default function LoginInside() {
         </Grid>
       </Grid>
     </ThemeProvider>
-  );
+);
 }

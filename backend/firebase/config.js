@@ -10,6 +10,7 @@ const firebaseConfig = {
   storageBucket: "fir-recetas-d6d31.appspot.com",
   messagingSenderId: "1028848992944",
   appId: "1:1028848992944:web:91e65fbfd0c63993b7b175"
+
 };
 
 // Inicializar Firebase

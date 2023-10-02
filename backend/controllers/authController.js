@@ -4,100 +4,82 @@ import bcrypt from 'bcryptjs';
 import { generarJWT } from '../helpers/jwt.js';
 
 //Este lleva el validationResult aqui mismo, el de login lo lleva en un middleware chulo :)
-const crearUsuario = async (req,res) => {
-    const {nombre, email, password} = req.body
-    
-    // FYI aqui va a saltar la validacion middleware que hemos creado aunque aqui no venga na (ver en la ruta)
-    let usuario = await Usuario.findOne({  //esto es una promise myfriend
-      email:email
-    })  
-
-    if (usuario) {
-      console.log(`El usuario ${nombre} ya existe`);      
-      res.status(400).json({
-         ok:false,
-         mensaje: "El usuario ya existe"
-      })
-    } else{
-
-      usuario = new Usuario(req.body);
-      
-      //Necesitamos encriptar la contraseña con bcrypt
-      var salt = bcrypt.genSaltSync();
-      usuario.password = bcrypt.hashSync(password, salt); //hashea    
-      
-      let token = ''
-      try {
-         await usuario.save();
-          // Necesitamos generar un JWT
-         token = await generarJWT(usuario._id,nombre)
-       } catch (error) {
-         console.log("Ha habido un error");
-         res.status(500).json({
-            ok:false,
-            mensaje: "Por favor hable con el administrador"            
-         })
-       }
-
-      res.status(201).json({
-         ok: true,
-         mensaje: "registro de nuevo usuario",
-         nombre,
-         email,
-         password,         
-         token
-        
-        }) 
-    }
-
-    // Creo un usuario desde el modelo
-    /* usuario = new Usuario(req.body);
-    // Intento un nuevo registro en la BBDD
-    try {
-      await usuario.save();
-    } catch (error) {
-      console.log("Ha habido un error");
-      res.status(500).json({
-         ok:false,
-         mensaje: "Por favor hable con el administrador"
-      })
-    }
-    */
-    
-
-   
- }
-
- const loginUsuario = async (req,res) => {
-
-   const { email, password } = req.body
-    
-   //Buscamos al usuario
-   try {
-
-    let usuario = await Usuario.findOne({
-     email:email
-    }) 
+const crearUsuario = async (req, res) => {
+  const { nombre, email, password, socialLogin, googleID } = req.body;
   
-    // Si no existe devolvemos un 400    
-    if ( !usuario ) {
-      return res.status(400).json({
+  let usuario = await Usuario.findOne({ email });
+
+  if (usuario) {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "El usuario ya existe"
+    });
+  }
+  
+  usuario = new Usuario(req.body);
+
+  // Si no existe usuario, le pone un googleID o una password según
+  if (socialLogin) {
+    usuario.googleID = googleID;
+  } else {
+    const salt = bcrypt.genSaltSync();
+    usuario.password = bcrypt.hashSync(password, salt);
+  }
+
+  try {
+    await usuario.save();
+    const token = await generarJWT(usuario._id, nombre);
+    
+    res.status(201).json({
+      ok: true,
+      uid: usuario._id,
+      nombre,
+      email,
+      token
+    });
+    
+  } catch (error) {
+    console.error("Ha habido un error creando al usuario", error);
+    return res.status(500).json({
+      ok: false,
+      mensaje: "Error creando usuario",
+      error: error.message
+    });
+  }
+}
+
+const loginUsuario = async (req, res) => {
+  const { email, password, socialLogin } = req.body;
+  
+  try {
+    let usuario = await Usuario.findOne({ email });
+
+    // Si no encuentra usuario hace uno con email y socialLogin (doble funcionalidad)
+    if (!usuario) {
+      if (socialLogin) {
+        req.body.email = email; 
+        return crearUsuario({email, socialLogin});
+      } else {
+        return res.status(400).json({
           ok: false,
           msg: 'El usuario no existe con ese email'
-      });
+        });
+      }
     }
-  
-    let comparacion = bcrypt.compareSync(password, usuario.password);
-    
-    if (!comparacion) {
-      return res.status(400).json({
-         ok: false,
-         msg: "La password no es correcta"
-      });
+
+    // Existe el usuario y viene de form normal
+    if (!socialLogin && usuario) {
+      const comparacion = bcrypt.compareSync(password, usuario.password);
+      
+      if (!comparacion) {
+        return res.status(400).json({
+          ok: false,
+          msg: "La password no es correcta"
+        });
+      }
     }
     
-    // Genero JWT y mando la respuesta. En cada login genero un token
-    const token = await generarJWT( usuario._id, usuario.nombre );    
+    const token = await generarJWT(usuario._id, usuario.nombre);
 
     res.json({
       ok: true,
@@ -106,19 +88,19 @@ const crearUsuario = async (req,res) => {
       token,
       usuario,
       msg: "Se ha logeado al usuario correctamente"
-  })
-
-  // Si algo fallara devuelvo un error 500
-  } catch (error) {
-
-    console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Algo ha fallado tratando de logear al usuario'
-        });
-   }   
+    });
     
- }    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      msg: 'Algo ha fallado tratando de logear al usuario',
+      error: error.message
+    });
+  }
+}
+
+  
  
 // Se supone que lo cogemos asi? Se supone que lo que viene del middleware es req.uid = uid + req.name = name;
 

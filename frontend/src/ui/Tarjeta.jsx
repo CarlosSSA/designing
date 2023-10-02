@@ -99,14 +99,14 @@ export default function RecipeReviewCard({usuario,userFavRecipes,setUserFavRecip
     // setLikesReceta(receta.likes) esto hace falta?
     setLikesReceta(receta.likes);
 
-    //compruebo si la receta ha sido likeada
-    if (userLikedRecipes.includes(receta._id)) {
-      setRecipeLiked(true)
-      
-    }
-    if (userFavRecipes.includes(receta._id)) {
-      setRecipeSaved(true);      
-    }
+  // compruebo si la receta ha sido likeada
+  if (userLikedRecipes && Array.isArray(userLikedRecipes) && userLikedRecipes.includes(receta._id)) {
+    setRecipeLiked(true)
+  }
+
+  if (userFavRecipes && Array.isArray(userFavRecipes) && userFavRecipes.includes(receta._id)) {
+    setRecipeSaved(true);      
+  }
    
   }, [])
 

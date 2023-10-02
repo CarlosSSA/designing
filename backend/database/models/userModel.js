@@ -20,15 +20,22 @@ const UsuarioSchema = new Schema({
     type: String,
     enum: ['perder', 'mantener', 'ganar']
   },
+  googleID: {type: String },
   
   email: {
     type: String,
     required: true,
     unique: true 
   },
+  socialLogin: {
+    type: Boolean,
+    default: false,    
+  },
+  googleID: {
+    type: String,        
+  },
   password: {
-    type: String,
-    required: true,     
+    type: String,         
   },
   recetas: [{ type: Schema.Types.ObjectId, ref: 'Receta' }],
   publicaciones: { type: Number, default: function() { return this.recetas.length }},
