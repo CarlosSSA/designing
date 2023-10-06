@@ -5,6 +5,7 @@ import './App.css'
 import { AppRouter } from './router/AppRouter';
 import PrimarySearchAppBar from './ui/NavBar'
 import { Container } from '@mui/material';
+import { Footer } from './ui/Footer';
 
 
 
@@ -16,6 +17,7 @@ export const RecipeApp = () => {
         <PrimarySearchAppBar />
         <Container maxWidth="100%" disableGutters>
           <AppRouter />
+        <Footer />
         </Container>
       </BrowserRouter>
     </Provider>

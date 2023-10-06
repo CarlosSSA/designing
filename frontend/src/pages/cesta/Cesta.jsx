@@ -36,7 +36,9 @@ const Cesta = () => {
   // Función asíncrona para obtener las recetas del usuario.
   const obtenerRecetas = async () => {
     const miUsuario = await startGetUsuarioCalendarRecipes({ uid });
+    console.log("CESTA me llega algo de obtenerRecetas?", miUsuario)
     setRecetasCalendario(miUsuario.usuario.calendarRecipes);
+    console.log("CESTA me llega bien", miUsuario.usuario.calendarRecipes)
   };
 
   useEffect(() => {
@@ -55,12 +57,15 @@ const Cesta = () => {
         days.push(new Date(d));
       }
       return days;
+      
     }
 
     const currentWeekDates = getWeekDates();
+    console.log("CESTA days",currentWeekDates )
     setWeekDates(currentWeekDates.map(d => `${d.getUTCDate()}/${d.getUTCMonth() + 1}`));
     setEsISOweeks(currentWeekDates.map(d => formatDateToDay(d.toISOString())));
-
+    
+    console.log("CESTA ISOWEeks",esISOweeks )
     obtenerRecetas();  // Llamamos a la función para obtener las recetas.
   }, []);
 
@@ -68,7 +73,7 @@ const Cesta = () => {
   const obtenerListaDeCompra = () => {
     const listaCompra = {};
 
-    if (recetasCalendario && esISOweeks.length) {
+    if (recetasCalendario !== null && esISOweeks.length) {      
       recetasCalendario.forEach(receta => {
         if (esISOweeks.includes(formatDateToDay(receta.fecha))) {
           receta.receta.ingredientes.forEach(ing => {
@@ -86,6 +91,7 @@ const Cesta = () => {
   }
 
   const listaCompra = obtenerListaDeCompra();
+  console.log("CESTA listaCompra", listaCompra)
 
   return (
     <div>

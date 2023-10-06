@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import './PasosList.css'
 import { useRecipeStore } from '../../hooks/useRecipeStore';
-import { uploadImage } from '../../hooks/useFireBase'
+import { uploadIngredientImage } from '../../hooks/useFireBase'
 import { useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -86,7 +86,7 @@ const PasosList = ({ pasos, userRecipeID, userID, recipeID, onUpdateSteps }) => 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     try {
-      const imageURL = await uploadImage(file);
+      const imageURL = await uploadIngredientImage(file);
       console.log("Imagen subida con éxito. URL:", imageURL);
       // Guardamos la foto en la BBDD en el paso en cuestiónS
     } catch (error) {
