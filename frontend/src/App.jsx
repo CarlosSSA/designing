@@ -5,7 +5,7 @@ import './App.css'
 import { AppRouter } from './router/AppRouter';
 import PrimarySearchAppBar from './ui/NavBar'
 import { Container } from '@mui/material';
-import { Footer } from './ui/Footer';
+import Footer from './ui/Footer';
 
 
 

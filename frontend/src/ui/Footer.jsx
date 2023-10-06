@@ -1,32 +1,31 @@
-
-import React from 'react';
-
-import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import AddIcon from '@mui/icons-material/Add';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import ExploreIcon from '@mui/icons-material/Explore';
+import Paper from '@mui/material/Paper';
 
-export const Footer = () => {
+export default function Footer() {
   const [value, setValue] = React.useState(0);
 
   return (
-    <BottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '60px', // puedes ajustar la altura según tus necesidades
-        boxShadow: '0px -2px 10px rgba(0, 0, 0, 0.1)',
-      }}
-    >
-      <BottomNavigationAction icon={<AddIcon />} />
-      <BottomNavigationAction icon={<CalendarTodayIcon />} />
-      <BottomNavigationAction icon={<ExploreIcon />} />
-    </BottomNavigation>
+    <Box sx={{ pb: 7 }}>
+      <CssBaseline />
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <BottomNavigation
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+        >
+          <BottomNavigationAction icon={<AddIcon />} />
+          <BottomNavigationAction icon={<CalendarTodayIcon />} />
+          <BottomNavigationAction icon={<ExploreIcon />} />
+        </BottomNavigation>
+      </Paper>
+    </Box>
   );
-};
+}
