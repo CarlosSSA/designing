@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import './Buscador.css';
 import { useRecipeStore } from '../hooks/useRecipeStore';
-import {onSetSearchFilter, onSetRecipeFilter} from '../store/recipes/recipesSlice';
+import {onSetSearchFilter, onSetRecipeFilter, onSetError, onClearError} from '../store/recipes/recipesSlice';
 import { useDispatch } from 'react-redux';
 
 
@@ -25,9 +25,10 @@ export default function Buscador({ ingredientes, onSearch }) {
 
   // Cuando selecciono un ingrediente de la lista
   const handleAddIngredient = (ingredient) => {
-    if (ingredient && ingredient.trim() !== '' && !selectedIngredients.includes(ingredient)) {
+    if (ingredientes.includes(ingredient) && ingredient.trim() !== '' && !selectedIngredients.includes(ingredient)) {
         setSelectedIngredients([...selectedIngredients, ingredient]);
         dispatch(onSetSearchFilter(selectedIngredients))
+        console.log(selectedIngredients)
         setInputValue('');  // Limpiamos el input
     }
 };
@@ -42,8 +43,8 @@ export default function Buscador({ ingredientes, onSearch }) {
     const filteredIngredients = selectedIngredients.filter(ingredient => ingredient !== null);
   
     try {
-      // Si el input NO es un ingrediente -> Busco las recetas que contengan esa palabra en el titulo
-        if (!ingredientes.includes(inputValue)) {
+      // Si el input NO es un ingrediente y las chips están vacías -> Busco las recetas que contengan esa palabra en el titulo
+        if (filteredIngredients.length === 0 && !ingredientes.includes(inputValue)) {
             //Esto simplemente hace un console.log, es una funcion que le viene como prop al componente
             onSearch(inputValue,"titulo");
             
@@ -51,26 +52,42 @@ export default function Buscador({ ingredientes, onSearch }) {
             
             const resultado = await startGetRecetaByName(inputValue); // Asumo que startActiveRecipe es una función que devuelve una promesa
             console.log("Resultado de la búsqueda por título:", resultado);
-            // Aqui debería alterar el estado filteredRecipes
-            dispatch(onSetRecipeFilter(resultado))
 
-        } else {
+            if (resultado && resultado.length > 0) {
+              dispatch(onSetRecipeFilter(resultado));              
+              dispatch(onClearError());
+              
+          } else {
+              // Si no hay resultados o el resultado es inválido, despacha un error
+              dispatch(onSetError("No hay Recetas que Coincidan con tu Búsqueda"));
+          }
+
+            
+
+        } else {  // las chips tienen algo
+            // Esto solo hace un console.log 
             onSearch(inputValue, "ingrediente");
             console.log("filteredIngredients", filteredIngredients);
-            // Parece que funciona OK, al menos para 1 ingrediente
+            
+           // Primero necesito llamar al backend para que me encuentre Recetas con estos ingredientes
+
             const recetasXIngredient = await startSearchByIngredientName({nombreIngredientes:filteredIngredients})
             console.log(recetasXIngredient)
 
-            // Para que queria usar esto?
-            // dispatch(onSetSearchFilter(recetasXIngredient));
+            
+
+            //Luego actualizo el estado
+            dispatch(onSetRecipeFilter(recetasXIngredient));
 
             // Aquí harías una llamada similar para buscar por ingredientes
             // Ejemplo:
-            // const resultado = await startSearchByIngredients(filteredIngredients);
+            
             // console.log("Resultado de la búsqueda por ingredientes:", resultado);
         }
     } catch (error) {
         console.error("Error al buscar recetas:", error.message);
+        dispatch(onSetError("No hay Recetas que Coincidan con tu Búsqueda"));
+
     }
 };
 

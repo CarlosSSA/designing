@@ -20,6 +20,7 @@ export const recipesSlice = createSlice({
         isLoadingEvents: true,
         searchFilter: null,
         recipeFilter: null,
+        error: null,
         recipes: [
             // tempEvent
         ],
@@ -29,6 +30,13 @@ export const recipesSlice = createSlice({
         createRecipe: {}
     },
     reducers: {
+
+        onSetError: (state, action) => {
+            state.error = action.payload;
+        },
+        onClearError: (state) => {
+            state.error = null;
+        },
 
         onSetSearchFilter: (state, action) => {
             state.searchFilter = action.payload;
@@ -104,6 +112,6 @@ export const recipesSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { onSetRecipeFilter, onClearRecipeFilter, onSetSearchFilter, onClearSearchFilter, onLoadUserRecipes, onSetActiveRecipe, onAddNewRecipe, onUpdateRecipe, onDeleteRecipe, onLoadRecipes, onLogoutRecipe, onCreateRecipe,onFormRecipe  } = recipesSlice.actions
+export const { onSetError, onClearError, onSetRecipeFilter, onClearRecipeFilter, onSetSearchFilter, onClearSearchFilter, onLoadUserRecipes, onSetActiveRecipe, onAddNewRecipe, onUpdateRecipe, onDeleteRecipe, onLoadRecipes, onLogoutRecipe, onCreateRecipe,onFormRecipe  } = recipesSlice.actions
 
 export default recipesSlice.reducer

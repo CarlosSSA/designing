@@ -21,6 +21,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { onSetRecipeFilter, onClearRecipeFilter, onLoadUserRecipes } from '../../store/recipes/recipesSlice.js';
+import ErrorBusqueda from './ErrorBusqueda.jsx';
 
 
 
@@ -57,23 +58,10 @@ export default function HomePage() {
   const searchFilter = useSelector(state => state.recipes.searchFilter);
   const recipeFilter = useSelector(state => state.recipes.recipeFilter);
   const recipes = useSelector(state => state.recipes.recipes);
+  const errorBusqueda = useSelector(state => state.recipes.error);
 
-  useEffect(() => {
-    console.log("Search Filter? ", searchFilter )
-    const obtenerRecetas = async () => {
-      if (searchFilter) {
-        console.log("El search filter trae cositas", searchFilter)
-        setRecetasIniciales(searchFilter)
-       // dispatch(onSetRecipeFilter(searchFilter))      //esto esta mal  
-      } else {
-        console.log("El search filter es null o vacio")
-        const allRecipes = await startAllRecipes();      
-        setRecetasIniciales(allRecipes)
-      }
-      
-    };
-    obtenerRecetas();
-  }, [searchFilter]); 
+ 
+
 
   useEffect(() => {
       const obtenerRecetasXNombre = async () => {
@@ -121,12 +109,17 @@ export default function HomePage() {
           {/* End hero unit */}
           <Grid container spacing={6}>
 
-            {recetasiniciales.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={6} >
-                <RecipeReviewCard usuario = {usuario} userLikedRecipes={userLikedRecipes} userFavRecipes={userFavRecipes} setUserFavRecipes={setUserFavRecipes} setUserLikedRecipes={setUserLikedRecipes} nombre = {card.nombre} autor = {card.autor.nombre} receta = {card} descripcion={card.descripcion} likes = {card.likes} comments = {card.comments}/>
-              </Grid>
-            ))}
-            
+            {/* Verificar si hay un mensaje de error */}
+            {errorBusqueda 
+              ? (
+                <ErrorBusqueda message={errorBusqueda} />
+              )
+              : recetasiniciales.map((card) => (
+                  <Grid item key={card} xs={12} sm={6} md={6}>
+                    <RecipeReviewCard usuario={usuario} userLikedRecipes={userLikedRecipes} userFavRecipes={userFavRecipes} setUserFavRecipes={setUserFavRecipes} setUserLikedRecipes={setUserLikedRecipes} nombre={card.nombre} autor={card.autor.nombre} receta={card} descripcion={card.descripcion} likes={card.likes} comments={card.comments} />
+                  </Grid>
+                ))
+            }
           </Grid>
         </Container>
       </main>
