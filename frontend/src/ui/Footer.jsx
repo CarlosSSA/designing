@@ -10,6 +10,7 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import SaveIcon from '@mui/icons-material/Save';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Paper from '@mui/material/Paper';
+import './Footer.css';
 
 export default function Footer() {
   const [value, setValue] = React.useState(0);
@@ -19,10 +20,11 @@ export default function Footer() {
   const isRecipePage = location.pathname.includes('/recipe/');
 
   return (
-    <Box sx={{ pb: 7 }}>
+    <Box className="footer-container">
       <CssBaseline />
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+      <Paper className="footer-paper" elevation={3}>
         <BottomNavigation
+          className="footer-navigation"
           value={value}
           onChange={(event, newValue) => {
             setValue(newValue);
@@ -31,16 +33,16 @@ export default function Footer() {
           {/* Si estamos en una página de receta, mostramos estos botones */}
           {isRecipePage ? (
             <>
-              <BottomNavigationAction label="Guardar" icon={<SaveIcon />} />
-              <BottomNavigationAction label="Likear" icon={<ThumbUpIcon />} />
-              <BottomNavigationAction label="Calendario" icon={<CalendarTodayIcon />} />
+              <BottomNavigationAction label="Guardar" icon={<SaveIcon />} centered />
+              <BottomNavigationAction label="Likear" icon={<ThumbUpIcon />} centered />
+              <BottomNavigationAction label="Calendario" icon={<CalendarTodayIcon />} centered />
             </>
           ) : (
             // Si no, mostramos estos otros botones
             <>
-              <BottomNavigationAction icon={<AddIcon />} />
-              <BottomNavigationAction icon={<CalendarTodayIcon />} />
-              <BottomNavigationAction icon={<ExploreIcon />} />
+              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
+              <BottomNavigationAction label="userCalendar" icon={<CalendarTodayIcon />} centered />
+              <BottomNavigationAction label="userCalendar" icon={<ExploreIcon />} centered />
             </>
           )}
         </BottomNavigation>

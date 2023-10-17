@@ -428,6 +428,44 @@ const crearReceta = async (req,res) => {
         }
       } 
 
+      const searchByIngredients = async (req,res) => {
+
+        const {rid, pasos} = req.body  
+        console.log("BE: body del updateRecipeSteps controller: ", req.body)
+       
+        let recipe = await Receta.findOne({_id:rid}) 
+             
+        // Validación básica
+        if (!recipe || !Array.isArray(pasos)) {
+          return res.status(400).json({
+            ok: false,
+            mensaje: "Datos enviados no son válidos."
+          });
+        }
+
+        // !!
+        try {          
+      
+          // Verificación de que el usuario es el autor
+          recipe.pasos = pasos
+          recipe.save();  
+          
+       
+          res.status(200).json({
+            ok: true,
+            mensaje: "Actualizados los pasos de la receta " ,
+            pasos: recipe.pasos
+          });
+      
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({
+            ok: false,
+            mensaje: "Error al intentar actualizar los pasos."
+          });
+        }
+      } 
+
 
       export {
         updateRecipeComments,
@@ -440,5 +478,6 @@ const crearReceta = async (req,res) => {
         updateReceta,
         deleteReceta,
         todasRecetas,
-        updateRecipeSteps
+        updateRecipeSteps,
+        searchByIngredients
       };

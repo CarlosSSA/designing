@@ -20,7 +20,6 @@ export const useRecipeStore = () => {
     
     
     const {recipes} = useSelector(state => state.recipes) // payload.recipes
-    console.log("Esto es lo que saco del useSelector desde el useRecipeStore", recipes);
     //recojo el id del usuario de la url "/user/123"  
     const dispatch = useDispatch();
 
@@ -180,7 +179,41 @@ export const useRecipeStore = () => {
         }
             
         
+    }   
+
+    
+    const startGetRecetaByName = async( nombre ) => {   
+
+        try {  
+            console.log(`Vamos a ver qué envío al BE para que me de las recetas por titulo ${nombre}`)
+            const {data} = await recetaApi.post('/recipe/getRecetaByName',{nombre})   
+                   
+            console.log("startUpdateRecipeSteps Hook: Lo que me devuelve el BE", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema encontrando recetas con esa palabra", error);
+        }
+            
+        
     }
+
+    const startSearchByIngredientName = async( {nombreIngredientes} ) => {  
+    
+        try {  
+            console.log(`Vamos a ver qué envío al BE para que me busque recetas por nombre ${nombreIngredientes}`)
+            
+            const {data} = await recetaApi.post('/recipe/searchByIngredientName',{nombreIngredientes})   
+                   
+            console.log("startUpdateRecipeSteps Hook: Lo que me devuelve el BE", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema filtrando recetas por ingrediente", error);
+        }
+            
+        
+    }
+
+    
 
     
 
@@ -196,7 +229,9 @@ export const useRecipeStore = () => {
         startUpdateRecipeLikes,
         startGetRecipePost,
         startUpdateRecipeComments,
-        startUpdateRecipeSteps
+        startUpdateRecipeSteps,
+        startGetRecetaByName,
+        startSearchByIngredientName
         
         
     }

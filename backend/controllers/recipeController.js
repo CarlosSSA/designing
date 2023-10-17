@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Receta from '../database/models/recipeModel.js';
 import Usuario from '../database/models/userModel.js';
 import Comentario from '../database/models/commentModel.js';
+import Ingrediente from '../database/models/ingredientModel.js';
 
 
 const crearReceta = async (req,res) => {
@@ -428,6 +429,52 @@ const crearReceta = async (req,res) => {
         }
       } 
 
+     const getRecetaByName = async (req, res) => {
+      console.log(">>que me llega llega en el body???", req.body)
+  
+      try {
+          const { nombre } = req.body; // Suponemos que pasas el string como un parámetro de consulta
+          
+          // Utilizamos una expresión regular para buscar de forma no sensible a mayúsculas/minúsculas
+          const recetas = await Receta.find({ nombre: new RegExp(nombre, 'i') });
+      
+          if (!recetas.length) {
+            return res.status(404).json({ message: 'No se encontraron recetas con ese título.' });
+          }
+      
+          res.status(200).json(recetas);
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: 'Hubo un error al buscar las recetas.' });
+        }
+      };
+
+      const searchByIngredientName = async (req, res) => {
+        const { nombreIngredientes } = req.body;
+        console.log("Que me llega en searchByIngredientName?: ", nombreIngredientes )
+        console.log("Que me llega en el body searchByIngredientName?: ", req.body )
+      
+        try {
+            // operador de MongoDB que filtra por valores que estén dentro de un array especificado
+            const ingredientes = await Ingrediente.find({ nombre: { $in: nombreIngredientes } });
+            
+            // Extraemos los IDs de los ingredientes encontrados.
+            const ingredientIds = ingredientes.map(ing => ing._id);
+      
+            // Luego, buscamos las recetas que contengan esos ingredientes.
+            const recipes = await Receta.find({ 'ingredientes.ingrediente': { $in: ingredientIds } }).populate('ingredientes.ingrediente');
+      
+            if (recipes.length === 0) {
+                return res.status(404).json({ message: 'No se encontraron recetas con los ingredientes especificados.' });
+            }
+      
+            return res.status(200).json(recipes);
+      
+        } catch (error) {
+            return res.status(500).json({ message: 'Error al buscar recetas.', error });
+        }
+      };
+
 
       export {
         updateRecipeComments,
@@ -440,5 +487,7 @@ const crearReceta = async (req,res) => {
         updateReceta,
         deleteReceta,
         todasRecetas,
-        updateRecipeSteps
+        updateRecipeSteps,
+        getRecetaByName,
+        searchByIngredientName
       };

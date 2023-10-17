@@ -1,0 +1,17 @@
+/* Estilo para el contenedor principal del footer */
+.footer-container {
+    padding-bottom: 7px;
+  }
+  
+  /* Estilo para el footer flotante */
+  .footer-paper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  /* Estilo para la navegación inferior */
+  .footer-navigation {
+    padding: 10px 0;
+  }

@@ -23,7 +23,7 @@
 
   import { useState } from 'react';
 
-  import { useRecipeStore } from '../../hooks/useRecipeStore';
+  
   import DeleteIcon from '@mui/icons-material/Delete';
 
 
@@ -64,7 +64,7 @@
     const dispatch = useDispatch();
     
 
-    const { startActiveRecipe } = useRecipeStore();
+  
 
     const handleCardActionAreaClick = async() => {    
       console.log("Has pinchado la receta con el otro ID: ", receta._id);

@@ -18,6 +18,8 @@ export const recipesSlice = createSlice({
     name: 'recipes',
     initialState: {
         isLoadingEvents: true,
+        searchFilter: null,
+        recipeFilter: null,
         recipes: [
             // tempEvent
         ],
@@ -27,6 +29,23 @@ export const recipesSlice = createSlice({
         createRecipe: {}
     },
     reducers: {
+
+        onSetSearchFilter: (state, action) => {
+            state.searchFilter = action.payload;
+        },
+
+        onClearSearchFilter: (state) => {
+            state.searchFilter = null;
+        },
+
+        onSetRecipeFilter: (state, action) => {
+            state.recipeFilter = action.payload;
+        },
+
+        onClearRecipeFilter: (state) => {
+            state.recipeFilter = null;
+        },
+
         onSetActiveRecipe: ( state, { payload }) => {
             state.activeRecipe = payload; // hay un problema al recibir el payload
         },
@@ -60,7 +79,7 @@ export const recipesSlice = createSlice({
                 }
             })
         },
-        // FOCO A ESTA --> FUNCIONA!!!!
+        // FOCO A ESTA --> FUNCIONA!!!! no se para que lo queria
         onLoadUserRecipes: (state, { payload = [] }) => {
             state.isLoadingEvents = false;
             // state.events = payload;
@@ -85,6 +104,6 @@ export const recipesSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { onLoadUserRecipes, onSetActiveRecipe, onAddNewRecipe, onUpdateRecipe, onDeleteRecipe, onLoadRecipes, onLogoutRecipe, onCreateRecipe,onFormRecipe  } = recipesSlice.actions
+export const { onSetRecipeFilter, onClearRecipeFilter, onSetSearchFilter, onClearSearchFilter, onLoadUserRecipes, onSetActiveRecipe, onAddNewRecipe, onUpdateRecipe, onDeleteRecipe, onLoadRecipes, onLogoutRecipe, onCreateRecipe,onFormRecipe  } = recipesSlice.actions
 
 export default recipesSlice.reducer

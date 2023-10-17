@@ -19,7 +19,9 @@ import RecipeReviewCard from '../../ui/Tarjeta.jsx'
 import { useRecipeStore } from '../../hooks/useRecipeStore.js';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { onSetRecipeFilter, onClearRecipeFilter, onLoadUserRecipes } from '../../store/recipes/recipesSlice.js';
+
 
 
 
@@ -50,8 +52,46 @@ export default function HomePage() {
   const [userFavRecipes, setUserFavRecipes] = useState([]);
   const usuario = useSelector(state => state.auth.user);
 
+  //Filtro de recetas del buscador
+  const dispatch = useDispatch();
+  const searchFilter = useSelector(state => state.recipes.searchFilter);
+  const recipeFilter = useSelector(state => state.recipes.recipeFilter);
+  const recipes = useSelector(state => state.recipes.recipes);
 
-  
+  useEffect(() => {
+    console.log("Search Filter? ", searchFilter )
+    const obtenerRecetas = async () => {
+      if (searchFilter) {
+        console.log("El search filter trae cositas", searchFilter)
+        setRecetasIniciales(searchFilter)
+       // dispatch(onSetRecipeFilter(searchFilter))      //esto esta mal  
+      } else {
+        console.log("El search filter es null o vacio")
+        const allRecipes = await startAllRecipes();      
+        setRecetasIniciales(allRecipes)
+      }
+      
+    };
+    obtenerRecetas();
+  }, [searchFilter]); 
+
+  useEffect(() => {
+      const obtenerRecetasXNombre = async () => {
+        if (recipeFilter) {
+          console.log("El recipe filter trae cositas", recipeFilter)
+          setRecetasIniciales(recipeFilter)
+        // dispatch(onSetRecipeFilter(searchFilter))      //esto esta mal  
+        } else {
+          console.log("El recipe filter es null o vacio")
+          const allRecipes = await startAllRecipes();      
+          setRecetasIniciales(allRecipes)
+        }
+        
+      };
+      obtenerRecetasXNombre();
+  }, [recipeFilter]); 
+
+/*
   useEffect(() => {
     const obtenerRecetas = async () => {
       const allRecipes = await startAllRecipes();      
@@ -68,6 +108,8 @@ export default function HomePage() {
     
   }, [])  
 
+  */
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -78,11 +120,13 @@ export default function HomePage() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={6}>
+
             {recetasiniciales.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={6} >
                 <RecipeReviewCard usuario = {usuario} userLikedRecipes={userLikedRecipes} userFavRecipes={userFavRecipes} setUserFavRecipes={setUserFavRecipes} setUserLikedRecipes={setUserLikedRecipes} nombre = {card.nombre} autor = {card.autor.nombre} receta = {card} descripcion={card.descripcion} likes = {card.likes} comments = {card.comments}/>
               </Grid>
             ))}
+            
           </Grid>
         </Container>
       </main>

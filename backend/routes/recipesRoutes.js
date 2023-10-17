@@ -15,6 +15,8 @@ import {
   todasRecetas,
   updateRecipeLikes,
   updateRecipeSteps,
+  getRecetaByName,
+  searchByIngredientName
 } from '../controllers/recipeController.js';
 
 // Creamos el objeto Router
@@ -49,11 +51,13 @@ router.delete('/:rid',
 
 // Todas las recetas para la Home
 router.get('/', validacion, todasRecetas);
+router.post('/getRecetaByName', getRecetaByName);
 
 router.post('/updateRecipeLikes', updateRecipeLikes);
 router.post('/updateRecetaIndividualPost', updateRecetaIndividualPost);
 router.post('/getRecetaIndividualPost', getRecetaIndividualPost);
 router.post('/updateRecipeComments', updateRecipeComments);
 router.post('/updateRecipeSteps', updateRecipeSteps);
+router.post('/searchByIngredientName', searchByIngredientName);
 
 export default router;
