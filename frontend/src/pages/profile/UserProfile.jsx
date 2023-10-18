@@ -48,20 +48,20 @@ const UserProfile = () => {
   // me falta definir el prop de user, necesito al usuario? o casi mejor hago un Selector del auth y una llamada a la BBDD y recojo todo
 
   return (
+    
     <div className="profile-container">
       
       <div className="profile-header">
-        <img src={user.nombre || "ruta/default/avatar.jpg"} alt="Avatar del usuario" className="user-avatar" />
+        <img src={user ? user.nombre || "ruta/default/avatar.jpg" : "ruta/default/avatar.jpg"} alt="Avatar del usuario" className="user-avatar" />
         <div className="profile-info">
-          <h2>{user.nombre}</h2>
+          <h2>{user ? user.nombre : ""}</h2>
           <div className="profile-stats">
-            <span>{user.recetas.length} publicaciones</span>
-            <span>{user.followers.length} seguidores</span>
-            <span>{user.following.length} seguidos</span>
-            
+            <span>{user && user.recetas ? user.recetas.length : 0} publicaciones</span>
+            <span>{user && user.followers ? user.followers.length : 0} seguidores</span>
+            <span>{user && user.following ? user.following.length : 0} seguidos</span>
           </div>
-        </div>
       </div>
+    </div>
 
       <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                   <Tabs value={value} onChange={handleChange} centered>
@@ -81,13 +81,13 @@ const UserProfile = () => {
         ? 
         usuarioPopulado.recetas.map((recipe) => (
             <TarjetaRecetaProfile 
-                key={recipe.id} 
+                key={recipe._id} 
                 nombre={recipe.nombre} 
                 autor={recipe.autor.nombre} 
                 receta={recipe} 
                 descripcion={recipe.descripcion} 
                 likes={recipe.likes.length} 
-                comments={recipe.comments.length}
+                comments={recipe.comentarios.length}
             />
         ))
         : 
@@ -106,13 +106,13 @@ const UserProfile = () => {
         ? 
         usuarioPopulado.likedRecipes.map((recipe) => (
             <TarjetaRecetaProfile 
-                key={recipe.id} 
+                key={recipe._id} 
                 nombre={recipe.nombre} 
                 autor={recipe.autor.nombre} 
                 receta={recipe} 
                 descripcion={recipe.descripcion} 
                 likes={recipe.likes.length} 
-                comments={recipe.comments.length}
+                comments={recipe.comentarios.length}
             />
         ))
         : 
@@ -131,13 +131,13 @@ const UserProfile = () => {
         ? 
         usuarioPopulado.favRecipes.map((recipe) => (
             <TarjetaRecetaProfile 
-                key={recipe.id} 
+                key={recipe._id} 
                 nombre={recipe.nombre} 
                 autor={recipe.autor.nombre} 
                 receta={recipe} 
                 descripcion={recipe.descripcion} 
                 likes={recipe.likes.length} 
-                comments={recipe.comments.length}
+                comments={recipe.comentarios.length}
             />
         ))
         : 
@@ -155,13 +155,13 @@ const UserProfile = () => {
         ? 
         usuarioPopulado.recetas.map((recipe) => (
             <TarjetaRecetaProfile 
-                key={recipe.id} 
+                key={recipe._id} 
                 nombre={recipe.nombre} 
                 autor={recipe.autor.nombre} 
                 receta={recipe} 
                 descripcion={recipe.descripcion} 
                 likes={recipe.likes.length} 
-                comments={recipe.comments.length}
+                comments={recipe.comentarios.length}
             />
         ))
         : 
@@ -172,7 +172,9 @@ const UserProfile = () => {
       )}
      
     </div>
+    
   );
+  
 }
 
 export default UserProfile;

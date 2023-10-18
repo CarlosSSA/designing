@@ -15,7 +15,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 import MenuBurger from './MenuBurger';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Avatar, Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 import Buscador from './Buscador';
@@ -86,9 +85,6 @@ export default function PrimarySearchAppBar() {
     navigate('/');
   };
 
-  const handleClickCalendar = (event) => {
-    navigate('/userCalendar');
-  };
 
   const menuId = 'primary-search-account-menu';
 
@@ -157,8 +153,6 @@ export default function PrimarySearchAppBar() {
           
           {/* Componente Buscador */}
           <Buscador ingredientes={listaDeIngredientes} onSearch={tuFuncionDeBusqueda} />
-
-          <CalendarMonthIcon onClick={handleClickCalendar} />
           
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
