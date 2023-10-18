@@ -12,6 +12,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Paper from '@mui/material/Paper';
 import './Footer.css';
 import { useNavigate } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 export default function Footer() {
@@ -22,10 +23,17 @@ export default function Footer() {
 
   // Verificar si la URL contiene "/recipe/"
   const isRecipePage = location.pathname.includes('/recipe/');
+  const isCalendarPage = location.pathname.includes('/userCalendar');
 
   const handleClickCalendar = (event) => {
     navigate('/userCalendar');
   };
+
+  const handleClickHome = (event) => {
+    navigate('/');
+  };
+
+  
 
   return (
     <Box className="footer-container">
@@ -38,23 +46,32 @@ export default function Footer() {
             setValue(newValue);
           }}
         >
-          {/* Si estamos en una página de receta, mostramos estos botones */}
           {isRecipePage ? (
             <>
+              {/* Botones para la página de recetas */}
+              <BottomNavigationAction label="Home" icon={<HomeIcon color="action"/>} centered />
               <BottomNavigationAction label="Guardar" icon={<SaveIcon />} centered />
               <BottomNavigationAction label="Likear" icon={<ThumbUpIcon />} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon /> } onClick={handleClickCalendar} centered />
             </>
-          ) : (
-            // Si no, mostramos estos otros botones
+          ) : isCalendarPage ? (
             <>
+              <BottomNavigationAction label="Home" icon={<HomeIcon/>} onClick={handleClickHome} centered />
+              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
+              <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon color="primary"/> } onClick={handleClickCalendar} centered />
+              <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
+            </>
+          ) : (
+            <>
+              {/* Botones por defecto */}
+              <BottomNavigationAction label="Home" icon={<HomeIcon color="primary"/>} onClick={handleClickHome} centered />
               <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon /> } onClick={handleClickCalendar} centered />
-              <BottomNavigationAction label="userCalendar" icon={<ExploreIcon />} centered />
+              <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
             </>
           )}
         </BottomNavigation>
       </Paper>
     </Box>
-  );
+);
 }
