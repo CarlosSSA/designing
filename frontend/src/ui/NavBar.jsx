@@ -17,10 +17,11 @@ import { useNavigate } from 'react-router-dom';
 import MenuBurger from './MenuBurger';
 import { Avatar, Button } from '@mui/material';
 import { useSelector } from 'react-redux';
-import Buscador from './Buscador';
+import BuscadorFake from './BuscadorFake';
 import { useEffect } from 'react';
 import { useIngredientStore } from '../hooks/useIngredientStore';
 import { useState } from 'react';
+
 
 
 
@@ -128,7 +129,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position="static" sx={{ background: 'transparent', boxShadow: 'none' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -138,7 +139,7 @@ export default function PrimarySearchAppBar() {
             sx={{ mr: 2 }}
             onClick={(e) => console.log(e.currentTarget)}
           >
-            <MenuBurger />
+            <MenuBurger  />
           </IconButton>
           
           <Typography
@@ -152,17 +153,10 @@ export default function PrimarySearchAppBar() {
           </Typography>        
           
           {/* Componente Buscador */}
-          <Buscador ingredientes={listaDeIngredientes} onSearch={tuFuncionDeBusqueda} />
-          
+          <BuscadorFake />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <div>
-              {auth.status === 'autenticado' ? (
-                <Avatar onClick={() => { alert("Hola chato") }} />
-              ) : (
-                <Button />
-              )}
-            </div>
+            
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -173,13 +167,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <div>
-                {auth.status === 'autenticado' ? (
-                  <Avatar onClick={() => { alert("Hola chato") }} />
-                ) : (
-                  <Button />
-                )}
-              </div>
+              
             </IconButton>
           </Box>
         </Toolbar>

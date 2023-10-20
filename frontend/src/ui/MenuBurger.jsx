@@ -105,7 +105,7 @@ export default function MenuBurger() {
 
   return (
     <div>
-      <MenuIcon onClick={toggleDrawer('left', true)}>Open Left</MenuIcon>
+      <MenuIcon onClick={toggleDrawer('left', true)} sx={{color: "#000" }} >Open Left</MenuIcon>
       <Drawer
         anchor='left'
         open={state.left}

@@ -1,5 +1,5 @@
 // Buscador.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
@@ -8,6 +8,7 @@ import './Buscador.css';
 import { useRecipeStore } from '../hooks/useRecipeStore';
 import {onSetSearchFilter, onSetRecipeFilter, onSetError, onClearError} from '../store/recipes/recipesSlice';
 import { useDispatch } from 'react-redux';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 
 
@@ -33,6 +34,10 @@ export default function Buscador({ ingredientes, onSearch }) {
     }
 };
 
+useEffect(() => {
+  console.log('Ingredientes en Buscador:', ingredientes);
+}, [ingredientes]);
+
   const handleRemoveIngredient = (ingredient) => {
     setSelectedIngredients(selectedIngredients.filter(ing => ing !== ingredient));
   };
@@ -56,7 +61,7 @@ export default function Buscador({ ingredientes, onSearch }) {
             if (resultado && resultado.length > 0) {
               dispatch(onSetRecipeFilter(resultado));              
               dispatch(onClearError());
-              
+
           } else {
               // Si no hay resultados o el resultado es inválido, despacha un error
               dispatch(onSetError("No hay Recetas que Coincidan con tu Búsqueda"));
@@ -105,9 +110,12 @@ export default function Buscador({ ingredientes, onSearch }) {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Autocomplete
           freeSolo
-          options={ingredientes}
+          options={ingredientes}          
+          sx={{ width: 150 }}
+          fullWidth="true"
           onInputChange={(event, newInputValue) => {
-            setInputValue(newInputValue);
+            setInputValue(newInputValue);          
+            
           }}
           onChange={(event, newValue) => {
             handleAddIngredient(newValue);
@@ -117,8 +125,8 @@ export default function Buscador({ ingredientes, onSearch }) {
             <TextField {...params} label="Buscar ingrediente o receta" margin="normal" variant="outlined" />
           )}
         />
-        <Button variant="contained" color="primary" onClick={handleSearch}>
-          Buscar
+        <Button size= "small" color="inherit" onClick={handleSearch} className="searchButton" >
+          <SearchOutlinedIcon className="searchIcon" fontSize='small' color="primary" />
         </Button>
       </div>
     </div>

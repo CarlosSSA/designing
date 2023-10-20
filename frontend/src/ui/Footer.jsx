@@ -13,17 +13,26 @@ import Paper from '@mui/material/Paper';
 import './Footer.css';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
+import { useSelector } from 'react-redux';
+import { Avatar, Button } from '@mui/material';
+
+
+
 
 
 export default function Footer() {
   const [value, setValue] = React.useState(0);
   const location = useLocation();
+  const auth = useSelector(state => state.auth);
+
 
   const navigate = useNavigate();
 
   // Verificar si la URL contiene "/recipe/"
   const isRecipePage = location.pathname.includes('/recipe/');
   const isCalendarPage = location.pathname.includes('/userCalendar');
+  const isBusquedaPage = location.pathname.includes('/busquedaPage');
+
 
   const handleClickCalendar = (event) => {
     navigate('/userCalendar');
@@ -31,6 +40,10 @@ export default function Footer() {
 
   const handleClickHome = (event) => {
     navigate('/');
+  };
+
+  const handleClickProfile = (event) => {
+    navigate('/miperfil');
   };
 
   
@@ -53,6 +66,11 @@ export default function Footer() {
               <BottomNavigationAction label="Guardar" icon={<SaveIcon />} centered />
               <BottomNavigationAction label="Likear" icon={<ThumbUpIcon />} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon /> } onClick={handleClickCalendar} centered />
+              <BottomNavigationAction label="Explore" icon={ <Avatar 
+                onClick={ handleClickProfile }
+                src={auth.user.avatar}
+              />} centered /> 
+
             </>
           ) : isCalendarPage ? (
             <>
@@ -60,14 +78,36 @@ export default function Footer() {
               <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon color="primary"/> } onClick={handleClickCalendar} centered />
               <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
+              <BottomNavigationAction label="Explore" icon={ <Avatar 
+                onClick={ handleClickProfile }
+                src={auth.user.avatar}
+              />} centered />       
+             
+
             </>
+          ) : isBusquedaPage ? (
+            <>
+               <BottomNavigationAction label="Home" icon={<HomeIcon/>} onClick={handleClickHome} centered />
+              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
+              <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon/> } onClick={handleClickCalendar} centered />
+              <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
+              <BottomNavigationAction label="Explore" icon={ <Avatar 
+                onClick={ handleClickProfile }
+                src={auth.user.avatar}
+              />} centered />  
+            </>
+
           ) : (
             <>
               {/* Botones por defecto */}
-              <BottomNavigationAction label="Home" icon={<HomeIcon color="primary"/>} onClick={handleClickHome} centered />
+              <BottomNavigationAction label="Home" icon={<HomeIcon/>} onClick={handleClickHome} centered />
               <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon /> } onClick={handleClickCalendar} centered />
               <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
+              <BottomNavigationAction label="Explore" icon={ <Avatar 
+                onClick={ handleClickProfile }
+                src={auth.user.avatar}
+              />} centered /> 
             </>
           )}
         </BottomNavigation>

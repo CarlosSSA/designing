@@ -52,10 +52,10 @@ const UserProfile = () => {
     <div className="profile-container">
       
       <div className="profile-header">
-        <img src={user ? user.nombre || "ruta/default/avatar.jpg" : "ruta/default/avatar.jpg"} alt="Avatar del usuario" className="user-avatar" />
+        <img src={user ? user.avatar || "ruta/default/avatar.jpg" : "ruta/default/avatar.jpg"} alt="Avatar del usuario" className="user-avatar" />
         <div className="profile-info">
           <h2>{user ? user.nombre : ""}</h2>
-          <div className="profile-stats">
+          <div className="profile-stats" >
             <span>{user && user.recetas ? user.recetas.length : 0} publicaciones</span>
             <span>{user && user.followers ? user.followers.length : 0} seguidores</span>
             <span>{user && user.following ? user.following.length : 0} seguidos</span>
@@ -65,9 +65,9 @@ const UserProfile = () => {
 
       <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                   <Tabs value={value} onChange={handleChange} centered>
-                  <Tab label="Mis Recetas" />
-                  <Tab label="Me Gustan" />
-                  <Tab label="Favoritas" />            
+                  <Tab label="Mis Recetas" style={{ fontSize: '10px' }}/>
+                  <Tab label="Me Gustan" style={{ fontSize: '10px' }} />
+                  <Tab label="Favoritas" style={{ fontSize: '10px' }}/>            
                   </Tabs>
         </Box>
       

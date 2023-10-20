@@ -47,6 +47,7 @@ export const useAuthStore = () => {
                 nombre:datos.usuario.nombre,
                 email:datos.usuario.email,
                 uid:datos.usuario._id,
+                avatar:datos.usuario.avatarUrl,
                 recetasCalendar:calendarRecipesEspaña,
                 //... (otros campos)
             }));

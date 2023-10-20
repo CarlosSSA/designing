@@ -5,7 +5,7 @@
   
   /* Estilo para el footer flotante */
   .footer-paper {
-    position: fixed;
+    position: static;
     bottom: 0;
     left: 0;
     right: 0;
@@ -14,4 +14,8 @@
   /* Estilo para la navegación inferior */
   .footer-navigation {
     padding: 10px 0;
+  }
+
+  .avatar-icon {
+    margin: 0 auto;
   }

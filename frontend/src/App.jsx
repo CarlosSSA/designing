@@ -9,13 +9,14 @@ import Footer from './ui/Footer';
 
 
 
+
 export const RecipeApp = () => {
 
   return (
     <Provider store={store}>
       <BrowserRouter>
       <PrimarySearchAppBar/> 
-        <Container maxWidth="100%" disableGutters style={{paddingTop:'50px'}}>
+        <Container maxWidth="100%" disableGutters style={{paddingTop:'1px'}}>
           <AppRouter />
         <Footer />
         </Container>

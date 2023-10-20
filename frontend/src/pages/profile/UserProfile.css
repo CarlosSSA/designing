@@ -7,14 +7,17 @@
 .profile-header {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .user-avatar {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: 1px;
+  object-fit: cover;
 }
+
 
 .profile-info {
   flex: 1;
@@ -23,6 +26,7 @@
 .profile-stats {
   display: flex;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
 .recetas, .recetas-like, .recetas-guardadas {
@@ -30,3 +34,10 @@
   flex-wrap: wrap;
   gap: 10px;
 }
+
+span {
+
+  font-size: 10px;
+}
+
+
