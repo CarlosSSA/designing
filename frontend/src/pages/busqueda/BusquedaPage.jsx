@@ -8,6 +8,8 @@ import { useIngredientStore } from '../../hooks/useIngredientStore';
 import { useSelector } from 'react-redux';
 import ErrorBusqueda from '../home/ErrorBusqueda';
 import RecipeReviewCard from '../../ui/Tarjeta';
+import BlenderIcon from '@mui/icons-material/Blender';
+import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 
 
 
@@ -89,7 +91,9 @@ const BusquedaPage = () => {
             <p className="legend">Legend 3</p>
         </div>
     </Carousel>
-   <h3>Tipo Netflix</h3>  
+   <h3>Resto Filtros</h3> 
+    <BlenderIcon />
+    <OutdoorGrillIcon />  
 
     <Paper>
     <div>

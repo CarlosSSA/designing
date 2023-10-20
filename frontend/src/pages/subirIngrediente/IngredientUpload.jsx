@@ -4,6 +4,8 @@ import { uploadIngredientImage } from '../../hooks/useFireBase'
 import { Button } from '@mui/material';
 import { useIngredientStore } from '../../hooks/useIngredientStore';
 import { useSelector } from 'react-redux';
+import PieChart from '../../ui/PieChart';
+
 
 
 
@@ -155,6 +157,7 @@ const IngredientUpload = () => {
 
   return (
     <div className="ingredient-upload">
+        <PieChart />
       <form onSubmit={handleSubmit}>
         <div className="form-column">
           <div className="form-group">

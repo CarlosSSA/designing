@@ -124,7 +124,6 @@ const startAddRecetaCalendar = async({recipeid, uid, fecha}) => {
     //new
     const date = format(new Date(fecha), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
     console.log("nueva date con fns",date)
-    dispatch(onChecking())
 
     try {        
               
