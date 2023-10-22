@@ -16,7 +16,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAuthStore } from '../../hooks/useAuthStore';
 import Swal from 'sweetalert2';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect  } from "firebase/auth";
 import { GoogleLoginButton  } from "react-social-login-buttons";
 
 
@@ -46,7 +46,7 @@ export default function LoginInside() {
 
   // Login Social con Firebase
   const call_login_google = () => {
-    signInWithPopup(auth, provider)
+    signInWithPopup (auth, provider)
       .then(async (result) => {
         const user = result.user;
 
