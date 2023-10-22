@@ -11,6 +11,8 @@ const DificultadComponent = ({handleChange})=>{
             name="dificultad"
             value={value}
             onChange={handleChange}
+            style={{ transform: 'scale(2.5)' }}
+            size="large" 
         />
     </>
 

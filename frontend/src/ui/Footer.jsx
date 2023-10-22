@@ -46,6 +46,10 @@ export default function Footer() {
     navigate('/miperfil');
   };
 
+  const handleClickAddreceta = () => {
+    navigate('/crearReceta')
+  }
+
   
 
   return (
@@ -75,7 +79,7 @@ export default function Footer() {
           ) : isCalendarPage ? (
             <>
               <BottomNavigationAction label="Home" icon={<HomeIcon/>} onClick={handleClickHome} centered />
-              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
+              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} onClick={handleClickAddreceta} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon color="primary"/> } onClick={handleClickCalendar} centered />
               <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
               <BottomNavigationAction label="Explore" icon={ <Avatar 
@@ -88,7 +92,7 @@ export default function Footer() {
           ) : isBusquedaPage ? (
             <>
                <BottomNavigationAction label="Home" icon={<HomeIcon/>} onClick={handleClickHome} centered />
-              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
+              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} onClick={handleClickAddreceta} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon/> } onClick={handleClickCalendar} centered />
               <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
               <BottomNavigationAction label="Explore" icon={ <Avatar 
@@ -101,7 +105,7 @@ export default function Footer() {
             <>
               {/* Botones por defecto */}
               <BottomNavigationAction label="Home" icon={<HomeIcon/>} onClick={handleClickHome} centered />
-              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} centered />
+              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} onClick={handleClickAddreceta} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon /> } onClick={handleClickCalendar} centered />
               <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
               <BottomNavigationAction label="Explore" icon={ <Avatar 

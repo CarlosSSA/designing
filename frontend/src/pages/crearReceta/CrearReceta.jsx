@@ -149,24 +149,48 @@ const CrearReceta = () => {
   }
 
   return (
-    <Box>
-        <p>Crea tu receta</p>
-        <div>
-         <TitleComponent title={receta.nombre} handleChange={handleChange} />
-        </div>
-        <div>     
-        <DescripcionComponent descripcion={receta.descripcion} handleChange={handleChange}/> 
-        </div>    
-        <PorcionesComponent porciones={receta.porciones} handleChange={handleChange}/>
-        <DificultadComponent handleChange={handleChange}/>
-        <TimeComponent tiempo={receta.tiempo} handleChange={handleChange}/>
+    <Box className="container">
+        <Typography className="title">Crea tu receta</Typography>
         
+        <div className="textfield">
+            <TitleComponent title={receta.nombre} handleChange={handleChange} />
+        </div>
+        
+        <div className="textfield">     
+            <DescripcionComponent descripcion={receta.descripcion} handleChange={handleChange}/> 
+        </div>
+        
+        <div className="textfield">
+            <PorcionesComponent porciones={receta.porciones} handleChange={handleChange}/>
+        </div>
+        
+        <div className="textfield">
+            <DificultadComponent handleChange={handleChange}/>
+        </div>
+        
+        <div className="textfield">
+            <TimeComponent tiempo={receta.tiempo} handleChange={handleChange}/>
+        </div>
        
-        <IngredientForm ingredientes={receta.ingredientes} ingredientesDb = {allIngredients} addIngredient={addIngredient} handleChange={handleChange} />
-        <IngredientTable ingredients={receta.ingredientes} deleteItem={deleteItem}/>
-        <PasosForm pasos = {receta.pasos} addPaso={addPaso} handleChange={handleChange}/>
-        <PasosTable pasos={receta.pasos} deletePaso={deletePaso}  />
-        <Button onClick={() => recetaJson(receta) }>Crear Receta</Button>
+        <div className="textfield">
+            <IngredientForm ingredientes={receta.ingredientes} ingredientesDb = {allIngredients} handleChange={handleChange} />
+            <Button onClick={() => addIngredient(receta)}>Agregar Ingrediente</Button>
+        </div>
+        
+        <div className="textfield">
+            <IngredientTable ingredients={receta.ingredientes} deleteItem={deleteItem}/>
+        </div>
+        
+        <div className="textfield">
+            <PasosForm pasos = {receta.pasos} handleChange={handleChange}/>
+            <Button onClick={() => addPaso(receta)}>Agregar Paso</Button>
+        </div>
+        
+        <div className="textfield">
+            <PasosTable pasos={receta.pasos} deletePaso={deletePaso}  />
+        </div>
+        
+        <Button className="button" onClick={() => recetaJson(receta) }>Crear Receta</Button>
     </Box>    
     );
 };
