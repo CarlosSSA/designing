@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 
 
+
 // al pinchar en borrar no se borra el elemento
 // cuando llegar al obtenerRecetas, me da lo mismo, tengo que darle 2 veces
 
@@ -56,32 +57,26 @@ const UserCalendar = () => {
     }
   }, [recetasCalendario]);
 
-  const objetivoKcal = 2000;
-  const porcentajeProgreso = (valoresTotales.kcal / objetivoKcal) * 100;
+  const kcalObjetivo = 2000;
+  const porcentajeProgreso = (valoresTotales.kcal / kcalObjetivo) * 100;
+
+  //comprobamos que valoresTotales sea un número y que sea un número finito
   const esKcalValida = !isNaN(valoresTotales.kcal) && isFinite(valoresTotales.kcal);
 
     return (
 
       <>
-      <h1>Este es el calendario diario del usuario</h1>
+      <DatePickerSection recetasCalendario={recetasCalendario} obtenerRecetas={obtenerRecetas} kcalObjetivo={kcalObjetivo} />
+
       <Box>
         {esKcalValida ? (
           <>
-            <Typography variant="body1">
-              Llevas {valoresTotales.kcal} de {objetivoKcal} kcals objetivo ({porcentajeProgreso.toFixed(1)}%)
-            </Typography>
-            <LinearProgress variant="determinate" value={porcentajeProgreso} />
-            {porcentajeProgreso > 100 && (
-              <Alert severity="warning" sx={{ mt: 2 }}>
-                Te has pasado de kcals, te vas a poner PANSÓN
-              </Alert>
-            )}
+            
           </>
         ) : (
-          <Typography variant="body1">Añade alguna receta a tu Calendario, tu objetivo son {objetivoKcal} kcals diarias</Typography>
+          <Typography variant="body1">Añade alguna receta a tu Calendario, tu objetivo son {kcalObjetivo} kcals diarias</Typography>
         )}
       </Box>
-      <DatePickerSection recetasCalendario={recetasCalendario} obtenerRecetas={obtenerRecetas} />
     </>
 
     )

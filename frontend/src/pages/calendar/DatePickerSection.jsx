@@ -6,7 +6,8 @@ import { useAuthStore } from '../../hooks/useAuthStore';
 import { useSelector } from 'react-redux';
 
 
-function DatePickerSection({recetasCalendario, obtenerRecetas}) {
+
+function DatePickerSection({recetasCalendario, obtenerRecetas, kcalObjetivo}) {
   const currentDate = new Date();
   const [selectedDate, setSelectedDate] = useState(new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate())));
   const [showDailyRecipes, setShowDailyRecipes] = useState(false);
@@ -38,9 +39,13 @@ function DatePickerSection({recetasCalendario, obtenerRecetas}) {
         <p style={{ display: "inline-block" }}>{selectedDate.toUTCString().split(' ').slice(0, 4).join(' ')}</p>
         <button onClick={sigFecha}>&gt;</button>
       </div>
-      {recetasCalendario && showDailyRecipes && 
-         <DailyRecipes fecha={selectedDate} recetas={recetasCalendario} obtenerRecetas={obtenerRecetas} />
-      }      
+     
+      {recetasCalendario && showDailyRecipes && (
+                 
+          <DailyRecipes fecha={selectedDate} recetas={recetasCalendario} obtenerRecetas={obtenerRecetas} kcalObjetivo={kcalObjetivo} />
+        
+      )}
+      
     </>
   );
 }

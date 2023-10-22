@@ -24,6 +24,8 @@ const BotonCalendario = ({ recetaID, autorID }) => {
     if (value) {
       const date = value.$d;
       const formattedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds())).toISOString();
+      const friendlyDate = format(new Date(formattedDate), 'dd/MM/yyyy');
+
 
       try {
         startAddRecetaCalendar({
@@ -32,15 +34,13 @@ const BotonCalendario = ({ recetaID, autorID }) => {
           recipeid: recetaID
         });
         Swal.fire(
-          'Receta agendada correctamente',
-          `You clicked the button! En la fecha ${formattedDate}`,
+          `Receta Guardada correctamente`,
+          `A fecha: ${friendlyDate}`,
           'success'
         );
       } catch (error) {
         console.error("Algo se ha roto actualizando las recetas del calendario", error);
       }
-
-      window.location.reload();
     }
   }, [value]);
 
