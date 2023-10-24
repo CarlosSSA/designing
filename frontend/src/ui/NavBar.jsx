@@ -16,11 +16,13 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 import MenuBurger from './MenuBurger';
 import { Avatar, Button } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BuscadorFake from './BuscadorFake';
 import { useEffect } from 'react';
 import { useIngredientStore } from '../hooks/useIngredientStore';
 import { useState } from 'react';
+import { onLoadAllIngredients } from '../store/ingredients/ingredientsSlice';
+
 
 
 
@@ -28,6 +30,7 @@ import { useState } from 'react';
 export default function PrimarySearchAppBar() {
 
   const [listaDeIngredientes, setListaDeIngredientes] = useState([]);
+  const dispatch = useDispatch();
 
   const tuFuncionDeBusqueda = (valorDeBusqueda) => {
     console.log(valorDeBusqueda);
@@ -47,6 +50,7 @@ export default function PrimarySearchAppBar() {
 
       console.log("tuListaDeIngredientes", nombresDeIngredientes);
       console.log("tuListaDeIngredientes en Estado", listaDeIngredientes);
+      dispatch(onLoadAllIngredients(nombresDeIngredientes))
     };
 
     fetchData();

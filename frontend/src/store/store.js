@@ -18,6 +18,8 @@ import storage from 'redux-persist/lib/storage';
 
 import authSlice from './auth/authSlice';
 import recipesSlice from './recipes/recipesSlice';
+import ingredientsSlice from './ingredients/ingredientsSlice';
+
 
 const persistConfig = {
   key: 'root',
@@ -27,13 +29,15 @@ const persistConfig = {
 
 const rootReducer = {
   auth: authSlice,
-  recipes: recipesSlice
+  recipes: recipesSlice,
+  ingredients: ingredientsSlice
 };
 
 
 const persistedReducer = {
   auth: persistReducer(persistConfig, authSlice),
-  recipes: recipesSlice
+  recipes: recipesSlice,
+  ingredients: ingredientsSlice
 };
 
 export const store = configureStore({

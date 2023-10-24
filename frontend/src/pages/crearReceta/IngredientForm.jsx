@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useIngredientStore } from "../../hooks/useIngredientStore";
 
 
-const IngredientForm = ({addIngredient, handleChange, ingredientesDb}) => {
+const IngredientForm = ({addIngredient, handleChange, totalIngredients}) => {
   
     const [ingredient, setIngredient] = useState("");
     const [amount, setAmount] = useState("");
@@ -18,18 +18,22 @@ const IngredientForm = ({addIngredient, handleChange, ingredientesDb}) => {
 
     //how to create a loop?
 
-    const totalIngredientes = ingredientesDb    
     
-    const options = totalIngredientes.map(item => ({ nombre: item.nombre, id: item._id })) 
-    // Filtramos y se queda así
-    /*
-    [{nombre:'Tomate', id;'13123adsd},{},{}...]
-    */ 
+    
+    const options = totalIngredients
+
+    useEffect(() => {
+      console.log("que me llega en totalIngredients", totalIngredients)
+    
+      
+    }, [])
+    
+   
 
     const handleSubmit = (event, estado) => {
       event.preventDefault();    
       //actualizo la propiedad de ingredientes con el ID del Ingrediente y su cantidad
-      addIngredient({ ingrediente:estado.id, cantidad:amount }); // [{}]
+      addIngredient({ value }); // [{}]
       setIngredient("");
       setAmount("");
     };
@@ -43,7 +47,7 @@ const IngredientForm = ({addIngredient, handleChange, ingredientesDb}) => {
        
           <Autocomplete                
                 options={options}
-                getOptionLabel={(option) => option.nombre}
+                getOptionLabel={(option) => option}
                 renderInput={(params) => <TextField {...params} label="Elige una opción" />}
                 value={value}
                 onChange={(event, newValue) => {

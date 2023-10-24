@@ -3,19 +3,18 @@ import { useState } from "react";
 
 
 const PasosForm = ({addPaso, handleChange}) => {
-    const [paso, setPaso] = useState("");  
-    
-    const handleSubmit = (event) => {
-      event.preventDefault();      
-      addPaso(paso);
-      setPaso("")
-      console.log("se lanza un handlesubmit desde PasosForm");
-      
-    };
-   
+  const [paso, setPaso] = useState("");  
   
-    return (
-      <form onSubmit={handleSubmit} style={{display: 'flex', justifyContent: 'space-between'}}>
+  const handleSubmit = (event) => {
+    event.preventDefault();      
+    addPaso(paso); // Esto agrega el paso al array de pasos en el componente padre
+    handleChange('pasos', [...pasos, paso]); // Esto actualiza el estado de los pasos en el componente padre
+    setPaso("")
+    console.log("se lanza un handlesubmit desde PasosForm");
+  };
+ 
+  return (
+    <form onSubmit={handleSubmit} style={{display: 'flex', justifyContent: 'space-between'}}>
       <FormControl>
         <div>
           <TextField
@@ -30,9 +29,9 @@ const PasosForm = ({addPaso, handleChange}) => {
             Ave
           </Button>
         </div>
-        </FormControl>  
-      </form>
-    );
-  };
+      </FormControl>  
+    </form>
+  );
+};
 
-export default PasosForm
+export default PasosForm;
