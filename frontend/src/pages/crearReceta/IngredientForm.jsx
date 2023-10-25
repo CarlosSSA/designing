@@ -3,58 +3,54 @@ import React, { useEffect, useState } from "react";
 import { useIngredientStore } from "../../hooks/useIngredientStore";
 
 
-const IngredientForm = ({addIngredient, handleChange, totalIngredients}) => {
+const IngredientForm = ({addIngredient, totalIngredients}) => {
   
-    const [ingredient, setIngredient] = useState("");
-    const [amount, setAmount] = useState("");
-    //Para controlar las unidades
-    const [unit, setUnit] = useState(1);    
-    const [value, setValue] = useState();     
+  const [ingredient, setIngredient] = useState("");
+  const [amount, setAmount] = useState("");
+  const [unit, setUnit] = useState(1);
+  const nombres = totalIngredients.map(item => item.nombre);
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
 
-    // Recibo todos los ingredientes de la BBDD
-    /*
-    [{cantidad, descripcion,grasas, hcs, nombre, proteinas, id},{},{}...]
-    */
-
-    //how to create a loop?
-
-    
-    
-    const options = totalIngredients
-
-    useEffect(() => {
-      console.log("que me llega en totalIngredients", totalIngredients)
-    
-      
-    }, [])
-    
-   
-
-    const handleSubmit = (event, estado) => {
-      event.preventDefault();    
-      //actualizo la propiedad de ingredientes con el ID del Ingrediente y su cantidad
-      addIngredient({ value }); // [{}]
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  
+    if (selectedIngredient) {
+      // Extract the name and URL from the selected ingredient object
+      const { nombre: name, imagenUrl: imageUrl } = selectedIngredient;
+  
+      // Create a new ingredient object
+      const newIngredient = {
+        name,
+        amount,
+        unit,
+        imageUrl, // Pass the URL to the new ingredient object
+      };
+  
+      // Send to the parent component
+      addIngredient(newIngredient);
+  
+      // Clear local states
       setIngredient("");
       setAmount("");
-    };
-
-    // el newValue evalua a {nombre: 'Huevo', id: '63810a897ef4db1713b09135'}
-  
+      setUnit(1);
+      setSelectedIngredient(null); // Reset the selected ingredient
+    }
+  };  
   
     return (      
-      <form onSubmit={(event) => handleSubmit(event, value)} style={{display: 'flex', justifyContent: 'space-between'}}>
+      <form onSubmit={handleSubmit} style={{display: 'flex', justifyContent: 'space-between'}}>
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">        
        
-          <Autocomplete                
-                options={options}
-                getOptionLabel={(option) => option}
-                renderInput={(params) => <TextField {...params} label="Elige una opción" />}
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);                  
-                }}                 
-                
-            />
+        <Autocomplete
+          options={totalIngredients}
+          getOptionLabel={(option) => option.nombre} // Display the ingredient name
+          renderInput={(params) => <TextField {...params} label="Elige una opción" />}
+          value={selectedIngredient}
+          onChange={(event, newValue) => {
+            setSelectedIngredient(newValue);
+          }}
+        />
             <TextField
                 label="Cantidad"
                 value={amount}
@@ -68,7 +64,7 @@ const IngredientForm = ({addIngredient, handleChange, totalIngredients}) => {
                 id="demo-select-small"
                 value={unit}
                 label="Unidades"
-                onChange={handleChange}
+                onChange={(event) => setUnit(event.target.value)} // ajuste aquí
                 required
             >                
                 <MenuItem value={1}>g</MenuItem>
@@ -76,8 +72,6 @@ const IngredientForm = ({addIngredient, handleChange, totalIngredients}) => {
                 <MenuItem value={3}>Taza</MenuItem>
                 <MenuItem value={4}>Cucharada</MenuItem>
             </Select>
-    
-
 
             <Button type="submit" variant="contained" color="primary">
             Agregar
@@ -87,4 +81,4 @@ const IngredientForm = ({addIngredient, handleChange, totalIngredients}) => {
     );
   };
 
-export default IngredientForm
+export default IngredientForm;

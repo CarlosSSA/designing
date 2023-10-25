@@ -1,17 +1,25 @@
 import { Table,TextField, TableBody, TableCell, TableRow, Paper, Button  } from "@mui/material";
+import { useEffect } from "react";
 
 
-const IngredientTable = ({ ingredients, deleteItem }) => (
-    
+const IngredientTable = ({ ingredients, deleteItem }) => {
+  useEffect(() => {
+    console.log("que recibo en ingredients?", ingredients);
+  }, [ingredients]);
+
+  return (
     <Paper>
       <Table>
         <TableBody>
           {ingredients.map((ingredient, index) => (
             <TableRow key={index}>
-              <TableCell>{ingredient.ingredient}</TableCell>
-              <TableCell>{ingredient.cantidad}</TableCell>
               <TableCell>
-              <Button onClick={() => deleteItem(ingredients, index) }>Delete</Button>
+                <img src={ingredient.imageUrl} alt={ingredient.name} style={{ width: '50px', height: 'auto' }} />
+              </TableCell>
+              <TableCell>{ingredient.name}</TableCell>
+              <TableCell>{ingredient.amount}</TableCell>
+              <TableCell>
+                <Button onClick={() => deleteItem(ingredients, index)}>Delete</Button>
               </TableCell>
             </TableRow>
           ))}
@@ -19,9 +27,8 @@ const IngredientTable = ({ ingredients, deleteItem }) => (
       </Table>
     </Paper>
   );
+};
 
-
-
-export default IngredientTable
+export default IngredientTable;
 
 

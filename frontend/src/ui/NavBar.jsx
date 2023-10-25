@@ -50,7 +50,7 @@ export default function PrimarySearchAppBar() {
 
       console.log("tuListaDeIngredientes", nombresDeIngredientes);
       console.log("tuListaDeIngredientes en Estado", listaDeIngredientes);
-      dispatch(onLoadAllIngredients(nombresDeIngredientes))
+      dispatch(onLoadAllIngredients(ingredientesDb))
     };
 
     fetchData();

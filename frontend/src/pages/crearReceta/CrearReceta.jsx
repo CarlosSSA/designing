@@ -13,6 +13,7 @@ import "./crearReceta.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useRecipeStore } from "../../hooks/useRecipeStore";
 import { useIngredientStore } from "../../hooks/useIngredientStore";
+import { uploadStepImage } from "../../hooks/useFireBase";
 
 
 
@@ -20,7 +21,7 @@ import { useIngredientStore } from "../../hooks/useIngredientStore";
 
 const CrearReceta = () => {
   const { uid } = useSelector(state => state.auth.user);
-  const ingredientesTotales = useSelector(state => state.ingredients.totalingredients);
+  const ingredientesTotales = useSelector(state => state.ingredients.totalingredients.ingredientes);
 
   const { startCreateRecipe, startFormRecipe } = useRecipeStore();
 
@@ -29,8 +30,6 @@ const CrearReceta = () => {
   useEffect(() => {
     setTotalIngredientes(ingredientesTotales);
   }, [ingredientesTotales]);
-
-
 
   const [receta, setReceta] = useState({
     nombre: "",
@@ -73,9 +72,25 @@ const CrearReceta = () => {
     });
   };
 
-  const recetaJson = (receta) => {
-    const recetaJSON = JSON.stringify(receta);
-    startCreateRecipe(receta);
+  const recetaJson = async (receta) => {
+    const uploadedImages = await Promise.all(receta.pasos.map(async paso => {
+      if (paso.imgURL.startsWith('data:image')) {
+        const url = await uploadStepImage(paso.imgURL);
+        return url;
+      }
+      return paso.imgURL;
+    }));
+
+    const updatedReceta = {
+      ...receta,
+      pasos: receta.pasos.map((paso, index) => ({
+        ...paso,
+        imgURL: uploadedImages[index]
+      }))
+    };
+
+    const recetaJSON = JSON.stringify(updatedReceta);
+    startCreateRecipe(updatedReceta);
   };
 
   const deletePaso = (paso, index) => {
@@ -113,8 +128,7 @@ const CrearReceta = () => {
         <IngredientTable ingredients={receta.ingredientes} deleteItem={deleteItem} />
       </div>
       <div className="textfield">
-        <PasosForm pasos={receta.pasos} handleChange={handleChange} />
-        <Button onClick={() => addPaso(receta)}>Agregar Paso</Button>
+        <PasosForm addPaso={addPaso} handleChange={handleChange} />
       </div>
       <div className="textfield">
         <PasosTable pasos={receta.pasos} deletePaso={deletePaso} />
