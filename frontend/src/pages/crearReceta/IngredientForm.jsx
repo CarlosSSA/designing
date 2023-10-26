@@ -11,20 +11,30 @@ const IngredientForm = ({addIngredient, totalIngredients}) => {
   const nombres = totalIngredients.map(item => item.nombre);
   const [selectedIngredient, setSelectedIngredient] = useState(null);
 
+  useEffect(() => {
+    console.log("totalIngredients",totalIngredients )
+  
+   
+  }, [])
+  
+
   
   const handleSubmit = (event) => {
     event.preventDefault();
   
     if (selectedIngredient) {
       // Extract the name and URL from the selected ingredient object
-      const { nombre: name, imagenUrl: imageUrl } = selectedIngredient;
-  
+      const { nombre: name, imagenUrl: imageUrl, unidad } = selectedIngredient;
+      const gramsEquivalent = amount * unidad[unit];
+
       // Create a new ingredient object
       const newIngredient = {
+        ingrediente: selectedIngredient._id,
         name,
-        amount,
-        unit,
-        imageUrl, // Pass the URL to the new ingredient object
+        cantidad: parseFloat(amount),
+        unidad:unit,
+        imageUrl,
+        gramsEquivalent, // Pass the grams equivalence to the new ingredient object
       };
   
       // Send to the parent component
@@ -43,35 +53,41 @@ const IngredientForm = ({addIngredient, totalIngredients}) => {
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">        
        
         <Autocomplete
-          options={totalIngredients}
-          getOptionLabel={(option) => option.nombre} // Display the ingredient name
-          renderInput={(params) => <TextField {...params} label="Elige una opción" />}
-          value={selectedIngredient}
-          onChange={(event, newValue) => {
-            setSelectedIngredient(newValue);
-          }}
+            options={totalIngredients}
+            getOptionLabel={(option) => option.nombre}
+            renderInput={(params) => <TextField {...params} label="Ingrediente" />}
+            value={selectedIngredient}
+            onChange={(event, newValue) => {
+                setSelectedIngredient(newValue);
+            }}
         />
-            <TextField
-                label="Cantidad"
-                value={amount}
-                onChange={(event) => setAmount(event.target.value)}
-                margin="normal"
-            />
+       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <TextField
+              label="Cantidad"
+              value={amount}
+              onChange={(event) => setAmount(event.target.value)}
+              margin="normal"
+          />
+      </FormControl>
          
-            <InputLabel id="demo-select-small">Unidad</InputLabel>
+      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="unidad-label">Unidad</InputLabel>
             <Select
-                labelId="demo-select-small"
-                id="demo-select-small"
+                labelId="unidad-label"
+                id="select-unidad"
                 value={unit}
                 label="Unidades"
-                onChange={(event) => setUnit(event.target.value)} // ajuste aquí
+                onChange={(event) => setUnit(event.target.value)}
                 required
-            >                
-                <MenuItem value={1}>g</MenuItem>
-                <MenuItem value={2}>Pieza</MenuItem>
-                <MenuItem value={3}>Taza</MenuItem>
-                <MenuItem value={4}>Cucharada</MenuItem>
+            >
+                {selectedIngredient && Object.entries(selectedIngredient.unidad).map(([key, value]) => {
+                    if (value !== 0) {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>;
+                    }
+                    return null;
+                })}
             </Select>
+        </FormControl>
 
             <Button type="submit" variant="contained" color="primary">
             Agregar

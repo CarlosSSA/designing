@@ -9,8 +9,7 @@ const TimeComponent = ({ tiempo, handleChange }) => {
 
   const handleTimeChange = (event) => {
       const { name, value } = event.target;
-      setTime(value);
-      handleChange(name, value);
+      handleChange("tiempo", value);
   };
 
   return (

@@ -17,7 +17,7 @@ const IngredientTable = ({ ingredients, deleteItem }) => {
                 <img src={ingredient.imageUrl} alt={ingredient.name} style={{ width: '50px', height: 'auto' }} />
               </TableCell>
               <TableCell>{ingredient.name}</TableCell>
-              <TableCell>{ingredient.amount}</TableCell>
+              <TableCell>{ingredient.amount} x {ingredient.unit} ({ingredient.gramsEquivalent}g)</TableCell>
               <TableCell>
                 <Button onClick={() => deleteItem(ingredients, index)}>Delete</Button>
               </TableCell>

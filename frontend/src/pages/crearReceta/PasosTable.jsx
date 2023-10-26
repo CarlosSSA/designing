@@ -8,7 +8,7 @@ const PasosTable = ({ pasos, deletePaso }) => {
     <List>
       {pasos.map((paso, index) => (
         <ListItem key={index}>
-          <ListItemText primary={paso.descripcion} />
+          <ListItemText primary={paso.texto} />
           {paso.imgURL && (
             <img src={paso.imgURL} alt={`Imagen Paso ${index}`} style={{ maxWidth: '100px', maxHeight: '100px' }} />
           )}

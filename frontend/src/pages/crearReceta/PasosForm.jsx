@@ -13,12 +13,14 @@ const PasosForm = ({ addPaso, handleChange }) => {
     const file = event.target.files[0];
     if (file) {
       console.log("Nombre del archivo:", file.name);
-      // Paso 1: Obtener una previsualización local de la imagen
+      // Paso 1: FileReader = API navegadores, nos da acceso a .readAsDataURL donde el result nos dará una URL tipo data:... en base 64 incrustada directamente en el navegador
       const reader = new FileReader();
+      reader.readAsDataURL(file);
+      // cuando termina guarda esa url codificada en base64 en el estado
       reader.onloadend = () => {
         setImagenPaso(reader.result); // Esto establecerá la URL de previsualización local en el estado
       };
-      reader.readAsDataURL(file);
+      
 
       // Paso 2: Cargar la imagen en Firebase
       try {
@@ -35,7 +37,7 @@ const PasosForm = ({ addPaso, handleChange }) => {
 
     if (paso.trim() !== "") {
       const nuevoPaso = {
-        descripcion: paso,
+        texto: paso,
         imgURL: imagenPaso,
       };
 
