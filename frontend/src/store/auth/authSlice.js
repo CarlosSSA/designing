@@ -26,6 +26,7 @@ export const authSlice = createSlice({
         console.log("payload", payload)
         state.errorMessage = undefined;
     }, 
+
     //intento de thunk un poco fail, ver midu
     onLogout: (state, {payload}) => {
       state.status = 'no autenticado';
@@ -35,6 +36,18 @@ export const authSlice = createSlice({
     onclearErrorMessage: (state) => {
       state.errorMessage = undefined
     },
+
+    onLikeRecipe: (state, action) => {
+      
+      if (!state.likedRecipes.includes(action.payload)) {
+        state.user.likedRecipes.push(action.payload);
+      }
+    },
+    onUnlikeRecipe: (state, action) => {
+      
+      state.likedRecipes = state.user.likedRecipes.filter(id => id !== action.payload);
+    }
+  },
     onPremium: (state) => {  //necesito identificar al usuario por payload?
       state.premium = true
     },
@@ -47,9 +60,9 @@ export const authSlice = createSlice({
     },
 
   },
-})
+)
 
 // Action creators are generated for each case reducer function
-export const { onChecking, onLogin, onThunk, onLogout, onclearErrorMessage, onPremium, onLoosePremium, onValoresTotales } = authSlice.actions
+export const { onLikeRecipe, onUnlikeRecipe, onChecking, onLogin, onThunk, onLogout, onclearErrorMessage, onPremium, onLoosePremium, onValoresTotales } = authSlice.actions
 
 export default authSlice.reducer

@@ -41,16 +41,16 @@ export const useAuthStore = () => {
             console.log("startLogin, el BE me devuelve este data: ", datos);
             
             localStorage.setItem('token',datos.token);
-            localStorage.setItem('token-init-date',new Date().getTime());        
+            localStorage.setItem('token-init-date',new Date().getTime()); 
+            // Saco el password del estado
+            const { password, ...userWithoutPassword } = datos.usuario;
+
             
             dispatch(onLogin({
-                nombre:datos.usuario.nombre,
-                email:datos.usuario.email,
-                uid:datos.usuario._id,
-                avatar:datos.usuario.avatarUrl,
-                recetasCalendar:calendarRecipesEspaña,
-                //... (otros campos)
+                ...userWithoutPassword,
+                recetasCalendar: calendarRecipesEspaña
             }));
+
         } else {
             console.log("data: ", datos)
             console.log("Error: data.usuario o data.usuario.calendarRecipes no definidos", datos);
@@ -161,7 +161,9 @@ const startAddRecetaCalendar = async({recipeid, uid, fecha}) => {
         try {        
                   
             const {data} = await recetaApi.post('/auth/usuarioIndividual', {uid})
-            console.log("Usuario individual, recibo desde el BE:",data);                 
+            console.log("Usuario individual, recibo desde el BE:",data);   
+            dispatch( onLogin({ usuario: data.usuario}) );
+              
             return data.usuario
     
         } catch (error) {
@@ -281,7 +283,7 @@ const startGetUsuarioCalendarRecipes = async({ uid }) => {
     }
 }
 
-    
+   
 
   return {
 
@@ -305,7 +307,8 @@ const startGetUsuarioCalendarRecipes = async({ uid }) => {
     startUpdateUserFavs,
     startUpdateHarris,
     startGetKcalsPerWeek,
-    startGetUsuarioCalendarRecipes
+    startGetUsuarioCalendarRecipes,
+    
     
   }
 

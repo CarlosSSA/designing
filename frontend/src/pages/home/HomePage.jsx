@@ -22,6 +22,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { onSetRecipeFilter, onClearRecipeFilter, onLoadUserRecipes } from '../../store/recipes/recipesSlice.js';
 import ErrorBusqueda from './ErrorBusqueda.jsx';
+import { useAuthStore } from '../../hooks/useAuthStore.js';
+
 
 
 // Hacer una llamada y filtrar las ultimas 20 recetas por fecha
@@ -31,10 +33,12 @@ const theme = createTheme();
 
 export default function HomePage() { 
   const {startAllRecipes} = useRecipeStore();
-  const [recetasiniciales, setRecetasIniciales] = useState([])
-  const [userLikedRecipes, setUserLikedRecipes] = useState([]);
+  const [recetasiniciales, setRecetasIniciales] = useState([])  
   const [userFavRecipes, setUserFavRecipes] = useState([]);
+  const [miUsuario, setMiUsuario] = useState();
+
   const usuario = useSelector(state => state.auth.user);
+  const [userLikedRecipes, setUserLikedRecipes] = useState(usuario.likedRecipes);
 
   //Filtro de recetas del buscador
   const dispatch = useDispatch();
@@ -42,6 +46,8 @@ export default function HomePage() {
   const recipeFilter = useSelector(state => state.recipes.recipeFilter);
   const recipes = useSelector(state => state.recipes.recipes);
   const errorBusqueda = useSelector(state => state.recipes.error);
+  const {startUsuarioIndividual} = useAuthStore();
+
 
  
 
@@ -62,25 +68,9 @@ export default function HomePage() {
       obtenerRecetasXNombre();
   }, [recipeFilter]); 
 
-/*
-  useEffect(() => {
-    const obtenerRecetas = async () => {
-      const allRecipes = await startAllRecipes();      
-      console.log("Esto me hace el useEffect de la Home?: ", allRecipes);
-      setRecetasIniciales(allRecipes)
-      setUserLikedRecipes(usuario.likedRecipes)
-      setUserFavRecipes(usuario.favRecipes)
-      
-    };
-    obtenerRecetas();
-    console.log("usuario desde la HOME, que me llega?", usuario)
-    console.log("usuario uid", usuario.uid)
-    console.log("esto da algo? inicialmente?", usuario.likedRecipes)
-    
-  }, [])  
-
-  */
-
+  
+  
+  
 
   return (
     <ThemeProvider theme={theme}>

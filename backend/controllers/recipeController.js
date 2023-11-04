@@ -323,7 +323,8 @@ const crearReceta = async (req,res) => {
         
          if (recipe && recipe.likes.includes(userLike)) { 
            
-          recipe.likes = recipe.likes.filter(id => id.toString() !== userLike) // tiene que ser un [uid,uid...]
+          recipe.likes = recipe.likes.filter(id => id && id.toString() !== userLike) // tiene que ser un [uid,uid...]
+
           recipe.save();  
           
        
