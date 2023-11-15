@@ -162,7 +162,6 @@ const startAddRecetaCalendar = async({recipeid, uid, fecha}) => {
                   
             const {data} = await recetaApi.post('/auth/usuarioIndividual', {uid})
             console.log("Usuario individual, recibo desde el BE:",data);   
-            dispatch( onLogin({ usuario: data.usuario}) );
               
             return data.usuario
     

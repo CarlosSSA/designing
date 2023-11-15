@@ -134,7 +134,7 @@ const IngredientSchema = new Schema({
   },
   vitaminaB5: {
     cantidad: { type: Number, default: 0 },
-    unidad: { type: String, default: 'miligramos' }
+    unidad: { type: String, default: 'microgramos' }
   },
   vitaminaB7: {
     cantidad: { type: Number, default: 0 },

@@ -50,16 +50,16 @@ const MiDiario = () => {
 
     const fetchKcals = async () => {
         console.log("lanzo la funcion fetchKcals")
-        console.log("lanzo la funcion fetchKcals uid", user.uid) //undefined
+        console.log("lanzo la funcion fetchKcals uid", user._id) //undefined
         console.log("lanzo la funcion fetchKcals esISOweeks", esISOweeks.length)
         console.log("lanzo la funcion fetchKcals esISOweeks", esISOweeks)
 
-        if (user.uid && esISOweeks.every(date => typeof date === 'string' && date !== '0')) {
+        if (user._id && esISOweeks.every(date => typeof date === 'string' && date !== '0')) {
             console.log("debería estar llamando a startGetKcalsPerWeek dentro del if")
-            console.log("le pasaria uid", user.uid)
+            console.log("le pasaria uid", user._id)
             console.log("le pasaria datesArray", esISOweeks)
             
-            const {kcals} = await startGetKcalsPerWeek({ uid: user.uid, datesArray: esISOweeks });
+            const {kcals} = await startGetKcalsPerWeek({ uid: user._id, datesArray: esISOweeks });
             
             setKcalData(kcals);
             

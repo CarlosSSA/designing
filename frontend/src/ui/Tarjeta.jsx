@@ -51,6 +51,7 @@ const navigate = useNavigate();
 const dispatch = useDispatch();
 
 
+
 const { startUpdateRecipeLikes } = useRecipeStore(); 
 const {startUpdateUserLikes, startUpdateUserFavs} = useAuthStore(); 
 
@@ -252,6 +253,7 @@ return (
         image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdcKQZxEQg-EWoF50h2Nk6lLYLL34BBUwi7_7fqsdwBQ&s"
         alt="Paella dish"
       />
+
       
       <CardContent>
         <Typography variant="body2" color="text.secondary">

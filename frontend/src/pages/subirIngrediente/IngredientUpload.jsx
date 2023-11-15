@@ -159,7 +159,6 @@ const IngredientUpload = () => {
 
   return (
     <div className="ingredient-upload">
-        <GraficoSuperior />
      
       <form onSubmit={handleSubmit}>
 
@@ -333,7 +332,7 @@ const IngredientUpload = () => {
           </div>
 
           <div className="form-group">
-              <label>Unidad - Acido Folico: (microgramos)</label>
+              <label>Unidad - Acido Folico (B9): (microgramos)</label>
               <input type="number" step = "any" min = "0" name="acidoFolico.cantidad" onChange={handleChange} />
           </div>
 
@@ -358,7 +357,7 @@ const IngredientUpload = () => {
           </div>
 
           <div className="form-group">
-              <label>Unidad - Vitamina B5: (miligramos)</label>
+              <label>Unidad - Vitamina B5: (microgramos)</label>
               <input type="number" step = "any" min = "0" name="vitaminaB5.cantidad" onChange={handleChange} />
           </div>
 

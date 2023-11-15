@@ -18,11 +18,11 @@ const GraficoPeso = () => {
 
     useEffect(() => {
         const obtenerUsuario = async () => {
-          const miUsuario = await startUsuarioIndividual({uid: user.uid});
+          const miUsuario = await startUsuarioIndividual({uid: user._id});
           if(miUsuario){
             setWeights(miUsuario.registroPeso.pesos);
             setDates(miUsuario.registroPeso.fechas);
-            setStateUid(user.uid);
+            setStateUid(user._id);
             console.log(" UseEffect en Grafico Peso me llega esto del usuario", miUsuario)
         }
         };

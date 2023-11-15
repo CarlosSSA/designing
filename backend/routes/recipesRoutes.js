@@ -16,7 +16,9 @@ import {
   updateRecipeLikes,
   updateRecipeSteps,
   getRecetaByName,
-  searchByIngredientName
+  searchByIngredientName,
+  updateRecipeName,
+  updateRecipeTime
 } from '../controllers/recipeController.js';
 
 // Creamos el objeto Router
@@ -59,5 +61,7 @@ router.post('/getRecetaIndividualPost', getRecetaIndividualPost);
 router.post('/updateRecipeComments', updateRecipeComments);
 router.post('/updateRecipeSteps', updateRecipeSteps);
 router.post('/searchByIngredientName', searchByIngredientName);
+router.post('/updateRecipeName', updateRecipeName);
+router.post('/updateRecipeTime', updateRecipeTime);
 
-export default router;
+export default router

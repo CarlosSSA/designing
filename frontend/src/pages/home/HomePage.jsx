@@ -68,7 +68,11 @@ export default function HomePage() {
       obtenerRecetasXNombre();
   }, [recipeFilter]); 
 
-  
+  useEffect(() => {
+    if (usuario === null) {
+      dispatch(onLogout());
+    }
+  }, []) 
   
   
 

@@ -32,6 +32,8 @@ export default function Footer() {
   const isRecipePage = location.pathname.includes('/recipe/');
   const isCalendarPage = location.pathname.includes('/userCalendar');
   const isBusquedaPage = location.pathname.includes('/busquedaPage');
+  const isMidiarioPage = location.pathname.includes('/midiario');
+
 
 
   const handleClickCalendar = (event) => {
@@ -101,7 +103,21 @@ export default function Footer() {
               />} centered />  
             </>
 
-          ) : (
+          ) : isMidiarioPage ? (
+            <>
+               <BottomNavigationAction label="Home" icon={<HomeIcon/>} onClick={handleClickHome} centered />
+              <BottomNavigationAction label="AddReceta" icon={<AddIcon />} onClick={handleClickAddreceta} centered />
+              <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon/> } onClick={handleClickCalendar} centered />
+              <BottomNavigationAction label="Explore" icon={<ExploreIcon />} centered />
+              <BottomNavigationAction label="Explore" icon={ <Avatar 
+                onClick={ handleClickProfile }
+                src={auth.user.avatar}
+              />} centered />  
+            </>
+
+          )       
+          
+          : (
             <>
               {/* Botones por defecto */}
               <BottomNavigationAction label="Home" icon={<HomeIcon/>} onClick={handleClickHome} centered />

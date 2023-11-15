@@ -213,6 +213,38 @@ export const useRecipeStore = () => {
         
     }
 
+    const startUpdateRecipeName = async( {rid,name} ) => {  
+    
+        try {  
+            console.log(`Vamos a ver qué envío al BE para el cambio de nombre de la receta name: ${name} rid: ${rid} `)
+            
+            const {data} = await recetaApi.post('/recipe/updateRecipeName',{rid,name})   
+                   
+            console.log("startUpdateRecipeName Hook: Lo que me devuelve el BE", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema cambiando el nombre de la receta", error);
+        }
+            
+        
+    }
+
+    const startUpdateRecipeTime = async( {rid,tiempo} ) => {  
+    
+        try {  
+            console.log(`Vamos a ver qué envío al BE para el cambio de tiempo de la receta, tiempo: ${tiempo} rid: ${rid} `)
+            
+            const {data} = await recetaApi.post('/recipe/updateRecipeTime',{rid,tiempo})   
+                   
+            console.log("startUpdateRecipeName Hook: Lo que me devuelve el BE", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema cambiando el tiempo de la receta", error);
+        }
+            
+        
+    }
+
     
 
     
@@ -231,7 +263,10 @@ export const useRecipeStore = () => {
         startUpdateRecipeComments,
         startUpdateRecipeSteps,
         startGetRecetaByName,
-        startSearchByIngredientName
+        startSearchByIngredientName,
+        startUpdateRecipeName,
+        startUpdateRecipeTime,
+        
         
         
     }

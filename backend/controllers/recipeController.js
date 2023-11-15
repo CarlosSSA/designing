@@ -476,6 +476,74 @@ const crearReceta = async (req,res) => {
         }
       };
 
+      const updateRecipeName = async (req,res) => {
+
+        const {rid, name} = req.body      
+       
+        let recipe = await Receta.findOne({_id:rid}) 
+            
+        
+         if (recipe) {     
+         
+           
+          recipe.nombre = name
+          recipe.save(); 
+          
+       
+          res.status(200).json({
+            ok: true,
+            mensaje: "Actualizado el nombre de la receta" ,
+            nombre: recipe.nombre,
+                     
+          });
+      
+        }  else {
+
+          res.status(404).json({
+            ok: false,
+            mensaje: "No se han podido actualizar el comentario de la receta"
+          });
+          
+        } 
+          
+        
+      
+      }  
+
+      const updateRecipeTime = async (req,res) => {
+
+        const {rid, tiempo} = req.body      
+       
+        let recipe = await Receta.findOne({_id:rid}) 
+            
+        
+         if (recipe) {     
+         
+           
+          recipe.tiempo = tiempo
+          recipe.save(); 
+          
+       
+          res.status(200).json({
+            ok: true,
+            mensaje: "Actualizado el tiempo de la receta" ,
+            nombre: recipe.nombre,
+                     
+          });
+      
+        }  else {
+
+          res.status(404).json({
+            ok: false,
+            mensaje: "No se han podido actualizar el tiempo de la receta"
+          });
+          
+        } 
+          
+        
+      
+      }  
+
 
       export {
         updateRecipeComments,
@@ -490,5 +558,7 @@ const crearReceta = async (req,res) => {
         todasRecetas,
         updateRecipeSteps,
         getRecetaByName,
-        searchByIngredientName
+        searchByIngredientName,
+        updateRecipeName,
+        updateRecipeTime
       };
