@@ -544,6 +544,40 @@ const crearReceta = async (req,res) => {
       
       }  
 
+      const updateRecipeImage = async (req,res) => {
+
+        const {newImage, oldImage, rid} = req.body      
+       
+        let recipe = await Receta.findOne({_id:rid}) 
+            
+        
+         if (recipe) {     
+         
+           
+          recipe.imagenURL = newImage
+          recipe.save(); 
+          
+       
+          res.status(200).json({
+            ok: true,
+            mensaje: "Actualizada la imagen de la receta" ,
+            imagen: recipe.imagenURL,
+                     
+          });
+      
+        }  else {
+
+          res.status(404).json({
+            ok: false,
+            mensaje: "No se han podido actualizar la imagen de la receta"
+          });
+          
+        } 
+          
+        
+      
+      }  
+
 
       export {
         updateRecipeComments,
@@ -560,5 +594,6 @@ const crearReceta = async (req,res) => {
         getRecetaByName,
         searchByIngredientName,
         updateRecipeName,
-        updateRecipeTime
+        updateRecipeTime,
+        updateRecipeImage
       };

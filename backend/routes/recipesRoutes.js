@@ -18,7 +18,8 @@ import {
   getRecetaByName,
   searchByIngredientName,
   updateRecipeName,
-  updateRecipeTime
+  updateRecipeTime,
+  updateRecipeImage
 } from '../controllers/recipeController.js';
 
 // Creamos el objeto Router
@@ -63,5 +64,7 @@ router.post('/updateRecipeSteps', updateRecipeSteps);
 router.post('/searchByIngredientName', searchByIngredientName);
 router.post('/updateRecipeName', updateRecipeName);
 router.post('/updateRecipeTime', updateRecipeTime);
+router.post('/updateRecipeImage', updateRecipeImage);
+
 
 export default router

@@ -60,7 +60,8 @@ export default function HomePage() {
         // dispatch(onSetRecipeFilter(searchFilter))      //esto esta mal  
         } else {
           console.log("El recipe filter es null o vacio")
-          const allRecipes = await startAllRecipes();      
+          const allRecipes = await startAllRecipes(); 
+          console.log("allRecipes", allRecipes)     
           setRecetasIniciales(allRecipes)
         }
         

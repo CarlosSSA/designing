@@ -68,7 +68,7 @@ export default function Footer() {
           {isRecipePage ? (
             <>
               {/* Botones para la página de recetas */}
-              <BottomNavigationAction label="Home" icon={<HomeIcon color="action"/>} centered />
+              <BottomNavigationAction label="Home" onClick={handleClickHome} icon={<HomeIcon color="action"/>} centered />
               <BottomNavigationAction label="Guardar" icon={<SaveIcon />} centered />
               <BottomNavigationAction label="Likear" icon={<ThumbUpIcon />} centered />
               <BottomNavigationAction label="userCalendar" icon={<CalendarMonthIcon /> } onClick={handleClickCalendar} centered />

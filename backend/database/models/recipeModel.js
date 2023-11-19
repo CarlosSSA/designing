@@ -29,6 +29,7 @@ const RecipeSchema = new Schema({
   hcs: { type: Number },
   totales: { type: Schema.Types.Mixed, default: {} },
   grasas: { type: Number },
+  imagenURL:{ type: String, default: "" },
 });
 
 export default model('Receta', RecipeSchema);

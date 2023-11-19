@@ -13,33 +13,51 @@ import "./crearReceta.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useRecipeStore } from "../../hooks/useRecipeStore";
 import { useIngredientStore } from "../../hooks/useIngredientStore";
-import { uploadStepImage } from "../../hooks/useFireBase";
+import { uploadStepImage, uploadRecipeImage } from "../../hooks/useFireBase";
+import Compressor from 'compressorjs';
+
 
 
 
 
 
 const CrearReceta = () => {
-  const { uid } = useSelector(state => state.auth.user);
+  const { _id } = useSelector(state => state.auth.user);
   const ingredientesTotales = useSelector(state => state.ingredients.totalingredients.ingredientes);
 
   const { startCreateRecipe, startFormRecipe } = useRecipeStore();
 
-  const [totalIngredients, setTotalIngredientes] = useState([ingredientesTotales]);
+  const [totalIngredients, setTotalIngredientes] = useState(ingredientesTotales);
+
+  const [imagenFile, setImagenFile] = useState(null); // Estado para el archivo de imagen
+  const [imagenPreview, setImagenPreview] = useState(null); // Estado para la previsualización
+
+ // Para el cambio de la foto
+  const [newImage, setNewImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
     setTotalIngredientes(ingredientesTotales);
   }, [ingredientesTotales]);
 
+  useEffect(() => {
+    console.log("ingredientesTotales",ingredientesTotales)
+    console.log("ingredientesTotales",totalIngredients)
+
+    
+  }, [])
+  
+
   const [receta, setReceta] = useState({
     nombre: "",
-    autor: uid,
+    autor: _id,
     descripcion: "",
     ingredientes: [],
     pasos: [],
     dificultad: 0,
     tiempo: 0,
     porciones: 0,
+    imagenURL: null
   });
 
   useEffect(() => {
@@ -64,6 +82,8 @@ const CrearReceta = () => {
     });
   };
 
+  
+
   const deleteItem = (ingredients, index) => {
     const newIngredients = [...ingredients.slice(0, index), ...ingredients.slice(index + 1)];
     setReceta({
@@ -72,37 +92,109 @@ const CrearReceta = () => {
     });
   };
 
-  const recetaJson = async (receta) => {
-    const uploadedImages = await Promise.all(receta.pasos.map(async paso => {
-      if (paso.imgURL.startsWith('data:image')) {
-        const url = await uploadStepImage(paso.imgURL);
-        return url;
+  const recetaJson = async () => {
+    try {
+      // Sube la imagen de la receta si hay una seleccionada
+      if (imagenFile) {
+        const imageUrl = await uploadRecipeImage(imagenFile);
+        receta.imagenURL = imageUrl; // Actualizamos directamente el estado aquí
       }
-      return paso.imgURL;
-    }));
 
-    const updatedReceta = {
-      ...receta,
-      pasos: receta.pasos.map((paso, index) => ({
-        ...paso,
-        imgURL: uploadedImages[index]
-      }))
-    };
+      // Sube las imágenes de cada paso
+      const uploadedImages = await Promise.all(receta.pasos.map(async paso => {
+        if (paso.imagenFile) {
+          const url = await uploadStepImage(paso.imagenFile);
+          return url;
+        }
+        return null; // Devuelve null si no hay imagen
+      }));const recetaJson = async () => {
+    try {
+      // Sube la imagen de la receta si hay una seleccionada
+      if (imagenFile) {
+        const imageUrl = await uploadRecipeImage(imagenFile);
+        receta.imagenURL = imageUrl; // Actualizamos directamente el estado aquí
+      }
 
-    const recetaJSON = JSON.stringify(updatedReceta);
-    startCreateRecipe(updatedReceta);
+      // Sube las imágenes de cada paso
+      const uploadedImages = await Promise.all(receta.pasos.map(async paso => {
+        if (paso.imagenFile) {
+          const url = await uploadStepImage(paso.imagenFile);
+          return url;
+        }
+        return null; // Devuelve null si no hay imagen
+      }));
+
+      const updatedPasos = receta.pasos.map((paso, index) => ({
+        texto: paso.texto,
+        imgURL: uploadedImages[index] // Usa las URLs subidas
+      }));
+
+      const updatedReceta = {
+        ...receta,
+        pasos: updatedPasos
+      };
+
+      // Aquí ya puedes enviar la receta actualizada a tu backend o donde sea necesario
+      startCreateRecipe(updatedReceta);
+
+    } catch (error) {
+      console.error("Error al subir las imágenes:", error);
+    }
   };
 
-  const deletePaso = (paso, index) => {
-    const newPaso = [...receta.pasos.slice(0, index), ...receta.pasos.slice(index + 1)];
-    setReceta({
-      ...receta,
-      pasos: newPaso
-    });
+      const updatedPasos = receta.pasos.map((paso, index) => ({
+        texto: paso.texto,
+        imgURL: uploadedImages[index] // Usa las URLs subidas
+      }));
+
+      const updatedReceta = {
+        ...receta,
+        pasos: updatedPasos
+      };
+
+      // Aquí ya puedes enviar la receta actualizada a tu backend o donde sea necesario
+      startCreateRecipe(updatedReceta);
+
+    } catch (error) {
+      console.error("Error al subir las imágenes:", error);
+    }
+  };
+
+  // Subida de la imagen de la receta
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      new Compressor(file, {
+        quality: 0.6,
+        success(compressedImage) {
+          const previewUrl = URL.createObjectURL(compressedImage);
+          setImagenFile(compressedImage);
+          setImagenPreview(previewUrl);
+        },
+        error(err) {
+          console.log(err.message);
+        },
+      });
+    }
   };
 
   return (
     <Box className="container">
+      <div className="textfield upload-image-container">
+        <label htmlFor="recipe-image-upload" className="image-upload-label">
+          <Button variant="contained" component="span">
+            Sube la foto principal
+          </Button>
+          <input
+            id="recipe-image-upload"
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
+          />
+        </label>
+        {imagenPreview && <img src={imagenPreview} alt="Imagen de previsualización" style={{ maxWidth: '100%', height: 'auto' }} />}
+      </div>
       <Typography className="title">Crea tu receta</Typography>
       <div className="textfield">
         <TitleComponent title={receta.nombre} handleChange={handleChange} />
@@ -131,11 +223,11 @@ const CrearReceta = () => {
         <PasosForm addPaso={addPaso} handleChange={handleChange} />
       </div>
       <div className="textfield">
-        <PasosTable pasos={receta.pasos} deletePaso={deletePaso} />
+        <PasosTable pasos={receta.pasos}  />
       </div>
-      <Button className="button" onClick={() => recetaJson(receta)}>Crear Receta</Button>
+      <Button className="button" onClick={recetaJson}>Crear Receta</Button>
     </Box>
   );
 };
 
-export default CrearReceta;
+export default CrearReceta

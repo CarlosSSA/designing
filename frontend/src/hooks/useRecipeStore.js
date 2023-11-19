@@ -245,6 +245,22 @@ export const useRecipeStore = () => {
         
     }
 
+    const startUpdateRecipeImage = async( { newImage, oldImage, rid } ) => {  
+    
+        try {  
+            console.log(`Vamos a ver qué envío al BE para actualizar la imagen de la receta, newImage: ${newImage} rid: ${rid}, oldImage:${oldImage} `)
+            
+            const {data} = await recetaApi.post('/recipe/updateRecipeImage',{newImage, oldImage, rid })   
+                   
+            console.log("startUpdateRecipeImage Hook: Lo que me devuelve el BE", data);  
+            return data           
+        } catch (error) {
+            console.log("Ha habido un problema actualizando la imagen de la receta", error);
+        }
+            
+        
+    }
+
     
 
     
@@ -266,6 +282,7 @@ export const useRecipeStore = () => {
         startSearchByIngredientName,
         startUpdateRecipeName,
         startUpdateRecipeTime,
+        startUpdateRecipeImage
         
         
         

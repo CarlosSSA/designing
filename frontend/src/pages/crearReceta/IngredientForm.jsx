@@ -13,7 +13,7 @@ const IngredientForm = ({addIngredient, totalIngredients}) => {
 
   useEffect(() => {
     console.log("totalIngredients",totalIngredients )
-  
+    console.log("nombres",nombres )
    
   }, [])
   

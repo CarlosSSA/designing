@@ -22,11 +22,9 @@ import ContenidoCard from './ContenidoCard';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import UpdateIcon from '@mui/icons-material/Update';
 import ImageIcon from '@mui/icons-material/Image';
-
-
-  
-
-
+import { replaceRecipeImage } from '../../hooks/useFireBase';
+import Swal from 'sweetalert2';
+import Compressor from 'compressorjs';
 
 
 
@@ -41,11 +39,81 @@ const columns = [
 
     const [anchorEl, setAnchorEl] = useState(null); // Estado para el menú desplegable
     const open = Boolean(anchorEl);
-    const {startSelectRecipe, startUpdateRecipeName, startUpdateRecipeTime} = useRecipeStore()
-
+    const {startSelectRecipe, startUpdateRecipeName, startUpdateRecipeTime, startUpdateRecipeImage} = useRecipeStore()
+    
+    const {recipeid} = useParams()
+    const [fetchedData, setFetchedData] = useState()
 
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState('');
+
+    const [newImage, setNewImage] = useState(null);
+    const [imagePreview, setImagePreview] = useState("");
+
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
+    const handleEditImageClick = () => {
+      setIsImageModalOpen(true);
+      handleMenuClose(); // Cierra el menú desplegable
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      new Compressor(file, {
+        quality: 0.1,
+        success(compressedImage) {
+          const previewUrl = URL.createObjectURL(compressedImage);
+          setNewImage(compressedImage);
+          setImagePreview(previewUrl);
+        },
+        error(err) {
+          console.log(err.message);
+        },
+      });
+    }
+  };
+
+const handleAcceptNewImage = async () => {
+    if (newImage) {
+        try {
+            // Obtener la ruta de la imagen antigua y subir la nueva imagen
+            const oldImageRef = fetchedData.receta.imagenURL;
+            const newImageUrl = await replaceRecipeImage(newImage, oldImageRef, 'recipeImages');
+            
+            // Llamada a la base de datos para actualizar la URL de la imagen
+            // Asumiendo que tienes una función que maneja esta actualización
+          const updatedRecipe = await startUpdateRecipeImage({rid:fetchedData.receta._id, newImage:newImageUrl});
+
+            // Comprueba si la actualización fue exitosa antes de actualizar el estado local
+            if (updatedRecipe && updatedRecipe.ok) {
+                setFetchedData(prevData => ({
+                    ...prevData,
+                    receta: {
+                        ...prevData.receta,
+                        imagenURL: newImageUrl
+                    }
+                }));
+            }
+
+            // Restablecer estados y cerrar el modal
+            setNewImage(null);
+            setImagePreview("");
+            setIsImageModalOpen(false);
+
+            Swal.fire({
+                title: 'Hecho!',
+                text: 'Imagen cambiada correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+
+        } catch (error) {
+            console.error('Error al cambiar la imagen:', error);
+            // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje al usuario
+        }
+    }
+};
 
     const [isEditingTime, setIsEditingTime] = useState(false);
     const [editedTime, setEditedTime] = useState('');
@@ -158,8 +226,7 @@ const columns = [
     console.log("receta guardada")
 };
 
-  const {recipeid} = useParams()
-  const [fetchedData, setFetchedData] = useState()
+ 
  
  
   // Llamada a BBDD para recoger datos de esta receta en concreto
@@ -221,7 +288,7 @@ return (
                               open={open}
                               onClose={handleMenuClose}
                           >
-                              <MenuItem onClick={handleEditImage}>
+                              <MenuItem onClick={handleEditImageClick}>
                                 <ImageIcon fontSize="small" sx={{ mr: 1 }} /> Editar imagen
                               </MenuItem>
                               <MenuItem onClick={handleEditTime}>
@@ -260,7 +327,7 @@ return (
                   }}
                   component="img"
                   height="194"
-                  image={fetchedData.receta.imagen || "https://via.placeholder.com/194"}
+                  image={fetchedData.receta.imagenURL || "https://via.placeholder.com/194"}
                   alt={fetchedData.receta.nombre}
               />
               <CardActions disableSpacing>
@@ -308,6 +375,19 @@ return (
       ) : (
           <div>Cargando...</div>
       )}
+       <Dialog open={isImageModalOpen} onClose={() => setIsImageModalOpen(false)}>
+            <DialogTitle>Cambiar Imagen de la Receta</DialogTitle>
+            <DialogContent>
+                <input type="file" accept="image/*" onChange={handleImageChange} />
+                {imagePreview && (
+                    <div>
+                        <img src={imagePreview} alt="Previsualización" style={{ width: '100%', height: 'auto' }} />
+                        <Button onClick={handleAcceptNewImage}>Aceptar</Button>
+                    </div>
+                )}
+                <Button onClick={() => setIsImageModalOpen(false)}>Cancelar</Button>
+            </DialogContent>
+        </Dialog>
   </>
   )
 }
