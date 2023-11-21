@@ -316,6 +316,7 @@ return (
                         </Typography>
                     )
                 }
+                  className="card-header"
                   subheader={fetchedData.receta.autor.nombre}
               />
               <CardMedia
@@ -326,11 +327,12 @@ return (
                       borderTopRightRadius: 8,
                   }}
                   component="img"
+                  className="recipe-image"
                   height="194"
                   image={fetchedData.receta.imagenURL || "https://via.placeholder.com/194"}
                   alt={fetchedData.receta.nombre}
               />
-              <CardActions disableSpacing>
+              <CardActions disableSpacing className="card-actions">
                   <IconButton aria-label="add to favorites">
                       <FavoriteIcon />
                       {fetchedData.receta.likes ? fetchedData.receta.likes.length : 0}
@@ -365,11 +367,12 @@ return (
                       <LocalFireDepartmentIcon /> {fetchedData.receta.totales.kcal}
                   </Typography>
               </CardActions>
-              <CardContent>
+              <CardContent className="card-content">
                   <Typography variant="body2" color="text.secondary">
                       {fetchedData.receta.descripcion}
                   </Typography>
                   {/* Aquí puedes poner más contenido si es necesario */}
+                  <ContenidoCard datos={fetchedData}/>
               </CardContent>
           </Card>
       ) : (

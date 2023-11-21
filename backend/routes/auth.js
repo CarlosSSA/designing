@@ -17,7 +17,8 @@ import {
   updateUsuarioCalendarRecipes,
   updateHarris,
   getKcalsPerWeek,
-  getUsuarioCalendarRecipes
+  getUsuarioCalendarRecipes,
+  refreshUsuarioLikesYFavs
 
 } from '../controllers/authController.js';
 
@@ -61,6 +62,9 @@ router.post('/updateHarris', updateHarris);
 router.post('/getKcalsPerWeek', getKcalsPerWeek);
 
 router.post('/getUsuarioCalendarRecipes', getUsuarioCalendarRecipes);
+
+router.post('/refreshUsuarioLikesYFavs', refreshUsuarioLikesYFavs);
+
 
 
 

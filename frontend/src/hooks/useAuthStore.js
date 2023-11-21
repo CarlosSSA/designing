@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux';
 import recetaApi from '../apis/authApi';
-import { onclearErrorMessage, onChecking, onLogin, onLogout, onValoresTotales } from '../store/auth/authSlice';
+import { onRefreshLikesYFavs,onclearErrorMessage, onChecking, onLogin, onLogout, onValoresTotales } from '../store/auth/authSlice';
 
 //new
 import { format, parseISO } from 'date-fns';
@@ -282,6 +282,23 @@ const startGetUsuarioCalendarRecipes = async({ uid }) => {
     }
 }
 
+const startRefreshUsuarioLikesYFavs = async({ usuario }) => {
+      
+    
+    try {      
+        console.log("jajaja Hook, y el usuario?",usuario)
+        console.log("jajaja Hook, y el uid?",usuario._id)  
+
+        const {data} = await recetaApi.post('/auth/refreshUsuarioLikesYFavs', { uid: usuario._id })
+        dispatch(onRefreshLikesYFavs(data))
+        console.log("jajaja data", data)
+        return data
+
+    } catch (error) {
+        console.log("error en el Hook startRefreshUsuarioLikesYFavs ", error);        
+    }
+}
+
    
 
   return {
@@ -307,6 +324,7 @@ const startGetUsuarioCalendarRecipes = async({ uid }) => {
     startUpdateHarris,
     startGetKcalsPerWeek,
     startGetUsuarioCalendarRecipes,
+    startRefreshUsuarioLikesYFavs,
     
     
   }

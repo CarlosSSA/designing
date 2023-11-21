@@ -18,7 +18,7 @@ import Alert from '@mui/material/Alert';
 const UserCalendar = () => {
 
   const {status, user, errorMessage, valoresTotales} = useSelector(state => state.auth)
-  const {uid} = useSelector(state => state.auth.user); 
+  const {_id} = useSelector(state => state.auth.user); 
   const {startUsuarioIndividual} = useAuthStore();
 
   const [recetasCalendario, setRecetasCalendario] = useState(null)
@@ -28,8 +28,8 @@ const UserCalendar = () => {
   //recibimos las recetas favoritas del usuario y las guardamos en un estado. Que bien lo he hecho metiendolo en un callback :) 
 
   const obtenerRecetas = async () => {
-    console.log("Parent Element: UID usuario", uid);
-    const miUsuario = await startUsuarioIndividual({uid});
+    console.log("Parent Element: UID usuario", _id);
+    const miUsuario = await startUsuarioIndividual({uid:_id});
     console.log("Parent Element: usuario", miUsuario);
     setRecetasCalendario((prevState) => {
       console.log("Parent Element: sque tiene el usuario?", miUsuario.calendarRecipes);

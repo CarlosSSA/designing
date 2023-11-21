@@ -1,10 +1,84 @@
 
-  .card-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-   
+
+  /* Estilo general de la tarjeta */
+.card {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px; /* Ancho máximo para pantallas grandes */
+  margin: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave para la tarjeta */
+  border-radius: 10px; /* Esquinas redondeadas para la tarjeta */
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .card {
+    margin: 10px; /* Espacio alrededor para pantallas pequeñas */
   }
+}
+
+.card-content {
+  padding: 16px;
+}
+
+/* Ajustar imagen para que ocupe el ancho completo y tenga altura automática */
+.recipe-image {
+  width: 100%;
+  height: auto;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Botones de acción */
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+/* Estilo para los comentarios y otros contenidos */
+.comment-section {
+  padding: 16px;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start; /* Alinea ítems al principio para evitar desalineación cuando el texto es largo */
+  gap: 10px; /* Espacio entre avatar y texto */
+}
+
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.comment-text {
+  flex: 1; /* Permite que el texto ocupe el espacio restante */
+}
+
+/* Botón para agregar comentario */
+.add-comment-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+}
+
+/* Ajustes para los diálogos */
+.dialog-content {
+  padding: 20px;
+}
+
+/* Ajustes para la vista previa de la imagen */
+.image-preview {
+  width: 100%; /* Asegurar que la vista previa no sobrepase el ancho del contenedor */
+  margin-top: 10px; /* Espacio encima de la vista previa */
+}
   
   
   

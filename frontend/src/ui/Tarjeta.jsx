@@ -24,7 +24,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { onLikeRecipe, onUnlikeRecipe } from '../store/auth/authSlice';
+import { onLikeRecipe } from '../store/auth/authSlice';
 
 
 
@@ -86,12 +86,13 @@ useEffect(() => {
   console.log("xD: typeof(usuario.likedRecipes))", typeof(usuario.likedRecipes))
 
 
-
+  // Esto es el [rid,rid] del usuario a nivel Home - Likes
   if (userLikedRecipes && Array.isArray(userLikedRecipes) && userLikedRecipes.includes(receta._id)) {
     setRecipeLiked(true)
     console.log(` La receta ${receta._id} está dentro del array del usuario`)
   }
 
+  // Esto es el [rid,rid] del usuario a nivel Home - Favs
   if (userFavRecipes && Array.isArray(userFavRecipes) && userFavRecipes.includes(receta._id)) {
     setRecipeSaved(true);  
     console.log(` La receta ${receta._id} NO está dentro del array del usuario`)    
@@ -109,6 +110,7 @@ useEffect(() => {
   
   console.log("y el typeof de la receta??", typeof receta._id);
 
+  // Esto no se para que lo hago, lo necesito?
   userLikedRecipes.forEach(item => {
     console.log("y el typeof de userLikedRecipes??", typeof item); // Tipo básico
     console.log(Object.prototype.toString.call(item)); // Tipo detallado
@@ -174,7 +176,7 @@ const handleLikeRecipe = async() => {
     setUserLikedRecipes(userLikedRecipes.filter(id => id !== receta._id));
     setLikesReceta(likesReceta.filter(id => id !== usuario._id))
     setRecipeLiked(false);
-    dispatch(onUnlikeRecipe(receta._id));
+    dispatch(onLikeRecipe(receta._id));
     console.log("receta deslikeada");
     console.log(`me aseguro que mando los datos del like bien, sí estaba en el like: uid:${usuario._id} + likedRecipe: ${receta._id}`); 
 

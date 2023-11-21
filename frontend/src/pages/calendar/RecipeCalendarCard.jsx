@@ -122,7 +122,7 @@
           <CardMedia
             component="img"
             height="194"
-            image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdcKQZxEQg-EWoF50h2Nk6lLYLL34BBUwi7_7fqsdwBQ&s"
+            image={receta.imagenURL}
             alt="Paella dish"
           />
           

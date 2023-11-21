@@ -21,6 +21,8 @@ const UserProfile = () => {
   console.log("que me viene en user?", user);
 
   const [usuarioPopulado, setUsuarioPopulado] = useState()
+  const [likedRecipes, setLikedRecipes] = useState(user.likedRecipes);
+  const [favRecipes, setFavRecipes] = useState(user.favRecipes)
 
   // tengo que recoger todos los datos de las recetas una vez tengo el user
   // ver si me popula llamando a usuarioIndividual pasandole el uid simplemente
@@ -28,7 +30,7 @@ const UserProfile = () => {
 
   const popularUsuario = async () => {
     
-    const usuarioPopulado = await startUsuarioIndividual({uid:user.uid});
+    const usuarioPopulado = await startUsuarioIndividual({uid:user._id});
     console.log("El usuario populado que me llega", usuarioPopulado);      
     setUsuarioPopulado(usuarioPopulado)
     
@@ -36,11 +38,16 @@ const UserProfile = () => {
 
   useEffect(() => {
     popularUsuario();
+    console.log("El usuario populado que me llega", usuarioPopulado);      
+
   }, []);
+  
 
   // Si el campo calorías objetivo no viene definido, entoences muestro el componente de formulario
   const tabNames = ["Mis Recetas","Me Gustan", "Favoritas"];
   const [value, setValue] = useState(tabNames[0]);
+ ;
+
   const handleChange = (event, newValue) => {
     setValue(tabNames[newValue]);
   };
@@ -52,7 +59,7 @@ const UserProfile = () => {
     <div className="profile-container">
       
       <div className="profile-header">
-        <img src={user ? user.avatar || "ruta/default/avatar.jpg" : "ruta/default/avatar.jpg"} alt="Avatar del usuario" className="user-avatar" />
+        <img src={user ? user.avatarUrl || "ruta/default/avatar.jpg" : "ruta/default/avatar.jpg"} alt="Avatar del usuario" className="user-avatar" />
         <div className="profile-info">
           <h2>{user ? user.nombre : ""}</h2>
           <div className="profile-stats" >
@@ -88,6 +95,11 @@ const UserProfile = () => {
                 descripcion={recipe.descripcion} 
                 likes={recipe.likes.length} 
                 comments={recipe.comentarios.length}
+                tab="propias"
+                setLikedRecipes={setLikedRecipes}
+                setFavRecipes={setFavRecipes}
+                likedRecipes={likedRecipes}
+                favRecipes={favRecipes}
             />
         ))
         : 
@@ -113,6 +125,11 @@ const UserProfile = () => {
                 descripcion={recipe.descripcion} 
                 likes={recipe.likes.length} 
                 comments={recipe.comentarios.length}
+                tab="likes"
+                setLikedRecipes={setLikedRecipes}
+                setFavRecipes={setFavRecipes}
+                likedRecipes={likedRecipes}
+                favRecipes={favRecipes}
             />
         ))
         : 
@@ -138,6 +155,11 @@ const UserProfile = () => {
                 descripcion={recipe.descripcion} 
                 likes={recipe.likes.length} 
                 comments={recipe.comentarios.length}
+                tab="favs"
+                setLikedRecipes={setLikedRecipes}
+                setFavRecipes={setFavRecipes}
+                likedRecipes={likedRecipes}
+                favRecipes={favRecipes}
             />
         ))
         : 
@@ -162,6 +184,10 @@ const UserProfile = () => {
                 descripcion={recipe.descripcion} 
                 likes={recipe.likes.length} 
                 comments={recipe.comentarios.length}
+                setLikedRecipes={setLikedRecipes}
+                setFavRecipes={setFavRecipes}
+                likedRecipes={likedRecipes}
+                favRecipes={favRecipes}
             />
         ))
         : 

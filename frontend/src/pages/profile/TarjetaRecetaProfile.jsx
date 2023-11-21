@@ -20,6 +20,14 @@
   import { CardActionArea, Dialog, DialogContent, DialogTitle } from '@mui/material';
   import { useNavigate } from 'react-router-dom';
   import { useDispatch } from 'react-redux';
+  import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+  import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+  import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+  import { onLikeRecipe } from '../../store/auth/authSlice';
+
+
+
+
 
   import { useState } from 'react';
 
@@ -57,9 +65,10 @@
 
 
 
-  export default function TarjetaRecetaProfile({nombre, autor, receta, descripcion, likes, comments}) {
+  export default function TarjetaRecetaProfile({nombre, autor, receta, descripcion, likes, comments, tab, likedRecipes, setLikedRecipes, favRecipes, setFavRecipes}) {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     console.log("que me llega en likes?",likes)
 
@@ -89,8 +98,25 @@
       setOpen(false);
     };
 
+    const handleSaveRecipe = ()=>{
+      console.log("Hola")
+    }
 
-    // lo nuevo del calendario  
+    const handleLikeRecipe = async() => {      
+      
+        //setLikedRecipes(likedRecipes.filter(id => id !== receta._id));
+
+        //dispatch(onLikeRecipe(receta._id));        
+    
+        // Actualizar likes en la BBDD
+        await startUpdateUserLikes({uid: usuario._id, likedRecipe:  receta._id});
+        
+              
+      
+      
+    };  
+
+
 
   
     return (
@@ -139,9 +165,13 @@
         </CardActionArea>
         
           <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites" onClick={addFavorite}>
-              <FavoriteIcon />
-              {likes}
+          <IconButton aria-label="add to favorites" onClick={handleLikeRecipe}>
+              {tab === "likes" ? <FavoriteIcon fontSize="large"/>
+              : <FavoriteBorderIcon fontSize="large" />}
+              {receta.likes.length}
+            </IconButton>
+            <IconButton onClick={handleSaveRecipe}>
+              {tab === "favs" ? <BookmarkAddedIcon fontSize="large" /> : <BookmarkBorderIcon fontSize="large" />}
             </IconButton>
             <IconButton aria-label="message" onClick={commentCard}>            
               <MessageIcon />

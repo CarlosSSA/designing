@@ -34,11 +34,12 @@ const theme = createTheme();
 export default function HomePage() { 
   const {startAllRecipes} = useRecipeStore();
   const [recetasiniciales, setRecetasIniciales] = useState([])  
-  const [userFavRecipes, setUserFavRecipes] = useState([]);
+  
   const [miUsuario, setMiUsuario] = useState();
 
   const usuario = useSelector(state => state.auth.user);
   const [userLikedRecipes, setUserLikedRecipes] = useState(usuario.likedRecipes);
+  const [userFavRecipes, setUserFavRecipes] = useState(usuario.favRecipes);
 
   //Filtro de recetas del buscador
   const dispatch = useDispatch();
@@ -46,12 +47,12 @@ export default function HomePage() {
   const recipeFilter = useSelector(state => state.recipes.recipeFilter);
   const recipes = useSelector(state => state.recipes.recipes);
   const errorBusqueda = useSelector(state => state.recipes.error);
-  const {startUsuarioIndividual} = useAuthStore();
+  const {startUsuarioIndividual, startRefreshUsuarioLikesYFavs} = useAuthStore();
 
 
  
 
-
+  // RecipeFilter cuando añades un ingrediente en el Buscador. Ya no hace falta aquí porque esto lo hacemos en /busquedaPage
   useEffect(() => {
       const obtenerRecetasXNombre = async () => {
         if (recipeFilter) {
@@ -67,8 +68,11 @@ export default function HomePage() {
         
       };
       obtenerRecetasXNombre();
+      console.log("Llamo a la movida esta nueva?")
+      startRefreshUsuarioLikesYFavs({usuario})
   }, [recipeFilter]); 
 
+  // Esto no se si funciona
   useEffect(() => {
     if (usuario === null) {
       dispatch(onLogout());

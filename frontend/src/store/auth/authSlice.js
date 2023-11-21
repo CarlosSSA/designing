@@ -38,16 +38,17 @@ export const authSlice = createSlice({
     },
 
     onLikeRecipe: (state, action) => {
-      
-      if (!state.likedRecipes.includes(action.payload)) {
-        state.user.likedRecipes.push(action.payload);
+      const recipeId = action.payload;
+    
+      if (state.user.likedRecipes.includes(recipeId)) {
+        // Quitar el id si ya está presente
+        state.user.likedRecipes = state.user.likedRecipes.filter(id => id !== recipeId);
+      } else {
+        // Añadir el id si no está presente
+        state.user.likedRecipes.push(recipeId);
       }
     },
-    onUnlikeRecipe: (state, action) => {
-      
-      state.likedRecipes = state.user.likedRecipes.filter(id => id !== action.payload);
-    }
-  },
+    
     onPremium: (state) => {  //necesito identificar al usuario por payload?
       state.premium = true
     },
@@ -58,11 +59,17 @@ export const authSlice = createSlice({
       state.valoresTotales = payload.totales
       
     },
+    onRefreshLikesYFavs: (state, {payload}) => {  //recibe payload.totales
+      console.log("jaja pero que dise")
+      state.user.likedRecipes = payload.likedRecipes
+      state.user.favRecipes = payload.favRecipes
+      
+    },
 
   },
-)
+})
 
 // Action creators are generated for each case reducer function
-export const { onLikeRecipe, onUnlikeRecipe, onChecking, onLogin, onThunk, onLogout, onclearErrorMessage, onPremium, onLoosePremium, onValoresTotales } = authSlice.actions
+export const { onRefreshLikesYFavs, onLikeRecipe, onChecking, onLogin, onThunk, onLogout, onclearErrorMessage, onPremium, onLoosePremium, onValoresTotales } = authSlice.actions
 
 export default authSlice.reducer

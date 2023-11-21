@@ -525,6 +525,37 @@ function normalizeDate(dateString) {
   return `${year}-${month}-${day}`;
 }
 
+const refreshUsuarioLikesYFavs = async (req, res) => {
+  const { uid } = req.body;
+  console.log("jajaja que recibo en el uid?")
+
+  try {
+    let usuario = await Usuario.findOne({ _id: uid });
+
+    if (usuario) {  
+
+        res.status(200).json({
+        ok: true,
+        mensaje: "Encontrado el usuario, devolviendo sus likes y favs",
+        likedRecipes: usuario.likedRecipes,
+        favRecipes: usuario.favRecipes
+      });
+
+    } else {
+      res.status(404).json({
+        ok: false,
+        mensaje: "No se ha encontrado al usuario"
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      mensaje: "Error al encontrar al usuario",
+      error
+    });
+  }
+}
+
  
 
 export {
@@ -540,6 +571,7 @@ export {
   addRegistroPeso,
   updateHarris,
   getKcalsPerWeek,
-  getUsuarioCalendarRecipes
+  getUsuarioCalendarRecipes,
+  refreshUsuarioLikesYFavs,
 
 };
