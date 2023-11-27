@@ -17,8 +17,6 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import authSlice from './auth/authSlice';
-import recipesSlice from './recipes/recipesSlice';
-import ingredientsSlice from './ingredients/ingredientsSlice';
 
 
 const persistConfig = {
@@ -29,15 +27,11 @@ const persistConfig = {
 
 const rootReducer = {
   auth: authSlice,
-  recipes: recipesSlice,
-  ingredients: ingredientsSlice
 };
 
 
 const persistedReducer = {
   auth: persistReducer(persistConfig, authSlice),
-  recipes: recipesSlice,
-  ingredients: ingredientsSlice
 };
 
 export const store = configureStore({

@@ -13,10 +13,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MessageIcon from '@mui/icons-material/Message';
 import { CardActionArea, Dialog, DialogContent, DialogTitle } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRecipeStore } from '../hooks/useRecipeStore';
-import { useAuthStore } from '../hooks/useAuthStore';
+
 import { useState, useEffect } from 'react';
 import "./tarjeta.css"
 import BotonCalendario from './BotonCalendario';
@@ -45,10 +42,9 @@ const commentCard = ()=>{
 }
 
 
-export default function RecipeReviewCard({usuario, nombre, autor, receta, descripcion, likes, comments}) {
+export default function RecipeReviewCard() {
 
 
-const [likesReceta, setLikesReceta] = useState(receta.likes); // [u1,u2,u3] guardo los usuarios  
 const [recipeLiked, setRecipeLiked] = useState(false); // La tiene en su lista
 const [recipeSaved, setRecipeSaved] = useState(false); // La tiene en su lista
 const [open, setOpen] = useState(false);
@@ -174,8 +170,8 @@ return (
       </IconButton>
 
       <IconButton onClick={handleSaveRecipe}>
-          {recipeSaved ? <BookmarkAddedIcon fontSize="large"/>
-           : <BookmarkBorderIcon fontSize="large" />}
+          <BookmarkAddedIcon fontSize="large"/>
+    
       </IconButton>
 
         <IconButton aria-label="message" onClick={commentCard}>            
@@ -192,7 +188,7 @@ return (
 
         <IconButton aria-label="calendar">
           
-            <BotonCalendario recetaID = {receta._id} autorID = {usuario._id}/>
+            <BotonCalendario />
         </IconButton>
           <input type="date" id="date-picker" onChange={handleDateChange} style={{ display: "none" }} />
                   

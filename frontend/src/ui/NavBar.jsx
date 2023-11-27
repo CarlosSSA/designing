@@ -19,9 +19,7 @@ import { Avatar, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import BuscadorFake from './BuscadorFake';
 import { useEffect } from 'react';
-import { useIngredientStore } from '../hooks/useIngredientStore';
 import { useState } from 'react';
-import { onLoadAllIngredients } from '../store/ingredients/ingredientsSlice';
 
 
 
@@ -36,7 +34,6 @@ export default function PrimarySearchAppBar() {
     console.log(valorDeBusqueda);
   }
 
-  const { startAllIngredients } = useIngredientStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +47,6 @@ export default function PrimarySearchAppBar() {
 
       console.log("tuListaDeIngredientes", nombresDeIngredientes);
       console.log("tuListaDeIngredientes en Estado", listaDeIngredientes);
-      dispatch(onLoadAllIngredients(ingredientesDb))
     };
 
     fetchData();
