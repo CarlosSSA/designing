@@ -23,9 +23,7 @@ app.use(cors());
 
 // Rutas
 app.use('/api/auth', authRoutes);
-app.use('/api/recipe', recipesRoutes);
-app.use('/api/createIngredient', ingredientRoute);
-app.use('/api/createComment', commentsRoute);
+
 
 // Sirve los archivos estáticos del frontend
 const __dirname = path.resolve(); // me da el directorio actual hasta /apprecetasfinal
