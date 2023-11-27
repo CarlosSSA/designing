@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import './Buscador.css';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { useNavigate } from 'react-router-dom';
 
 export default function BuscadorFake() {
 
-  const navigate = useNavigate(); 
 
-  const handleRedirect = () => {
-    navigate('/busquedaPage');  // Reemplaza '/rutaDeseada' con la ruta a la que deseas navegar
-  };
 
   return (
     <div>
@@ -31,11 +24,10 @@ export default function BuscadorFake() {
               label="Buscar ingrediente o receta" 
               margin="normal" 
               variant="outlined" 
-              onClick={handleRedirect}
             />
           )}
         />
-        <Button size= "small" color="inherit" onClick={handleRedirect} className="searchButton" >
+        <Button size= "small" color="inherit" className="searchButton" >
           <SearchOutlinedIcon className="searchIcon" fontSize='small' color="primary" />
         </Button>
       </div>

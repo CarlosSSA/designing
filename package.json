@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "backend": "node backend/index.js",
-    "frontend": "cd frontend && vite",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "dev": "cd frontend && vite",
     "build": "cd frontend && vite build",
     "preview": "vite preview",
     "start": "node backend/index.js"

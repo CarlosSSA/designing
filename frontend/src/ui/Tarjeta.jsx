@@ -17,11 +17,9 @@ import { CardActionArea, Dialog, DialogContent, DialogTitle } from '@mui/materia
 import { useState, useEffect } from 'react';
 import "./tarjeta.css"
 import BotonCalendario from './BotonCalendario';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { onLikeRecipe } from '../store/auth/authSlice';
 
 
 

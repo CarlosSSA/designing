@@ -1,51 +1,16 @@
 import * as React from 'react';
 
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RecipeReviewCard from '../../ui/Tarjeta.jsx'
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-
-
-// Hacer una llamada y filtrar las ultimas 20 recetas por fecha
-
-
-const theme = createTheme();
-
-export default function HomePage() { 
-  
-
-
-  const usuario = useSelector(state => state.auth.user);
- 
-
-  //Filtro de recetas del buscador
-  const dispatch = useDispatch();
-
-
-
-
- 
-
-  // RecipeFilter cuando añades un ingrediente en el Buscador. Ya no hace falta aquí porque esto lo hacemos en /busquedaPage
-  
-
-  // Esto no se si funciona
-  useEffect(() => {
-    if (usuario === null) {
-      dispatch(onLogout());
-    }
-  }, []) 
-  
+export default function HomePage() {   
   
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />             
+    <>
+                 
       <main>
         {/* Hero unit */}
      
@@ -68,6 +33,6 @@ export default function HomePage() {
         </Container>
       </main>
 
-    </ThemeProvider>
+    </>
   );
 }

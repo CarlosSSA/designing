@@ -13,10 +13,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { useNavigate } from 'react-router-dom';
 import MenuBurger from './MenuBurger';
 import { Avatar, Button } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import BuscadorFake from './BuscadorFake';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -28,7 +26,6 @@ import { useState } from 'react';
 export default function PrimarySearchAppBar() {
 
   const [listaDeIngredientes, setListaDeIngredientes] = useState([]);
-  const dispatch = useDispatch();
 
   const tuFuncionDeBusqueda = (valorDeBusqueda) => {
     console.log(valorDeBusqueda);
@@ -57,8 +54,6 @@ export default function PrimarySearchAppBar() {
   }, [listaDeIngredientes]);
 
 
-  const navigate = useNavigate();
-  const auth = useSelector(state => state.auth);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -82,9 +77,7 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleClickLogo = (event) => {
-    navigate('/');
-  };
+
 
 
   const menuId = 'primary-search-account-menu';
@@ -137,7 +130,6 @@ export default function PrimarySearchAppBar() {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
-            onClick={(e) => console.log(e.currentTarget)}
           >
             <MenuBurger  />
           </IconButton>
@@ -147,7 +139,7 @@ export default function PrimarySearchAppBar() {
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
-            onClick={handleClickLogo}
+         
           >
             Mi APP
           </Typography>        
@@ -164,7 +156,6 @@ export default function PrimarySearchAppBar() {
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
               color="inherit"
             >
               
