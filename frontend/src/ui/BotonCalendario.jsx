@@ -5,7 +5,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState, useEffect } from 'react';
 import { IconButton } from '@mui/material';
-import Swal from 'sweetalert2'
 
 //new
 import { format } from 'date-fns';
