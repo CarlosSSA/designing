@@ -25,35 +25,6 @@ import { useState } from 'react';
 
 export default function PrimarySearchAppBar() {
 
-  const [listaDeIngredientes, setListaDeIngredientes] = useState([]);
-
-  const tuFuncionDeBusqueda = (valorDeBusqueda) => {
-    console.log(valorDeBusqueda);
-  }
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const ingredientesDb = await startAllIngredients();
-      console.log("Lista de todos los ingredientes de la navbar!", ingredientesDb.ingredientes);
-
-      // Extraer solo los nombres de los ingredientes
-      const nombresDeIngredientes = ingredientesDb.ingredientes.map(ingrediente => ingrediente.nombre);
-      // Actualizar el estado con los nombres de los ingredientes
-      setListaDeIngredientes(nombresDeIngredientes);
-
-      console.log("tuListaDeIngredientes", nombresDeIngredientes);
-      console.log("tuListaDeIngredientes en Estado", listaDeIngredientes);
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    console.log("Holi", listaDeIngredientes)
-  }, [listaDeIngredientes]);
-
-
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
